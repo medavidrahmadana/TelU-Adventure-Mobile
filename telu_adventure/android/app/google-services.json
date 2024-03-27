@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712784786179",
+    "project_id": "telu-adventure-77586",
+    "storage_bucket": "telu-adventure-77586.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712784786179:android:903daab882ee6616292f36",
+        "android_client_info": {
+          "package_name": "com.example.telu_adventure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoY79klX0t8BYqNd8X0a8nLvaszEvatLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
