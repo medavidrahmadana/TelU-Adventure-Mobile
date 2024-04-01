@@ -3,6 +3,7 @@ import 'package:telu_adventure/page/course_page.dart';
 import 'package:telu_adventure/page/course_vid_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'page/landing_page.dart';
+import 'page/register_page.dart';
 import 'page/start_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -35,7 +36,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const landing_page()),
+        MaterialPageRoute(builder: (context) => lapor_page()),
       );
     });
     return const start();
