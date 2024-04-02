@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
 
 class vid_page extends StatelessWidget {
-  const vid_page({Key? key}) : super(key: key);
+  vid_page({Key? key}) : super(key: key);
+
+  // Daftar data video
+  final List<Map<String, String>> videos = [
+    {
+      'title': 'Installasi Flutter',
+      'uploaded': '1 hari yang lalu',
+      'thumbnail': 'assets/img/ThumbnailFlutter.jpg',
+    },
+    {
+      'title': 'Create Project Flutter',
+      'uploaded': '5 jam yang lalu',
+      'thumbnail': 'assets/img/ThumbnailFlutter.jpg',
+    },
+    {
+      'title': 'Push Rank',
+      'uploaded': '1 minggu yang lalu',
+      'thumbnail': 'assets/img/ThumbnailFlutter.jpg',
+    },
+    {
+      'title': 'List View Builder',
+      'uploaded': '2 hari yang lalu',
+      'thumbnail': 'assets/img/ThumbnailFlutter.jpg',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +56,14 @@ class vid_page extends StatelessWidget {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color:
-                                Color(0xFFEED1D1), // Warna latar belakang putih
+                            color: Color(0xFFEED1D1),
                             borderRadius: BorderRadius.circular(9),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black, // Warna efek bayangan
+                                color: Colors.black,
                                 spreadRadius: 1,
                                 blurRadius: 5,
-                                offset: Offset(0, 2), // Mengatur arah bayangan
+                                offset: Offset(0, 2),
                               ),
                             ],
                           ),
@@ -49,7 +72,7 @@ class vid_page extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             icon: Icon(Icons.arrow_back),
-                            color: Colors.black, // Warna ikon
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -92,110 +115,43 @@ class vid_page extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  Center(
-                    child: VideoButton(), // Menambahkan tombol video
+                  Column(
+                    children: List.generate(videos.length, (index) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 10.0),
+                          Center(
+                            child: VideoButton(
+                              thumbnail: videos[index]['thumbnail']!,
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+                          Center(
+                            child: Text(
+                              videos[index]['title']!,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5.0),
+                          Center(
+                            child: Text(
+                              'Uploaded - ${videos[index]['uploaded']}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+                        ],
+                      );
+                    }),
                   ),
-                  SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      'Installasi Flutter',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  Center(
-                    child: Text(
-                      'Uploaded - 1 hari yang lalu',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Center(
-                    child: VideoButton(), // Menambahkan tombol video
-                  ),
-                  SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      'Create Project Flutter',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  Center(
-                    child: Text(
-                      'Uploaded - 5 jam yang lalu',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Center(
-                    child: VideoButton(), // Menambahkan tombol video
-                  ),
-                  SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      'Push Rank',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  Center(
-                    child: Text(
-                      'Uploaded - 1 minggu yang lalu',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Center(
-                    child: VideoButton(), // Menambahkan tombol video
-                  ),
-                  SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      'List View Builder',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  Center(
-                    child: Text(
-                      'Uploaded -  2 hari yang lalu',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
                 ],
               ),
             ],
@@ -207,6 +163,10 @@ class vid_page extends StatelessWidget {
 }
 
 class VideoButton extends StatelessWidget {
+  final String thumbnail;
+
+  const VideoButton({Key? key, required this.thumbnail}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -231,15 +191,14 @@ class VideoButton extends StatelessWidget {
               ),
             ],
             image: DecorationImage(
-              image: AssetImage('assets/img/ThumbnailFlutter.jpg'),
+              image: AssetImage(thumbnail),
               fit: BoxFit.cover,
             ),
           ),
           child: Icon(
             Icons.play_arrow,
             size: 100.0,
-            color: const Color.fromARGB(
-                255, 255, 17, 0), // Ubah warna sesuai kebutuhan Anda
+            color: const Color.fromARGB(255, 255, 17, 0),
           ),
         ),
       ),

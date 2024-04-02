@@ -1,15 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/course_vid_page.dart';
 
-class course_page extends StatelessWidget {
-  const course_page({Key? key}) : super(key: key);
+class CoursePage extends StatelessWidget {
+  CoursePage({Key? key}) : super(key: key);
+
+  // Daftar Course Option
+  final List<Map<String, String>> courses = [
+    {'text': 'Mobpro'},
+    {'text': 'Proting 3'},
+    {'text': 'Kewirausahaan'},
+    {'text': 'Mobile Legends'},
+    {'text': 'Wrap Humic'},
+  ];
+
+  // Daftar Modul Option
+  final List<Map<String, String>> pilihanModul = [
+    {'topText': 'CLO 1', 'bottomText': 'Flutter'},
+    {'topText': 'CLO 2', 'bottomText': 'Dart'},
+    {'topText': 'CLO 3', 'bottomText': 'Firebase'},
+    {'topText': 'CLO 4', 'bottomText': 'State Management'},
+  ];
+
+  // Daftar Informasi Modul
+  final List<Map<String, String>> latSoal = [
+    {'title': 'Installasi Flutter', 'dateTime': '20 Maret 2024, 15.00-15.30'},
+    {
+      'title': 'Membuat Project Flutter',
+      'dateTime': '21 Maret 2024, 10.30-11.30'
+    },
+    {
+      'title': 'Push Rank Epic II - Mythic',
+      'dateTime': '22 Maret 2024, 00.00-03.00'
+    },
+    {
+      'title': 'Membuat Tampilan Sederhana',
+      'dateTime': '23 Maret 2024, 08.00-09.30'
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SingleChildScrollView(
-          // Tambahkan SingleChildScrollView di sini
           child: Stack(
             children: [
               Container(
@@ -56,91 +90,37 @@ class course_page extends StatelessWidget {
                       ),
                     ),
                   ),
+                  //bagain course option atau pilihan mata kuliah
                   SizedBox(height: 10.0),
                   SingleChildScrollView(
-                    // Tambahkan SingleChildScrollView di sini
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: [
-                        SizedBox(width: 20.0),
-                        CourseOption(text: 'Mobpro'),
-                        SizedBox(width: 10.0),
-                        CourseOption(text: 'Proting 3'),
-                        SizedBox(width: 10.0),
-                        CourseOption(text: 'Kewirausahaan'),
-                        SizedBox(width: 10.0),
-                        CourseOption(text: 'Mobile Legends'),
-                        SizedBox(width: 10.0),
-                        CourseOption(text: 'Wrap Humic'),
-                        SizedBox(width: 20.0),
-                      ],
+                      children: List.generate(courses.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: CourseOption(text: courses[index]['text']!),
+                        );
+                      }),
                     ),
                   ),
+                  //bagian modul option atau pilihan modul
                   SizedBox(height: 20.0),
                   SingleChildScrollView(
-                    // Tambahkan SingleChildScrollView di sini
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: [
-                        SizedBox(width: 20.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      vid_page(/* Data khusus untuk CLO 1 */)),
-                            );
-                          },
+                      children: List.generate(pilihanModul.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: ModulOption(
-                              topText: 'CLO 1', bottomText: 'Flutter'),
-                        ),
-                        SizedBox(width: 10.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Navigasi ke halaman vid_page untuk CLO 2 - Dart
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      vid_page(/* Data khusus untuk CLO 2 */)),
-                            );
-                          },
-                          child:
-                              ModulOption(topText: 'CLO 2', bottomText: 'Dart'),
-                        ),
-                        SizedBox(width: 10.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Navigasi ke halaman vid_page untuk CLO 3 - Firebase
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      vid_page(/* Data khusus untuk CLO 3 */)),
-                            );
-                          },
-                          child: ModulOption(
-                              topText: 'CLO 3', bottomText: 'Firebase'),
-                        ),
-                        SizedBox(width: 10.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Navigasi ke halaman vid_page untuk CLO 4 - State Management
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      vid_page(/* Data khusus untuk CLO 4 */)),
-                            );
-                          },
-                          child: ModulOption(
-                              topText: 'CLO 4', bottomText: 'State Management'),
-                        ),
-                        SizedBox(width: 20.0),
-                      ],
+                            topText: pilihanModul[index]['topText']!,
+                            bottomText: pilihanModul[index]['bottomText']!,
+                          ),
+                        );
+                      }),
                     ),
                   ),
+
+                  //bagian latihan soal
                   SizedBox(height: 10.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -161,7 +141,7 @@ class course_page extends StatelessWidget {
                         Spacer(),
                         TextButton(
                           onPressed: () {
-                            // Fungsi yang akan dijalankan saat tombol teks ditekan
+                            // untuk button lainnya
                           },
                           child: Text(
                             'Lainnya',
@@ -175,28 +155,17 @@ class course_page extends StatelessWidget {
                       ],
                     ),
                   ),
+                  //list view untuk latian soal
                   ListView(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      ModulInfoBox(
-                        title: 'Installasi Flutter',
-                        dateTime: '20 Maret 2024, 15.00-15.30',
-                      ),
-                      ModulInfoBox(
-                        title: 'Membuat Project Flutter',
-                        dateTime: '21 Maret 2024, 10.30-11.30',
-                      ),
-                      ModulInfoBox(
-                        title: 'Push Rank Epic II - Mythic',
-                        dateTime: '22 Maret 2024, 00.00-03.00',
-                      ),
-                      ModulInfoBox(
-                        title: 'Membuat Tampilan Sederhana',
-                        dateTime: '23 Maret 2024, 08.00-09.30',
-                      ),
-                    ],
-                  )
+                    children: List.generate(latSoal.length, (index) {
+                      return LatihanSoal(
+                        title: latSoal[index]['title']!,
+                        dateTime: latSoal[index]['dateTime']!,
+                      );
+                    }),
+                  ),
                 ],
               ),
             ],
@@ -207,6 +176,7 @@ class course_page extends StatelessWidget {
   }
 }
 
+//class buat profil
 class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -217,6 +187,7 @@ class ProfilePicture extends StatelessWidget {
   }
 }
 
+//class buat box info dibawah profil
 class InfoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -302,6 +273,7 @@ class InfoBox extends StatelessWidget {
   }
 }
 
+//class buat course
 class CourseOption extends StatefulWidget {
   final String text;
 
@@ -347,35 +319,30 @@ class _CourseOptionState extends State<CourseOption> {
   }
 }
 
-class ModulOption extends StatefulWidget {
+//class buat modul
+class ModulOption extends StatelessWidget {
   final String topText;
   final String bottomText;
 
   ModulOption({required this.topText, required this.bottomText});
 
   @override
-  _ModulOptionState createState() => _ModulOptionState();
-}
-
-class _ModulOptionState extends State<ModulOption> {
-  bool _isSelected = false;
-
-  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200.0, // Tambahkan batasan tinggi di sini
-      child: ElevatedButton(
-        onPressed: () {
-          setState(() {
-            _isSelected = !_isSelected;
-          });
+      height: 200.0,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => vid_page()),
+          );
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 5.0),
           width: 150.0,
           padding: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-            color: _isSelected ? Color(0xFFA11E22) : Colors.white,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
               BoxShadow(
@@ -392,21 +359,19 @@ class _ModulOptionState extends State<ModulOption> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  widget.topText,
+                  topText,
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
-                    color: _isSelected ? Colors.white : Colors.black,
                   ),
                 ),
               ),
               Spacer(),
               Text(
-                widget.bottomText,
+                bottomText,
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
-                  color: _isSelected ? Colors.white : Colors.black,
                 ),
               ),
             ],
@@ -417,70 +382,12 @@ class _ModulOptionState extends State<ModulOption> {
   }
 }
 
-class OptionGroup extends StatelessWidget {
-  final String courseText;
-  final String exerciseText;
-
-  OptionGroup({required this.courseText, required this.exerciseText});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          courseText,
-          style: TextStyle(
-            color: Color(0xFFA11E22),
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                "Lainnya",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFA11E22),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                exerciseText,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFA11E22),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class ModulInfoBox extends StatelessWidget {
+//class buat latian soal
+class LatihanSoal extends StatelessWidget {
   final String title;
   final String dateTime;
 
-  ModulInfoBox({required this.title, required this.dateTime});
+  LatihanSoal({required this.title, required this.dateTime});
 
   @override
   Widget build(BuildContext context) {
