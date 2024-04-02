@@ -20,7 +20,7 @@ class _NavButtonState extends State<NavButton> {
     map_page(),
     lapor_page(),
     forum_dashboard(),
-    course_page(),
+    CoursePage(),
   ];
 
   void onTabTapped(int index) {
