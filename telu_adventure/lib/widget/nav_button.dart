@@ -34,7 +34,7 @@ class _NavButtonState extends State<NavButton> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: Container(
-        height: 70, // Set tinggi container
+        height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -46,7 +46,7 @@ class _NavButtonState extends State<NavButton> {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 7,
-              offset: Offset(0, -3), // changes position of shadow
+              offset: Offset(0, -3),
             ),
           ],
         ),
