@@ -303,7 +303,7 @@ class lapor_page extends StatelessWidget {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 425, left: 25),
+                    padding: const EdgeInsets.only(top: 405, left: 25),
                     child: Text(
                       'List Barang Dicari',
                       style: TextStyle(
@@ -315,7 +315,7 @@ class lapor_page extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 420.0, left: 70),
+                    padding: const EdgeInsets.only(top: 410.0, left: 70),
                     child: Container(
                       width: 50,
                       height: 50,
@@ -339,7 +339,7 @@ class lapor_page extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 420.0, left: 15),
+                    padding: const EdgeInsets.only(top: 410.0, left: 15),
                     child: Container(
                       width: 50,
                       height: 50,
@@ -362,7 +362,7 @@ class lapor_page extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 5),
                 child: Container(
                   width: 350,
                   height: 45,
