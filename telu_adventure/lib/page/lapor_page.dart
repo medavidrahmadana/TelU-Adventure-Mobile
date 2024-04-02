@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/login_page.dart';
 
 class Barang {
@@ -49,28 +50,8 @@ class lapor_page extends StatelessWidget {
                         height: 50,
                         decoration: BoxDecoration(
                           color:
-                              Color(0xFFEED1D1), // Warna latar belakang putih
+                              Colors.transparent, // Warna latar belakang putih
                           borderRadius: BorderRadius.circular(9),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black, // Warna efek bayangan
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: Offset(0, 2), // Mengatur arah bayangan
-                            ),
-                          ],
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            // Navigasi ke halaman login
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
-                            );
-                          },
-                          icon: Icon(Icons.arrow_back),
-                          color: Colors.black, // Warna ikon
                         ),
                       ),
                     ),
@@ -107,13 +88,38 @@ class lapor_page extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: IconButton(
-                          onPressed: () {
-                            // Implement your notification button functionality here
-                          },
-                          icon: Icon(Icons.notifications),
-                          color: Colors.black, // Warna ikon
-                        ),
+                                    child:  IconButton(
+                      icon: Icon(
+                        Icons.notifications,
+                        color: Colors.orange,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return Stack(
+                                children: <Widget>[
+                                  lapor_page(), // Menambahkan forum_dashboard di belakang forum_notifikasi
+                                  SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: Offset(1.0, 0.0),
+                                      end: Offset(0.2, 0.0),
+                                    ).animate(animation),
+                                    child: forum_notifikasi(),
+                                  ),
+                                ],
+                              );
+                            },
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return child;
+                            },
+                          ),
+                        );
+                      },
+                    ),
                       ),
                     ),
                   ],

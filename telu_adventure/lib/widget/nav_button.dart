@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/course_page.dart';
+import 'package:telu_adventure/page/forum_dashboard.dart';
 import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
+import 'package:telu_adventure/page/map_page.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
@@ -15,9 +17,9 @@ class _NavButtonState extends State<NavButton> {
 
   final List<Widget> _children = [
     home_page(),
-    // MapScreen(),
+    map_page(),
     lapor_page(),
-    // ChatScreen(),
+    forum_dashboard(),
     course_page(),
   ];
 
@@ -68,8 +70,16 @@ class _NavButtonState extends State<NavButton> {
                     label: 'Home',
                   ),
                   BottomNavigationBarItem(
+                    icon: Icon(Icons.map),
+                    label: 'Map',
+                  ),
+                  BottomNavigationBarItem(
                     icon: Icon(Icons.assignment),
                     label: 'Lapor',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.chat),
+                    label: 'Forum',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.book),
