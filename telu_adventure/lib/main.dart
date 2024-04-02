@@ -7,6 +7,8 @@ import 'page/register_page.dart';
 import 'page/start_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'page/login_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +38,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => lapor_page()),
+        MaterialPageRoute(builder: (context) => CoursePage()),
       );
     });
     return const start();

@@ -72,31 +72,31 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 20),
-              child: Text(
-                'Nama Pengguna',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Inter',
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-              child: SizedBox(
-                width: 320, // Sesuaikan dengan lebar yang diinginkan
-                child: TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukkan nama pengguna',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 20.0, top: 20),
+            //   child: Text(
+            //     'Nama Pengguna',
+            //     style: TextStyle(
+            //       fontSize: 16,
+            //       fontWeight: FontWeight.w400,
+            //       fontFamily: 'Inter',
+            //       color: Colors.grey[600],
+            //     ),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+            //   child: SizedBox(
+            //     width: 320, // Sesuaikan dengan lebar yang diinginkan
+            //     child: TextField(
+            //       controller: usernameController,
+            //       decoration: InputDecoration(
+            //         labelText: 'Masukkan nama pengguna',
+            //         border: OutlineInputBorder(),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, top: 20),
               child: Text(
