@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/forum_pertanyaan.dart';
+import 'forum_notifikasi.dart';
 
 class forum_dashboard extends StatelessWidget {
   const forum_dashboard({Key? key}) : super(key: key);
@@ -39,7 +41,30 @@ class forum_dashboard extends StatelessWidget {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        // Add logic to handle notifications here
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return Stack(
+                                children: <Widget>[
+                                  forum_dashboard(), // Menambahkan forum_dashboard di belakang forum_notifikasi
+                                  SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: Offset(1.0, 0.0),
+                                      end: Offset(0.2, 0.0),
+                                    ).animate(animation),
+                                    child: forum_notifikasi(),
+                                  ),
+                                ],
+                              );
+                            },
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return child;
+                            },
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -69,25 +94,62 @@ class forum_dashboard extends StatelessWidget {
                     color: Color(0xFFDA696C),
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/img/forum-image1.png', // Path ke file gambar di dalam folder assets
+                      width:
+                          30, // Sesuaikan dengan ukuran gambar yang diinginkan
+                      height: 30,
+                    ),
+                  ),
                 ),
                 SizedBox(width: 16),
                 Expanded(
-                  child: Container(
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 8.0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return Stack(
+                              children: <Widget>[
+                                forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
+                                SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: Offset(
+                                        0.0, 1.0), // Mulai dari bawah layar
+                                    end: Offset(0.0,
+                                        0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
+                                  ).animate(animation),
+                                  child: ClipRect(
+                                    child:
+                                        forum_pertanyaan(), // forum_pertanyaan yang terbuka sebagian
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        child: Text(
-                          'Apa yang ingin Anda tanyakan?',
-                          style: TextStyle(color: Color(0xFF969696)),
+                      );
+                    },
+                    child: Container(
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 8.0,
+                          ),
+                          child: Text(
+                            'Apa yang ingin Anda tanyakan?',
+                            style: TextStyle(color: Color(0xFF969696)),
+                          ),
                         ),
                       ),
                     ),
@@ -246,9 +308,11 @@ class forum_dashboard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
-                            child: Text(
-                              'A',
-                              style: TextStyle(color: Colors.white),
+                            child: Image.asset(
+                              'assets/img/forum-image2.png', // Path ke file gambar di dalam folder assets
+                              width:
+                                  45, // Sesuaikan dengan ukuran gambar yang diinginkan
+                              height: 45,
                             ),
                           ),
                         ),
