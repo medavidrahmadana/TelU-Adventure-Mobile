@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/course_page.dart';
 import 'package:telu_adventure/page/course_vid_page.dart';
+import 'package:telu_adventure/page/forum_dashnboard.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
+import 'page/home_page.dart';
 import 'page/landing_page.dart';
 import 'page/register_page.dart';
 import 'page/start_page.dart';
@@ -36,7 +38,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => lapor_page()),
+        MaterialPageRoute(builder: (context) => forum_dashboard()),
       );
     });
     return const start();
