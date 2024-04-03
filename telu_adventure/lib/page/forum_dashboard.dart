@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/forum_jawab.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import 'forum_notifikasi.dart';
 
@@ -249,7 +250,31 @@ class forum_dashboard extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: () {
-                        // Add function to handle response to the answer button here
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return Stack(
+                                children: <Widget>[
+                                  forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
+                                  SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: Offset(
+                                          0.0, 1.0), // Mulai dari bawah layar
+                                      end: Offset(0.0,
+                                          0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
+                                    ).animate(animation),
+                                    child: ClipRect(
+                                      child:
+                                          forum_jawab(), // forum_jawab yang terbuka sebagian
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        );
                       },
                       icon: Icon(
                         Icons.edit,

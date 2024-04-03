@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/course_page.dart';
 import 'package:telu_adventure/page/course_vid_page.dart';
 import 'package:telu_adventure/page/forum_dashboard.dart';
+import 'package:telu_adventure/page/forum_jawab.dart';
 import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
