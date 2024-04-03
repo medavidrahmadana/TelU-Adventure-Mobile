@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/forum_notifikasi.dart';
+import 'package:telu_adventure/page/login_page.dart';
 
 class Tugas{
   final String nama;
@@ -329,53 +331,53 @@ class home_page extends StatelessWidget {
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       ),
                     );
                   },
                 ),
-                ],
-              ),
-Column(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Mengatur posisi antara icon button dan child lainnya
-      children: [
-        Spacer(), // Spacer untuk menggeser icon button ke kanan
-        Padding(
-          padding: const EdgeInsets.only(top: 50, right: 20), // Ubah padding ke bagian kanan
-          child: Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Color(0xFFEED1D1), // Warna latar belakang putih
-              borderRadius: BorderRadius.circular(9),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black, // Warna efek bayangan
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: Offset(0, 2), // Mengatur arah bayangan
-                ),
               ],
             ),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.notifications),
-              color: Colors.orange, // Warna ikon
-            ),
-          ),
-        ),
-      ],
-    ),
-  ],
-),
-
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Mengatur posisi antara icon button dan child lainnya
+                  children: [
+                    Spacer(), // Spacer untuk menggeser icon button ke kanan
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50, right: 20), // Ubah padding ke bagian kanan
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFEED1D1), // Warna latar belakang putih
+                          borderRadius: BorderRadius.circular(9),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black, // Warna efek bayangan
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: Offset(0, 2), // Mengatur arah bayangan
+                            ),
+                          ],
+                        ),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.logout,
+                              color: Colors.orange,
+                            ),
+                            onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),

@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_maps_flutter: ^2.5.0
+  webview_flutter: ^2.0.13
   firebase_core: ^2.27.1
   firebase_auth: ^4.3.0
 

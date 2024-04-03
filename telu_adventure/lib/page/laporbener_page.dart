@@ -20,8 +20,8 @@ List<Barang> dataList = [
       nama: 'Item 3', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
 ];
 
-class lapor_page extends StatelessWidget {
-  const lapor_page({Key? key}) : super(key: key);
+class laporbener_page extends StatelessWidget {
+  const laporbener_page({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class lapor_page extends StatelessWidget {
                                     (context, animation, secondaryAnimation) {
                                   return Stack(
                                     children: <Widget>[
-                                      lapor_page(), // Menambahkan forum_dashboard di belakang forum_notifikasi
+                                      laporbener_page(), // Menambahkan forum_dashboard di belakang forum_notifikasi
                                       SlideTransition(
                                         position: Tween<Offset>(
                                           begin: Offset(1.0, 0.0),

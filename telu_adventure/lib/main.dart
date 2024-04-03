@@ -6,12 +6,15 @@ import 'package:telu_adventure/page/forum_jawab.dart';
 import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
+import 'package:telu_adventure/page/map_page.dart';
+import 'package:telu_adventure/widget/nav_button.dart';
 import 'page/home_page.dart';
 import 'page/landing_page.dart';
 import 'page/register_page.dart';
 import 'page/start_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'page/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +44,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => forum_dashboard()),
+        MaterialPageRoute(builder: (context) => landing_page()),
       );
     });
     return const start();
