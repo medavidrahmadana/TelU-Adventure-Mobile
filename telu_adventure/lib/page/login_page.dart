@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'register_page.dart';
+import 'package:telu_adventure/widget/nav_button.dart';
 
 class LoginPage extends StatelessWidget {
   // Method untuk login menggunakan email dan password
@@ -18,7 +19,7 @@ class LoginPage extends StatelessWidget {
       // Navigasi ke halaman lapor_page setelah login berhasil
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => lapor_page()),
+        MaterialPageRoute(builder: (context) => NavButton()),
       );
       // Jika login berhasil, arahkan pengguna ke halaman lain jika diperlukan
       print('User logged in: ${userCredential.user?.uid}');
