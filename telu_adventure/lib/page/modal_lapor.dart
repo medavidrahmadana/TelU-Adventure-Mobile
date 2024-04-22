@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyAlertDialog extends StatelessWidget {
+class modal_lapor extends StatelessWidget {
   final TextEditingController _namaBarangController = TextEditingController();
   final TextEditingController _textFieldController2 = TextEditingController();
   final TextEditingController _textFieldController3 = TextEditingController();

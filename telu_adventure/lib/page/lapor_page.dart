@@ -374,7 +374,7 @@ class lapor_page extends StatelessWidget {
                                         begin: Offset(0, 0),
                                         end: Offset(0, 0),
                                       ).animate(animation),
-                                      child: MyAlertDialog(),
+                                      child: modal_lapor(),
                                     ),
                                   ],
                                 );
