@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentica
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/widget/nav_button.dart';
 import 'register_page.dart';
+import 'package:telu_adventure/widget/nav_button.dart';
 
 class LoginPage extends StatelessWidget {
   // Method untuk login menggunakan email dan password
