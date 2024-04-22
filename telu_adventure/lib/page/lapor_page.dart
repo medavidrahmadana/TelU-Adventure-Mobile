@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/login_page.dart';
 
+import 'modal_lapor.dart';
+
 class Barang {
   final String nama;
   final String imagePath; // Path gambar lokal
@@ -358,7 +360,32 @@ class lapor_page extends StatelessWidget {
                         ),
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return Stack(
+                                  children: <Widget>[
+                                    lapor_page(), // Menambahkan forum_dashboard di belakang forum_notifikasi
+                                    SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: Offset(0, 0),
+                                        end: Offset(0, 0),
+                                      ).animate(animation),
+                                      child: MyAlertDialog(),
+                                    ),
+                                  ],
+                                );
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return child;
+                              },
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.add),
                         color: Color(0xFFBB371A),
                         iconSize: 32,
