@@ -7,7 +7,6 @@ import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
-import 'package:telu_adventure/page/mapcard_page.dart';
 import 'package:telu_adventure/widget/nav_button.dart';
 import 'page/home_page.dart';
 import 'page/landing_page.dart';
@@ -48,7 +47,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => mapcard()),
+        MaterialPageRoute(builder: (context) => landing_page()),
       );
     });
     return const start();
