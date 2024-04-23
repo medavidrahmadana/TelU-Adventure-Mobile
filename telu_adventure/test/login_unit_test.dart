@@ -1,63 +1,73 @@
-import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
+import 'package:telu_adventure/page/login_page.dart';
+import 'package:telu_adventure/widget/nav_button.dart';
 
-class MockUserCredential extends Mock implements UserCredential {}
+import 'mock.dart';
+import 'test_helper.dart';
 
-class MockBuildContext extends Mock implements BuildContext {}
-
-Future<bool> _signInWithEmailAndPassword(
-    String email, String password, BuildContext context) async {
-  try {
-    // Lakukan proses login menggunakan signInWithEmailAndPassword
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-
-    // Navigasi ke halaman lapor_page setelah login berhasil
-    return true;
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => NavButton()),
-    // );
-    // Jika login berhasil, arahkan pengguna ke halaman lain jika diperlukan
-    // print('User logged in: ${userCredential.user?.uid}');
-    return true;
-  } catch (e) {
-    // Tangani kesalahan selama proses login
-    // print('Error during login: $e');
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(content: Text('Gagal melakukan login: $e')),
-    // );
-    print(e.toString());
-    return false;
+class MockFirebaseAuth extends Mock implements FirebaseAuth {
+  @override
+  Future<UserCredential> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) {
+    return super.noSuchMethod(
+      Invocation.method(
+        #signInWithEmailAndPassword,
+        [],
+        {#email: email, #password: password},
+      ),
+      returnValue: Future.value(MockUserCredential()),
+      returnValueForMissingStub: Future.value(MockUserCredential()),
+    );
   }
 }
 
+class MockUserCredential extends Mock implements UserCredential {}
+
 void main() {
-  setUpAll(() async {
-    // Initialize Firebase
-    await Firebase.initializeApp();
-  });
+  group('LoginPage', () {
+    late MockFirebaseAuth mockFirebaseAuth;
 
-  test('Login with valid email and password', () async {
-    final String email = "test@test.com";
-    final String password = "testtest";
-    final BuildContext context = MockBuildContext();
+    setupFirebaseAuthMocks();
 
-    bool berhasil = await _signInWithEmailAndPassword(email, password, context);
-    expect(berhasil, true);
-  });
+    setUpAll(() async {
+      await Firebase.initializeApp();
+      mockFirebaseAuth = MockFirebaseAuth();
+    });
 
-  test('Login with invalid email and password', () async {
-    final String email = 'testinvalid@test.com';
-    final String password = 'testinvalid';
-    final BuildContext context = MockBuildContext();
+    testWidgets('Login with valid credentials navigates to NavButton',
+        (WidgetTester tester) async {
+      FlutterError.onError = ignoreOverflowErrors;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginPage(firebaseAuth: mockFirebaseAuth),
+        ),
+      );
 
-    bool berhasil = await _signInWithEmailAndPassword(email, password, context);
+      final emailField =
+          find.widgetWithText(TextField, 'Masukan nama pengguna');
+      final passwordField =
+          find.widgetWithText(TextField, 'Enter your password');
+      final loginButton = find.widgetWithText(ElevatedButton, 'Login').first;
 
-    expect(berhasil, false);
+      await tester.enterText(emailField, 'test@test.com');
+      await tester.enterText(passwordField, 'xxxx');
+
+      when(mockFirebaseAuth.signInWithEmailAndPassword(
+        email: 'test@test.com',
+        password: 'xxxx',
+      )).thenAnswer((_) async => MockUserCredential());
+
+      await tester.ensureVisible(find.byType(ElevatedButton));
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(NavButton), findsOneWidget);
+    });
   });
 }

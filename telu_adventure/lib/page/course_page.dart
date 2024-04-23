@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/course_vid_page.dart';
+import 'package:telu_adventure/page/profile_page.dart';
 
 class CoursePage extends StatelessWidget {
   CoursePage({Key? key}) : super(key: key);
@@ -15,10 +16,26 @@ class CoursePage extends StatelessWidget {
 
   // Daftar Modul Option
   final List<Map<String, String>> pilihanModul = [
-    {'topText': 'CLO 1', 'bottomText': 'Flutter'},
-    {'topText': 'CLO 2', 'bottomText': 'Dart'},
-    {'topText': 'CLO 3', 'bottomText': 'Firebase'},
-    {'topText': 'CLO 4', 'bottomText': 'State Management'},
+    {
+      'topText': 'CLO 1', 
+      'bottomText': 'Flutter', 
+      'gambar': 'assets/img/logoflutter.png',
+    },
+    {
+      'topText': 'CLO 2', 
+      'bottomText': 'Dart', 
+      'gambar': 'assets/img/logodart.png',
+    },
+    {
+      'topText': 'CLO 3', 
+      'bottomText': 'Firebase', 
+      'gambar': 'assets/img/logofirebase.png',
+    },
+    {
+      'topText': 'CLO 4',
+      'bottomText': 'State Management', 
+      'gambar': 'assets/img/fluttergambar1.png',
+    },
   ];
 
   // Daftar Informasi Modul
@@ -66,7 +83,7 @@ class CoursePage extends StatelessWidget {
                   SizedBox(height: 10.0),
                   Center(
                     child: Text(
-                      'David',
+                      'Fadhil Jaidi',
                       style: TextStyle(
                         fontSize: 24.0,
                         fontFamily: 'Inter',
@@ -114,6 +131,7 @@ class CoursePage extends StatelessWidget {
                           child: ModulOption(
                             topText: pilihanModul[index]['topText']!,
                             bottomText: pilihanModul[index]['bottomText']!,
+                             gambar: pilihanModul[index]['gambar']!,
                           ),
                         );
                       }),
@@ -180,9 +198,18 @@ class CoursePage extends StatelessWidget {
 class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 50.0,
-      backgroundImage: AssetImage('assets/img/profil.png'),
+    return GestureDetector(
+      onTap: () {
+        // Navigasi ke halaman profil saat gambar profil ditekan
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+      },
+      child: CircleAvatar(
+        radius: 50.0,
+        backgroundImage: AssetImage('assets/img/Fadhil.png'),
+      ),
     );
   }
 }
@@ -323,8 +350,9 @@ class _CourseOptionState extends State<CourseOption> {
 class ModulOption extends StatelessWidget {
   final String topText;
   final String bottomText;
+  final String gambar;
 
-  ModulOption({required this.topText, required this.bottomText});
+  const ModulOption({Key? key, required this.topText, required this.bottomText, required this.gambar}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -352,6 +380,10 @@ class ModulOption extends StatelessWidget {
                 offset: Offset(0, 3),
               ),
             ],
+            image: DecorationImage(
+              image: AssetImage(gambar),
+              fit: BoxFit.cover,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,6 +394,7 @@ class ModulOption extends StatelessWidget {
                   topText,
                   style: TextStyle(
                     fontSize: 18.0,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -371,6 +404,7 @@ class ModulOption extends StatelessWidget {
                 bottomText,
                 style: TextStyle(
                   fontSize: 18.0,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
