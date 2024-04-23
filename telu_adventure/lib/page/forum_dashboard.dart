@@ -12,6 +12,14 @@ class forum_dashboard extends StatelessWidget {
 
   GlobalKey questionUserKey = GlobalKey();
 
+  GlobalKey userQuestionerKey = GlobalKey();
+
+  GlobalKey userQuestionKey = GlobalKey();
+
+  GlobalKey answerButtonKey = GlobalKey();
+
+  GlobalKey cardUserAnswerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,6 +33,7 @@ class forum_dashboard extends StatelessWidget {
             ),
             actions: [
               Container(
+                key: notificationKey,
                 width: 45,
                 height: 45,
                 margin: const EdgeInsets.only(right: 16),
@@ -44,7 +53,6 @@ class forum_dashboard extends StatelessWidget {
                     ),
                     IconButton(
                       icon: Icon(
-                        key: notificationKey,
                         Icons.notifications,
                         color: Colors.white,
                       ),
@@ -175,6 +183,7 @@ class forum_dashboard extends StatelessWidget {
                 vertical: 1.0,
               ),
               child: Row(
+                key: userQuestionerKey,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -235,6 +244,7 @@ class forum_dashboard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: 35.0), // jarak padding kanan kiri
               child: Column(
+                key: userQuestionKey,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
@@ -258,6 +268,7 @@ class forum_dashboard extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
+                      key: answerButtonKey,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -322,6 +333,7 @@ class forum_dashboard extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Card(
+              key: cardUserAnswerKey,
               margin: const EdgeInsets.symmetric(
                   horizontal: 30), // jarak padding kanan kiri
               child: Padding(
@@ -344,6 +356,7 @@ class forum_dashboard extends StatelessWidget {
                           child: Center(
                             child: Image.asset(
                               'assets/img/forum-image2.png', // Path ke file gambar di dalam folder assets
+                              semanticLabel: 'gambar_user_jawab',
                               width:
                                   45, // Sesuaikan dengan ukuran gambar yang diinginkan
                               height: 45,

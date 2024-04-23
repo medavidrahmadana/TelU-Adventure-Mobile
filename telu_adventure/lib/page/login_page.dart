@@ -5,6 +5,11 @@ import 'package:telu_adventure/widget/nav_button.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {
+  final FirebaseAuth _firebaseAuth;
+
+  LoginPage({Key? key, FirebaseAuth? firebaseAuth})
+      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+        super(key: key);
   // Method untuk login menggunakan email dan password
   Future<void> _signInWithEmailAndPassword(
     String email,
@@ -13,8 +18,11 @@ class LoginPage extends StatelessWidget {
   ) async {
     try {
       // Lakukan proses login menggunakan signInWithEmailAndPassword
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
       // Navigasi ke halaman lapor_page setelah login berhasil
       Navigator.push(
