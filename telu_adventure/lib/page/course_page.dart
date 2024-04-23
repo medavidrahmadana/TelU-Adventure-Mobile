@@ -29,12 +29,12 @@ class CoursePage extends StatelessWidget {
     {
       'topText': 'CLO 3', 
       'bottomText': 'Firebase', 
-      'gambar': 'assets/img/logoflutter.png',
+      'gambar': 'assets/img/logofirebase.png',
     },
     {
       'topText': 'CLO 4',
       'bottomText': 'State Management', 
-      'gambar': 'assets/img/logoflutter.png',
+      'gambar': 'assets/img/fluttergambar1.png',
     },
   ];
 
@@ -131,7 +131,7 @@ class CoursePage extends StatelessWidget {
                           child: ModulOption(
                             topText: pilihanModul[index]['topText']!,
                             bottomText: pilihanModul[index]['bottomText']!,
-                             gambar: pilihanModul[index]['gambar'] ?? getDefaultGambar(pilihanModul[index]['bottomText']!),
+                             gambar: pilihanModul[index]['gambar']!,
                           ),
                         );
                       }),
@@ -462,21 +462,5 @@ class LatihanSoal extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-String getDefaultGambar(String bottomText) {
-  // Implementasi logika untuk memberikan gambar default berdasarkan bottomText
-  switch (bottomText) {
-    case 'Flutter':
-      return 'assets/img/logoflutter.png';
-    case 'Dart':
-      return 'assets/img/logodart.png';
-    case 'Firebase':
-      return 'assets/img/logofirebase.png';
-    case 'State Management':
-      return 'assets/img/fluttergambar1.png';
-    default:
-      return 'assets/img/logoflutter.png'; // Gambar default jika tidak ada yang cocok
   }
 }
