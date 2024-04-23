@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-class map_page extends StatefulWidget {
+class map_page extends StatelessWidget {
   const map_page({Key? key}) : super(key: key);
 
   @override
-  State<map_page> createState() => _map_page();
-}
-
-class _map_page extends State<map_page> {
-  static const LatLng _pGooglePlex =
-      LatLng(-6.972809984586959, 107.6316317558203);
-
-  @override
   Widget build(BuildContext context) {
+    final String locationName = "telkom university";
+
+    final initialUrl = 'https://www.bing.com/maps?q=$locationName';
+
     return Scaffold(
-      body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: _pGooglePlex,
-          zoom: 13,
-        ),
+      appBar: AppBar(
+        title: Text('Maps'),
+      ),
+      body: WebView(
+        initialUrl: initialUrl,
+        javascriptMode: JavascriptMode.unrestricted,
       ),
     );
   }

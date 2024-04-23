@@ -84,9 +84,9 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 50.0, right: 180),
+              padding: const EdgeInsets.only(top: 50.0, right: 265),
               child: Text(
-                'Nama Pengguna',
+                'Email',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -104,7 +104,7 @@ class LoginPage extends StatelessWidget {
                   email = value; // Simpan email saat diubah
                 },
                 decoration: InputDecoration(
-                  labelText: 'Masukan nama pengguna',
+                  labelText: 'Masukan Email',
                   border: OutlineInputBorder(),
                 ),
               ),

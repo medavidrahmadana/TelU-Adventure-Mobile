@@ -10,6 +10,7 @@ class modal_lapor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.white,
       insetPadding: EdgeInsets.symmetric(horizontal: 25), // Set inset padding
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9, // Lebar container utama
@@ -33,16 +34,16 @@ class modal_lapor extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 48), // Untuk keseimbangan
+                SizedBox(width: 30), // Untuk keseimbangan
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             TextField(
               controller: _namaBarangController,
               decoration: InputDecoration(
                 hintText: "Nama Barang",
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(11),
                 ),
               ),
             ),
@@ -58,15 +59,13 @@ class modal_lapor extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: "Type",
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(11),
                           ),
                         ),
                       ),
                       IconButton(
                         icon: Icon(Icons.arrow_drop_down),
-                        onPressed: () {
-                          // Handle dropdown icon press
-                        },
+                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -81,7 +80,7 @@ class modal_lapor extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: "Foto",
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(11),
                           ),
                         ),
                       ),
@@ -116,7 +115,7 @@ class modal_lapor extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: "Deskripsi Barang",
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(11),
                 ),
               ),
             ),
@@ -126,11 +125,11 @@ class modal_lapor extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: "Lokasi Terakhir",
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(11),
                 ),
               ),
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 15),
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
@@ -141,7 +140,7 @@ class modal_lapor extends StatelessWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        15), // Atur radius sesuai keinginan
+                        11), // Atur radius sesuai keinginan
                     // Tambahan properti untuk mengatur tepi (edge)
                   ),
                 ),
