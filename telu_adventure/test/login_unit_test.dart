@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mockito/mockito.dart';
@@ -30,11 +31,17 @@ Future<bool> _signInWithEmailAndPassword(
     // ScaffoldMessenger.of(context).showSnackBar(
     //   SnackBar(content: Text('Gagal melakukan login: $e')),
     // );
+    print(e.toString());
     return false;
   }
 }
 
 void main() {
+  setUpAll(() async {
+    // Initialize Firebase
+    await Firebase.initializeApp();
+  });
+
   test('Login with valid email and password', () async {
     final String email = "test@test.com";
     final String password = "testtest";
@@ -43,6 +50,7 @@ void main() {
     bool berhasil = await _signInWithEmailAndPassword(email, password, context);
     expect(berhasil, true);
   });
+
   test('Login with invalid email and password', () async {
     final String email = 'testinvalid@test.com';
     final String password = 'testinvalid';
