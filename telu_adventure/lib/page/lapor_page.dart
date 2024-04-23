@@ -20,16 +20,6 @@ List<Barang> dataList = [
       nama: 'Item 2', imagePath: 'assets/gambar_barang2.png', type: 'Type 2'),
   Barang(
       nama: 'Item 3', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
-  Barang(
-      nama: 'Item 4', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
-  Barang(
-      nama: 'Item 5', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
-  Barang(
-      nama: 'Item 6', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
-  Barang(
-      nama: 'Item 7', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
-  Barang(
-      nama: 'Item 8', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
 ];
 
 class lapor_page extends StatelessWidget {

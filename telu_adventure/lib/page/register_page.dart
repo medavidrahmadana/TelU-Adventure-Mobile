@@ -10,21 +10,19 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(right: 200.0, top: 50),
               child: Image.asset(
                 'assets/img/logo_datar.png',
                 height: 50,
               ),
             ),
-            SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: const EdgeInsets.only(right: 240.0, top: 20),
               child: Text(
                 'Daftar',
                 style: TextStyle(
@@ -35,7 +33,7 @@ class RegisterPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: const EdgeInsets.only(right: 90.0, top: 10),
               child: Text(
                 'Gabung ke TelU Adventure',
                 style: TextStyle(
@@ -46,9 +44,8 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 50),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: const EdgeInsets.only(top: 50.0, right: 260),
               child: Text(
                 'Email',
                 style: TextStyle(
@@ -59,98 +56,70 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
+            Container(
+              width: 300,
+              height: 150,
+              padding: EdgeInsets.only(top: 20.0),
+              child: TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Masukkan Email',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-              child: SizedBox(
-                width: 320, // Sesuaikan dengan lebar yang diinginkan
-                child: TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukkan Email',
-                    border: OutlineInputBorder(),
+              padding: const EdgeInsets.only(right: 230),
+              child: Container(
+                child: Text(
+                  'Password',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Inter',
+                    color: Colors.grey[600],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 20),
-              child: Text(
-                'Nama Pengguna',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Inter',
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-              child: SizedBox(
-                width: 320, // Sesuaikan dengan lebar yang diinginkan
-                child: TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukkan nama pengguna',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 20),
-              child: Text(
-                'Password',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Inter',
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 340, // Sesuaikan dengan lebar yang diinginkan
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Masukkan kata sandi',
-                    border: OutlineInputBorder(),
-                  ),
+            Container(
+              width: 300,
+              height: 150,
+              padding: EdgeInsets.only(top: 16.0),
+              child: TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Masukkan kata sandi',
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
             SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 18.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  _registerWithEmailAndPassword(
-                    usernameController.text,
-                    passwordController.text,
-                    context,
-                  );
-                },
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Color(0xFFCA292E)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+            ElevatedButton(
+              onPressed: () {
+                _registerWithEmailAndPassword(
+                  usernameController.text,
+                  passwordController.text,
+                  context,
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xFFCA292E)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  fixedSize: MaterialStateProperty.all<Size>(Size(320, 50)),
                 ),
-                child: Text(
-                  'Daftar',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
+                fixedSize: MaterialStateProperty.all<Size>(Size(300, 50)),
+              ),
+              child: Text(
+                'Daftar',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -199,7 +168,7 @@ class RegisterPage extends StatelessWidget {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: username, // Gunakan email sebagai nama pengguna untuk contoh ini
+        email: username,
         password: password,
       );
       // Registrasi berhasil, arahkan pengguna ke halaman lain jika diperlukan
