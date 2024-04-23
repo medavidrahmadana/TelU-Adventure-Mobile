@@ -9,97 +9,157 @@ class modal_lapor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Row(
-        children: [
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          SizedBox(width: 40),
-          Expanded(child: Text('Lapor')),
-        ],
-      ),
-      content: SingleChildScrollView(
+    return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 25), // Set inset padding
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9, // Lebar container utama
+        padding: EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Text(
+                  'Lapor',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 48), // Untuk keseimbangan
+              ],
+            ),
+            SizedBox(height: 20),
             TextField(
               controller: _namaBarangController,
               decoration: InputDecoration(
-                  hintText: "Nama Barang",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20))),
+                hintText: "Nama Barang",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 15),
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _textFieldController2,
-                    decoration: InputDecoration(
-                        hintText: "Type",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
+                  child: Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      TextField(
+                        controller: _textFieldController2,
+                        decoration: InputDecoration(
+                          hintText: "Type",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          // Handle dropdown icon press
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 15),
                 Expanded(
-                  child: TextField(
-                    controller: _textFieldController3,
-                    decoration: InputDecoration(
-                        hintText: "Date",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
+                  child: Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      TextField(
+                        controller: _textFieldController3,
+                        decoration: InputDecoration(
+                          hintText: "Foto",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 10, // Positioning the camera icon
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFBB371A),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              // Handle camera icon press
+                            },
+                            icon: Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 15),
             TextField(
               controller: _textFieldController4,
               decoration: InputDecoration(
-                  hintText: "Deskripsi Barang",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20))),
+                hintText: "Deskripsi Barang",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 15),
             TextField(
               controller: _textFieldController5,
               decoration: InputDecoration(
-                  hintText: "Lokasi Terakhir",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20))),
+                hintText: "Lokasi Terakhir",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
             ),
-            SizedBox(
-              height: 10,
+            SizedBox(height: 25),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xFFBB371A)),
+                minimumSize: MaterialStateProperty.all<Size>(
+                  Size(double.infinity, 50),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        15), // Atur radius sesuai keinginan
+                    // Tambahan properti untuk mengatur tepi (edge)
+                  ),
+                ),
+              ),
+              child: Text(
+                'Lapor',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         ),
       ),
-      actions: <Widget>[
-        ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.red), // Merah
-            minimumSize: MaterialStateProperty.all<Size>(
-                Size(double.infinity, 50)), // Full-width
-          ),
-          child: Text('Lapor',
-              style: TextStyle(fontSize: 18)), // Custom text style
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
   }
 }
