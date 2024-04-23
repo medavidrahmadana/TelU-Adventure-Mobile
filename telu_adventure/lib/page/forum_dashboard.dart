@@ -4,16 +4,22 @@ import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import 'forum_notifikasi.dart';
 
 class forum_dashboard extends StatelessWidget {
-  const forum_dashboard({Key? key}) : super(key: key);
+  forum_dashboard({super.key});
+
+  GlobalKey notificationKey = GlobalKey();
+
+  GlobalKey profileKey = GlobalKey();
+
+  GlobalKey questionUserKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.0),
+          preferredSize: const Size.fromHeight(70.0),
           child: AppBar(
-            title: Text(
+            title: const Text(
               'Forum Tanya Jawab',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -21,7 +27,7 @@ class forum_dashboard extends StatelessWidget {
               Container(
                 width: 45,
                 height: 45,
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: Stack(
                   children: [
                     Positioned(
@@ -38,6 +44,7 @@ class forum_dashboard extends StatelessWidget {
                     ),
                     IconButton(
                       icon: Icon(
+                        key: notificationKey,
                         Icons.notifications,
                         color: Colors.white,
                       ),
@@ -52,10 +59,10 @@ class forum_dashboard extends StatelessWidget {
                                   forum_dashboard(), // Menambahkan forum_dashboard di belakang forum_notifikasi
                                   SlideTransition(
                                     position: Tween<Offset>(
-                                      begin: Offset(1.0, 0.0),
-                                      end: Offset(0.2, 0.0),
+                                      begin: const Offset(1.0, 0.0),
+                                      end: const Offset(0.2, 0.0),
                                     ).animate(animation),
-                                    child: forum_notifikasi(),
+                                    child: const forum_notifikasi(),
                                   ),
                                 ],
                               );
@@ -73,26 +80,26 @@ class forum_dashboard extends StatelessWidget {
               ),
             ],
             bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1.0),
               child: Divider(
                 color: Colors.grey[300],
                 thickness: 1,
               ),
-              preferredSize: Size.fromHeight(1.0),
             ),
           ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Container(
                   width: 45,
                   height: 45,
                   decoration: BoxDecoration(
-                    color: Color(0xFFDA696C),
+                    color: const Color(0xFFDA696C),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -101,12 +108,14 @@ class forum_dashboard extends StatelessWidget {
                       width:
                           30, // Sesuaikan dengan ukuran gambar yang diinginkan
                       height: 30,
+                      key: profileKey,
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: GestureDetector(
+                    key: questionUserKey,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -118,12 +127,12 @@ class forum_dashboard extends StatelessWidget {
                                 forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
                                 SlideTransition(
                                   position: Tween<Offset>(
-                                    begin: Offset(
+                                    begin: const Offset(
                                         0.0, 1.0), // Mulai dari bawah layar
-                                    end: Offset(0.0,
+                                    end: const Offset(0.0,
                                         0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
                                   ).animate(animation),
-                                  child: ClipRect(
+                                  child: const ClipRect(
                                     child:
                                         forum_pertanyaan(), // forum_pertanyaan yang terbuka sebagian
                                   ),
@@ -137,10 +146,10 @@ class forum_dashboard extends StatelessWidget {
                     child: Container(
                       height: 45,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5F5F5),
+                        color: const Color(0xFFF5F5F5),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Align(
+                      child: const Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: EdgeInsets.symmetric(
@@ -156,10 +165,10 @@ class forum_dashboard extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
               ],
             ),
-            SizedBox(height: 25), // jarak
+            const SizedBox(height: 25), // jarak
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 35.0, // jarak padding kanan kiri
@@ -173,10 +182,10 @@ class forum_dashboard extends StatelessWidget {
                     width: 45,
                     height: 45,
                     decoration: BoxDecoration(
-                      color: Color(0xFFFFD966),
+                      color: const Color(0xFFFFD966),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'A',
                         style: TextStyle(
@@ -186,8 +195,8 @@ class forum_dashboard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
-                  Expanded(
+                  const SizedBox(width: 20),
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -217,25 +226,25 @@ class forum_dashboard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Icons.more_vert),
+                  const Icon(Icons.more_vert),
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 35.0), // jarak padding kanan kiri
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Emangnya di asrama ada cerita horor ya? Soalnya aku mau asrama nanti',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 12),
-                  Row(
+                  const SizedBox(height: 12),
+                  const Row(
                     children: [
                       Text(
                         'Belum ada jawaban',
@@ -245,7 +254,7 @@ class forum_dashboard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
@@ -260,12 +269,12 @@ class forum_dashboard extends StatelessWidget {
                                   forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
                                   SlideTransition(
                                     position: Tween<Offset>(
-                                      begin: Offset(
+                                      begin: const Offset(
                                           0.0, 1.0), // Mulai dari bawah layar
-                                      end: Offset(0.0,
+                                      end: const Offset(0.0,
                                           0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
                                     ).animate(animation),
-                                    child: ClipRect(
+                                    child: const ClipRect(
                                       child:
                                           forum_jawab(), // forum_jawab yang terbuka sebagian
                                     ),
@@ -276,11 +285,11 @@ class forum_dashboard extends StatelessWidget {
                           ),
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.edit,
                         color: Color(0xFFCA292E),
                       ),
-                      label: Text(
+                      label: const Text(
                         'Jawab',
                         style: TextStyle(
                           color: Color(0xFFCA292E),
@@ -296,11 +305,11 @@ class forum_dashboard extends StatelessWidget {
                         ),
                         side: MaterialStateProperty.resolveWith((states) {
                           if (states.contains(MaterialState.pressed)) {
-                            return BorderSide(
+                            return const BorderSide(
                                 color: Colors.red,
                                 width: 2); // Warna outline saat tombol ditekan
                           }
-                          return BorderSide(
+                          return const BorderSide(
                               color: Color(0xFFCA292E),
                               width: 1); // Warna outline default
                         }),
@@ -311,9 +320,9 @@ class forum_dashboard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Card(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                   horizontal: 30), // jarak padding kanan kiri
               child: Padding(
                 padding: const EdgeInsets.all(
@@ -329,7 +338,7 @@ class forum_dashboard extends StatelessWidget {
                           width: 45,
                           height: 45,
                           decoration: BoxDecoration(
-                            color: Color(0xFFFFD966),
+                            color: const Color(0xFFFFD966),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
@@ -341,8 +350,8 @@ class forum_dashboard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 20),
-                        Expanded(
+                        const SizedBox(width: 20),
+                        const Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -372,18 +381,18 @@ class forum_dashboard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Icon(Icons.more_vert),
+                        const Icon(Icons.more_vert),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Saran jalan ke masjid telkom lewat mana ya yang cepet?',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 12),
-                    Row(
+                    const SizedBox(height: 12),
+                    const Row(
                       children: [
                         Text(
                           'Kalau maksudnya cepat dari segi jarak tempuh\nmaupun waktu, saya menyarankan anda untuk\nmemilih lewat GKU, lalu lurus melewati gedung\nrektorat, ambil jalan kiri menuju gate 3.\nSesudahnya, belok kanan untuk lewat ke\ngedung cacuk, lurus terus dan anda sampai di\nmasjid.',

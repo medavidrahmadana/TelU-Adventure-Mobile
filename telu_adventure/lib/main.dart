@@ -16,8 +16,10 @@ import 'page/start_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'page/login_page.dart';
+import 'package:flutter_driver/driver_extension.dart';
 
 void main() async {
+  enableFlutterDriverExtension();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -45,7 +47,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => modal_lapor()),
+        MaterialPageRoute(builder: (context) => forum_dashboard()),
       );
     });
     return const start();
