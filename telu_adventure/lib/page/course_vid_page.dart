@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/profile_page.dart';
 
 class vid_page extends StatelessWidget {
   vid_page({Key? key}) : super(key: key);
@@ -209,9 +210,18 @@ class VideoButton extends StatelessWidget {
 class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 50.0,
-      backgroundImage: AssetImage('assets/img/Fadhil.png'),
+    return GestureDetector(
+      onTap: () {
+        // Navigasi ke halaman profil saat gambar profil ditekan
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+      },
+      child: CircleAvatar(
+        radius: 50.0,
+        backgroundImage: AssetImage('assets/img/Fadhil.png'),
+      ),
     );
   }
 }
