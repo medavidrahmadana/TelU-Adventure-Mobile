@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/login_page.dart';
-
+import 'package:telu_adventure/page/achievement_page.dart';
 class Tugas{
   final String nama;
   final String deskripsi;
@@ -125,7 +125,68 @@ class home_page extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Achievement',
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                color: Color(0xFFA11E22),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => achievement_page()), 
+                            );
+                          },
+                          child: Text(
+                            'Lihat Semua',
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 10.0),
+                  SingleChildScrollView( // Tambahkan SingleChildScrollView di sini
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                       SizedBox(width: 20.0),
+                        ModulAch(
+                          topText: 'Still Free', 
+                          imagePath: 'assets/img/scholar.png'
+                        ),
+                        SizedBox(width: 10.0),
+                        ModulAch(
+                          topText: 'Task Master', 
+                          imagePath: 'assets/img/task_achievement.png'
+                        ),
+                        SizedBox(width: 10.0), 
+                        ModulAch(
+                          topText: 'Food Place', 
+                          imagePath: 'assets/img/restaurant.png'
+                        ),
+                        SizedBox(width: 10.0),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Row(
@@ -141,20 +202,6 @@ class home_page extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ),
-                        Spacer(),
-                        TextButton(
-                          onPressed: () {
-                            // Fungsi yang akan dijalankan saat tombol teks ditekan
-                          },
-                          child: Text(
-                            'Lihat Semua',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                         ),
                       ],
                     ),
@@ -244,7 +291,7 @@ class home_page extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ), // Atur jarak antara ListView
+                  ),
                  ListView.builder(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   itemExtent: 70.0, // Asumsi tinggi kotak adalah 120.0, sesuaikan sesuai kebutuhan Anda
@@ -630,6 +677,57 @@ class ModulOption extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ModulAch extends StatelessWidget {
+  final String topText;
+  final String imagePath;
+
+  ModulAch({required this.topText, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(10.0), // Tambahkan margin 10.0 di semua sisi container
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Mengatur agar column menyesuaikan ukuran widget
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            imagePath,
+            width: 100,
+            height: 100,
+          ),
+          SizedBox(height: 10.0),
+          Padding(
+            padding: EdgeInsets.only(bottom: 10.0), // Tambahkan jarak pada bagian bawah
+            child: Text(
+              topText,
+              textAlign: TextAlign.center, // Mengatur agar teks berada di tengah
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black, // Ubah warna teks menjadi hitam
+              ),
             ),
           ),
         ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/achievement_page.dart';
 import 'package:telu_adventure/page/course_page.dart';
 import 'package:telu_adventure/page/forum_dashboard.dart';
 import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
+import 'package:telu_adventure/page/achievement_page.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
