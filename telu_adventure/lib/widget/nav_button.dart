@@ -6,6 +6,7 @@ import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
+import 'package:telu_adventure/page/mapcard.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _NavButtonState extends State<NavButton> {
   final List<Widget> _children = [
     home_page(),
     map_page(),
+    // mapcard(),
     lapor_page(),
     forum_dashboard(),
     CoursePage(),

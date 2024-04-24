@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/Modal_map.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
 import 'package:telu_adventure/page/course_page.dart';
 import 'package:telu_adventure/page/course_vid_page.dart';
@@ -11,6 +12,7 @@ import 'package:telu_adventure/page/map_page.dart';
 import 'package:telu_adventure/widget/nav_button.dart';
 import 'page/home_page.dart';
 import 'page/landing_page.dart';
+import 'page/mapcard.dart';
 import 'page/modal_lapor.dart';
 import 'page/register_page.dart';
 import 'page/start_page.dart';
