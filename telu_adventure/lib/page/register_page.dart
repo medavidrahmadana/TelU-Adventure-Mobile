@@ -171,8 +171,12 @@ class RegisterPage extends StatelessWidget {
         email: username,
         password: password,
       );
-      // Registrasi berhasil, arahkan pengguna ke halaman lain jika diperlukan
+      // Registrasi berhasil, arahkan pengguna ke halaman login
       print('User registered: ${userCredential.user?.uid}');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
     } catch (e) {
       // Tangani kesalahan selama proses registrasi
       print('Error during registration: $e');

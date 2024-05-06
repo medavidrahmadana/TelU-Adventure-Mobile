@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
 import 'package:telu_adventure/page/course_page.dart';
@@ -5,8 +6,8 @@ import 'package:telu_adventure/page/forum_dashboard.dart';
 import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
-import 'package:telu_adventure/page/achievement_page.dart';
 import 'package:telu_adventure/page/mapcard.dart';
+import 'package:telu_adventure/page/scan_page.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
@@ -17,82 +18,183 @@ class NavButton extends StatefulWidget {
 
 class _NavButtonState extends State<NavButton> {
   int _currentIndex = 0;
+  late CameraDescription _camera;
+  late PageStorageBucket _bucket;
+  late Widget _currentScreen;
+  List<Widget> _children = [];
 
-  final List<Widget> _children = [
-    home_page(),
-    map_page(),
-    // mapcard(),
-    lapor_page(),
-    forum_dashboard(),
-    CoursePage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _initCamera();
+    _bucket = PageStorageBucket();
+    _currentScreen = home_page(); // Assuming HomePage is your default screen
+  }
+
+  Future<void> _initCamera() async {
+    final cameras = await availableCameras();
+    _camera = cameras.first;
+    setState(() {
+      _children = [
+        home_page(),
+        map_page(),
+        // MapCard(),
+        // LaporPage(),
+        ScanPage(camera: _camera),
+        forum_dashboard(),
+        CoursePage(),
+      ];
+    });
+  }
 
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _currentScreen = _children[index];
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
-      bottomNavigationBar: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 7,
-              offset: Offset(0, -3),
-            ),
-          ],
+      body: PageStorage(
+        child: _currentScreen,
+        bucket: _bucket,
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+              100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
         ),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0),
-              ),
-              child: BottomNavigationBar(
-                onTap: onTabTapped,
-                currentIndex: _currentIndex,
-                selectedItemColor: Colors.red,
-                unselectedItemColor: Colors.black54,
-                showSelectedLabels: true,
-                showUnselectedLabels: false,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.map),
-                    label: 'Map',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.assignment),
-                    label: 'Lapor',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.chat),
-                    label: 'Forum',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.book),
-                    label: 'Course',
-                  ),
+        child: Icon(Icons.qr_code_scanner_rounded),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ScanPage(camera: _camera)),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = home_page();
+                          _currentIndex = 0;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.home,
+                            color:
+                                _currentIndex == 0 ? Colors.red : Colors.grey,
+                          ),
+                          Text(
+                            'Home',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 0 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      )),
+                  MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = map_page();
+                          _currentIndex = 1;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.map,
+                            color:
+                                _currentIndex == 1 ? Colors.red : Colors.grey,
+                          ),
+                          Text(
+                            'Map',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 1 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      ))
                 ],
               ),
-            ),
-          ],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = forum_dashboard();
+                          _currentIndex = 2;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.chat,
+                            color:
+                                _currentIndex == 2 ? Colors.red : Colors.grey,
+                          ),
+                          Text(
+                            'Forum',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 2 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      )),
+                  MaterialButton(
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = lapor_page();
+                          _currentIndex = 3;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.assignment,
+                            color:
+                                _currentIndex == 3 ? Colors.red : Colors.grey,
+                          ),
+                          Text(
+                            'Lapor',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 3 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      ))
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -39,7 +39,6 @@ void main() {
       await Firebase.initializeApp();
       mockFirebaseAuth = MockFirebaseAuth();
     });
-
     testWidgets('Login with valid credentials navigates to NavButton',
         (WidgetTester tester) async {
       FlutterError.onError = ignoreOverflowErrors;
@@ -49,8 +48,7 @@ void main() {
         ),
       );
 
-      final emailField =
-          find.widgetWithText(TextField, 'Masukan nama pengguna');
+      final emailField = find.widgetWithText(TextField, 'Masukan Email');
       final passwordField =
           find.widgetWithText(TextField, 'Enter your password');
       final loginButton = find.widgetWithText(ElevatedButton, 'Login').first;
