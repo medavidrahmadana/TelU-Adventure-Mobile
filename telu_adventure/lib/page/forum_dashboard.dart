@@ -12,6 +12,8 @@ class forum_dashboard extends StatelessWidget {
 
   GlobalKey questionUserKey = GlobalKey();
 
+  GlobalKey questionUserTapKey = GlobalKey();
+
   GlobalKey userQuestionerKey = GlobalKey();
 
   GlobalKey userQuestionKey = GlobalKey();
@@ -33,7 +35,6 @@ class forum_dashboard extends StatelessWidget {
             ),
             actions: [
               Container(
-                key: notificationKey,
                 width: 45,
                 height: 45,
                 margin: const EdgeInsets.only(right: 16),
@@ -52,7 +53,8 @@ class forum_dashboard extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(
+                      key: notificationKey,
+                      icon: const Icon(
                         Icons.notifications,
                         color: Colors.white,
                       ),
@@ -113,17 +115,17 @@ class forum_dashboard extends StatelessWidget {
                   child: Center(
                     child: Image.asset(
                       'assets/img/forum-image1.png', // Path ke file gambar di dalam folder assets
+                      key: profileKey,
                       width:
                           30, // Sesuaikan dengan ukuran gambar yang diinginkan
                       height: 30,
-                      key: profileKey,
                     ),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: GestureDetector(
-                    key: questionUserKey,
+                    key: questionUserTapKey,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -152,6 +154,7 @@ class forum_dashboard extends StatelessWidget {
                       );
                     },
                     child: Container(
+                      key: questionUserKey,
                       height: 45,
                       decoration: BoxDecoration(
                         color: const Color(0xFFF5F5F5),
@@ -182,61 +185,64 @@ class forum_dashboard extends StatelessWidget {
                 horizontal: 35.0, // jarak padding kanan kiri
                 vertical: 1.0,
               ),
-              child: Row(
+              child: Container(
                 key: userQuestionerKey,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 45,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFD966),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'A',
-                        style: TextStyle(
-                          color: Color(0xFF1E1E1E), // Warna huruf abu-abu gelap
-                          fontWeight: FontWeight.bold, // Membuat huruf tebal
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFD966),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'A',
+                          style: TextStyle(
+                            color:
+                                Color(0xFF1E1E1E), // Warna huruf abu-abu gelap
+                            fontWeight: FontWeight.bold, // Membuat huruf tebal
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 20),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Abdul Hamid',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                    const SizedBox(width: 20),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Abdul Hamid',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text(
-                              'bertanya · ',
-                              style: TextStyle(
-                                color: Colors.grey,
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Text(
+                                'bertanya · ',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '3 jam',
-                              style: TextStyle(
-                                color: Colors.grey,
+                              Text(
+                                '3 jam',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const Icon(Icons.more_vert),
-                ],
+                    const Icon(Icons.more_vert),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 16),

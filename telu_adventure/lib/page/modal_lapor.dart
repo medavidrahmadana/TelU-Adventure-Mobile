@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/controllers/lapor_controller.dart';
+import 'package:telu_adventure/model/barang_model.dart';
 
 class modal_lapor extends StatelessWidget {
   final TextEditingController _namaBarangController = TextEditingController();
-  final TextEditingController _textFieldController2 = TextEditingController();
-  final TextEditingController _textFieldController3 = TextEditingController();
-  final TextEditingController _textFieldController4 = TextEditingController();
-  final TextEditingController _textFieldController5 = TextEditingController();
+  final TextEditingController _typeBarangController = TextEditingController();
+  final TextEditingController _imageBarangController = TextEditingController();
+  final TextEditingController _deskripsiBarangController =
+      TextEditingController();
+  final TextEditingController _lokasiBarangController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class modal_lapor extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     children: [
                       TextField(
-                        controller: _textFieldController2,
+                        controller: _typeBarangController,
                         decoration: InputDecoration(
                           hintText: "Type",
                           border: OutlineInputBorder(
@@ -76,7 +79,7 @@ class modal_lapor extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     children: [
                       TextField(
-                        controller: _textFieldController3,
+                        controller: _imageBarangController,
                         decoration: InputDecoration(
                           hintText: "Foto",
                           border: OutlineInputBorder(
@@ -111,7 +114,7 @@ class modal_lapor extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
-              controller: _textFieldController4,
+              controller: _deskripsiBarangController,
               decoration: InputDecoration(
                 hintText: "Deskripsi Barang",
                 border: OutlineInputBorder(
@@ -121,7 +124,7 @@ class modal_lapor extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
-              controller: _textFieldController5,
+              controller: _lokasiBarangController,
               decoration: InputDecoration(
                 hintText: "Lokasi Terakhir",
                 border: OutlineInputBorder(
@@ -153,7 +156,16 @@ class modal_lapor extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Future.delayed(Duration.zero, () {
+                  Barang _barang = Barang(
+                    nama: _namaBarangController.text,
+                    type: _typeBarangController.text,
+                    deskripsi: _deskripsiBarangController.text,
+                    imagePath: _imageBarangController.text,
+                    lokasi: _lokasiBarangController.text,
+                  );
+                  LaporCon.addToFirestore(context, _barang);
+                });
               },
             ),
           ],

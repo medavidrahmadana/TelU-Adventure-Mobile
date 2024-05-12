@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_notifikasi.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/login_page.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
 import 'package:telu_adventure/page/profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Tugas {
   final String nama;
@@ -132,7 +134,7 @@ class _home_pageState extends State<home_page> {
                   SizedBox(height: 10.0),
                   Center(
                     child: Text(
-                      'Fadhil',
+                      FirebaseAuth.instance.currentUser?.displayName ?? 'User',
                       style: TextStyle(
                         fontSize: 24.0,
                         fontFamily: 'Inter',
@@ -216,7 +218,8 @@ class _home_pageState extends State<home_page> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => achievement_page()), 
+                              MaterialPageRoute(
+                                  builder: (context) => achievement_page()),
                             );
                           },
                           child: Text(
@@ -232,25 +235,23 @@ class _home_pageState extends State<home_page> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  SingleChildScrollView( // Tambahkan SingleChildScrollView di sini
+                  SingleChildScrollView(
+                    // Tambahkan SingleChildScrollView di sini
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                       SizedBox(width: 20.0),
+                        SizedBox(width: 20.0),
                         ModulAch(
-                          topText: 'Still Free', 
-                          imagePath: 'assets/img/scholar.png'
-                        ),
+                            topText: 'Still Free',
+                            imagePath: 'assets/img/scholar.png'),
                         SizedBox(width: 10.0),
                         ModulAch(
-                          topText: 'Task Master', 
-                          imagePath: 'assets/img/task_achievement.png'
-                        ),
-                        SizedBox(width: 10.0), 
+                            topText: 'Task Master',
+                            imagePath: 'assets/img/task_achievement.png'),
+                        SizedBox(width: 10.0),
                         ModulAch(
-                          topText: 'Food Place', 
-                          imagePath: 'assets/img/restaurant.png'
-                        ),
+                            topText: 'Food Place',
+                            imagePath: 'assets/img/restaurant.png'),
                         SizedBox(width: 10.0),
                       ],
                     ),
@@ -844,7 +845,8 @@ class ModulAch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10.0), // Tambahkan margin 10.0 di semua sisi container
+      margin:
+          EdgeInsets.all(10.0), // Tambahkan margin 10.0 di semua sisi container
       padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -859,7 +861,8 @@ class ModulAch extends StatelessWidget {
         ],
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Mengatur agar column menyesuaikan ukuran widget
+        mainAxisSize:
+            MainAxisSize.min, // Mengatur agar column menyesuaikan ukuran widget
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
@@ -869,10 +872,12 @@ class ModulAch extends StatelessWidget {
           ),
           SizedBox(height: 10.0),
           Padding(
-            padding: EdgeInsets.only(bottom: 10.0), // Tambahkan jarak pada bagian bawah
+            padding: EdgeInsets.only(
+                bottom: 10.0), // Tambahkan jarak pada bagian bawah
             child: Text(
               topText,
-              textAlign: TextAlign.center, // Mengatur agar teks berada di tengah
+              textAlign:
+                  TextAlign.center, // Mengatur agar teks berada di tengah
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -885,9 +890,6 @@ class ModulAch extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class ModulInfoBox extends StatelessWidget {
   final String title;

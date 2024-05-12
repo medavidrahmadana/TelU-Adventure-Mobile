@@ -101,6 +101,7 @@ class RegisterPage extends StatelessWidget {
                 _registerWithEmailAndPassword(
                   usernameController.text,
                   passwordController.text,
+                  usernameController.text,
                   context,
                 );
               },
@@ -163,6 +164,7 @@ class RegisterPage extends StatelessWidget {
   Future<void> _registerWithEmailAndPassword(
     String username,
     String password,
+    String displayName,
     BuildContext context,
   ) async {
     try {
@@ -171,6 +173,7 @@ class RegisterPage extends StatelessWidget {
         email: username,
         password: password,
       );
+      await userCredential.user!.updateDisplayName(displayName);
       // Registrasi berhasil, arahkan pengguna ke halaman login
       print('User registered: ${userCredential.user?.uid}');
       Navigator.pushReplacement(

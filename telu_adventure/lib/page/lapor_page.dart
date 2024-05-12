@@ -1,29 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/page/forum_notifikasi.dart';
-import 'package:telu_adventure/page/login_page.dart';
 
 import 'modal_lapor.dart';
 
-class Barang {
-  final String nama;
-  final String imagePath; // Path gambar lokal
-  final String type;
-
-  Barang({required this.nama, required this.imagePath, required this.type});
-}
-
-// Daftar contoh data
-List<Barang> dataList = [
-  Barang(
-      nama: 'Item 1', imagePath: 'assets/gambar_barang1.png', type: 'Type 1'),
-  Barang(
-      nama: 'Item 2', imagePath: 'assets/gambar_barang2.png', type: 'Type 2'),
-  Barang(
-      nama: 'Item 3', imagePath: 'assets/gambar_barang3.png', type: 'Type 3'),
-];
-
 class lapor_page extends StatelessWidget {
-  const lapor_page({Key? key}) : super(key: key);
+  final LaporCon _laporCon = LaporCon();
+
+  lapor_page({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +117,7 @@ class lapor_page extends StatelessWidget {
                 ),
                 // Penambahan spasi antara profil dan nama pengguna
                 Text(
-                  'Fadhil',
+                  FirebaseAuth.instance.currentUser?.displayName ?? 'User',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -442,72 +428,82 @@ class lapor_page extends StatelessWidget {
                   ),
                 ),
               ),
-              // Letakkan ListView.builder di sini
-              ListView.builder(
-                padding: EdgeInsets.symmetric(
-                    vertical: 8.0), // Menambahkan padding vertikal
-                itemExtent: 60.0, // Menentukan tinggi setiap item
-                shrinkWrap: true,
-                itemCount: dataList.length,
-                itemBuilder: (context, index) {
-                  final barang = dataList[index];
-                  return Row(
-                    children: [
-                      // Widget untuk gambar
-                      Padding(
-                        padding: const EdgeInsets.only(left: 35),
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white, // Warna latar belakang putih
-                            borderRadius: BorderRadius.circular(
-                                13), // Radius sudut 30 (agar bundar)
-                            border: Border.all(
-                              color: Color.fromARGB(255, 228, 226, 226),
-                              width: 2,
-                            ),
-                          ),
-                          // child: Image.asset(
-                          //   barang.imagePath,
-                          //   fit: BoxFit.cover,
-                          // ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child:
-                            Text(barang.nama, style: TextStyle(fontSize: 16)),
-                      ),
-                      SizedBox(width: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45),
-                        child:
-                            Text(barang.type, style: TextStyle(fontSize: 16)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 55.0,
-                        ),
-                        child: Transform.rotate(
-                          angle: 90 * (22 / 7 / 180),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.more_vert),
-                            color: Colors.grey[500],
-                            iconSize: 32,
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
+              Expanded(child: _buildKarirList(context)),
             ],
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildKarirList(BuildContext context) {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('laporan').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text('Loading...');
+          }
+          return ListView(
+            children: snapshot.data!.docs
+                .map((doc) => _buildLaporItem(doc, context))
+                .toList(),
+          );
+        });
+  }
+
+  Widget _buildLaporItem(DocumentSnapshot doc, BuildContext context) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Row(
+      children: [
+        // Widget untuk gambar
+        Padding(
+          padding: const EdgeInsets.only(left: 35),
+          child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.white, // Warna latar belakang putih
+              borderRadius:
+                  BorderRadius.circular(13), // Radius sudut 30 (agar bundar)
+              border: Border.all(
+                color: Color.fromARGB(255, 228, 226, 226),
+                width: 2,
+              ),
+            ),
+            // child: Image.asset(
+            //   data['imagePath'],
+            //   fit: BoxFit.cover,
+            // ),
+          ),
+        ),
+        SizedBox(width: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: Text(data['nama'], style: TextStyle(fontSize: 16)),
+        ),
+        SizedBox(width: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 45),
+          child: Text(data['type'], style: TextStyle(fontSize: 16)),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 55.0,
+          ),
+          child: Transform.rotate(
+            angle: 90 * (22 / 7 / 180),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.more_vert),
+              color: Colors.grey[500],
+              iconSize: 32,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

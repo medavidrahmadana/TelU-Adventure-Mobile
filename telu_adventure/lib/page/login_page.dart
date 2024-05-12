@@ -11,7 +11,7 @@ class LoginPage extends StatelessWidget {
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         super(key: key);
   // Method untuk login menggunakan email dan password
-  Future<void> _signInWithEmailAndPassword(
+  Future<User?> _signInWithEmailAndPassword(
     String email,
     String password,
     BuildContext context,
@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
         MaterialPageRoute(builder: (context) => NavButton()),
       );
       // Jika login berhasil, arahkan pengguna ke halaman lain jika diperlukan
-      print('User logged in: ${userCredential.user?.uid}');
+      return userCredential.user;
     } catch (e) {
       // Tangani kesalahan selama proses login
       print('Error during login: $e');
