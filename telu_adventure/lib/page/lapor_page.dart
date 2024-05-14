@@ -438,7 +438,7 @@ class lapor_page extends StatelessWidget {
 
   Widget _buildKarirList(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('laporan').snapshots(),
+        stream: _laporCon.getlaporan(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text(snapshot.error.toString());
