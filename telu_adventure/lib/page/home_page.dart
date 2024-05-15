@@ -6,6 +6,11 @@ import 'package:telu_adventure/page/login_page.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
 import 'package:telu_adventure/page/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:telu_adventure/controllers/home_controller.dart';
+import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
+
+
+HomeController _controller = HomeController();
 
 class Tugas {
   final String nama;
@@ -160,40 +165,30 @@ class _home_pageState extends State<home_page> {
                   ),
                   SizedBox(height: 20.0),
                   SingleChildScrollView(
-                    // Tambahkan SingleChildScrollView di sini
                     scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20.0),
-                        ModulOption(
-                          imagePath: 'assets/img/Map.png',
-                          topText: 'Basis Data',
-                          bottomTexts: [
-                            'Gedung Kuliah Umum',
-                            'KU3 03.04',
-                            '06.30'
-                          ],
-                        ),
-                        SizedBox(width: 10.0),
-                        ModulOption(
-                          imagePath: 'assets/img/Map.png',
-                          topText: 'Proting',
-                          bottomTexts: ['TULT', '0703', '09.30'],
-                        ),
-                        SizedBox(width: 10.0),
-                        ModulOption(
-                          imagePath: 'assets/img/Map.png',
-                          topText: 'AKA',
-                          bottomTexts: ['TULT', '0704', '06.30'],
-                        ),
-                        SizedBox(width: 10.0),
-                        ModulOption(
-                          imagePath: 'assets/img/Map.png',
-                          topText: 'COA',
-                          bottomTexts: ['TULT', '0705', '08.30'],
-                        ),
-                        SizedBox(width: 20.0),
-                      ],
+                    child: FutureBuilder<List<jadwalPelajaran>>(
+                      future: _controller.getJadwalPelajaran() , // Menggunakan home_controller
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          List<jadwalPelajaran> jadwalList = snapshot.data ?? [];
+                          return Row(
+                            children: jadwalList.map((jadwal) {
+                              return SizedBox(
+                                width: 200, // Lebar masing-masing item
+                                child: ModulOption(
+                                  imagePath: 'assets/img/Map.png', // Ganti dengan gambar yang sesuai
+                                  topText: jadwal.namaMatkul,
+                                  bottomTexts: [jadwal.namaGedung, jadwal.ruangan, jadwal.waktu],
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
                     ),
                   ),
                   SizedBox(height: 20),
