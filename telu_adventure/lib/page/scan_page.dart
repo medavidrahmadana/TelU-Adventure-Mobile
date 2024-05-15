@@ -1,6 +1,9 @@
-import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:camera/camera.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'forum_dashboard.dart';
+import 'forum_notifikasi.dart';
 
 class ScanPage extends StatefulWidget {
   final CameraDescription camera;
@@ -12,79 +15,138 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanPageState extends State<ScanPage> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  late QRViewController qrController;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  Barcode? result;
 
   @override
-  void initState() {
-    super.initState();
-    _controller = CameraController(
-      widget.camera,
-      ResolutionPreset.medium,
-    );
-    _initializeControllerFuture = _controller.initialize();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  void reassemble() {
+    super.reassemble();
+    if (mounted) {
+      qrController.pauseCamera();
+      qrController.resumeCamera();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Scan Barcode'),
-      ),
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Center(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(70.0),
+        child: AppBar(
+          title: const Text(
+            'Scan Page',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            Container(
+              width: 45,
+              height: 45,
+              margin: const EdgeInsets.only(right: 16),
               child: Stack(
                 children: [
-                  CameraPreview(_controller),
-                  Center(
+                  Positioned(
+                    top: 0,
+                    right: 0,
                     child: Container(
-                      width: 240,
-                      height: 240,
+                      width: 45,
+                      height: 45,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2.0,
-                        ),
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(14),
                       ),
                     ),
                   ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return Stack(
+                              children: <Widget>[
+                                forum_dashboard(),
+                                SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(1.0, 0.0),
+                                    end: const Offset(0.2, 0.0),
+                                  ).animate(animation),
+                                  child: const forum_notifikasi(),
+                                ),
+                              ],
+                            );
+                          },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return child;
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+            ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0),
+            child: Divider(
+              color: Colors.grey[300],
+              thickness: 1,
+            ),
+          ),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            await _initializeControllerFuture;
-            final image = await _controller.takePicture();
-            // Use image for barcode scanning
-            String barcode = await FlutterBarcodeScanner.scanBarcode(
-              '#ff6666', // color for Android
-              'Cancel', // cancel button text
-              true, // show flash icon
-              ScanMode.BARCODE, // scan mode
-            );
-            // Process the scanned barcode
-            print('Scanned Barcode: $barcode');
-          } catch (e) {
-            print('Error: $e');
-          }
-        },
-        child: Icon(Icons.camera_alt),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 5,
+            child: QRView(
+              key: qrKey,
+              onQRViewCreated: _onQRViewCreated,
+              overlay: QrScannerOverlayShape(
+                borderColor: Colors.red,
+                borderRadius: 10,
+                borderLength: 30,
+                borderWidth: 10,
+                cutOutSize: 300,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: (result != null)
+                  ? Text(
+                      'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                  : Text('Scan a code'),
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      qrController = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    qrController.dispose();
+    super.dispose();
   }
 }

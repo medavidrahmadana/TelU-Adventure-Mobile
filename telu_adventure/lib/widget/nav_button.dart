@@ -1,13 +1,10 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:telu_adventure/page/achievement_page.dart';
-import 'package:telu_adventure/page/course_page.dart';
+import 'package:camera/camera.dart';
 import 'package:telu_adventure/page/forum_dashboard.dart';
 import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
-import 'package:telu_adventure/page/mapcard.dart';
-import 'package:telu_adventure/page/scan_page.dart';
+import '../page/scan_page.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
@@ -39,10 +36,10 @@ class _NavButtonState extends State<NavButton> {
         home_page(),
         map_page(),
         // MapCard(),
-        // LaporPage(),
+        // course_page(),
         ScanPage(camera: _camera),
         forum_dashboard(),
-        CoursePage(),
+        lapor_page(),
       ];
     });
   }
