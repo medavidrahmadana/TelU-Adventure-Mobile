@@ -23,9 +23,20 @@ class LaporCon {
     }
   }
 
-  //read
-  Stream<QuerySnapshot> getlaporan() {
-    return _firestore.collection('laporan').snapshots();
+// Constructor
+
+  Stream<QuerySnapshot> getlaporan(String uid) {
+    return _firestore
+        .collection('laporan')
+        .where('kehilangan', isEqualTo: uid) // Filter berdasarkan uid
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getlaporanbystatus() {
+    return _firestore
+        .collection('laporan')
+        .where('status', isEqualTo: "Belum") // Filter berdasarkan uid
+        .snapshots();
   }
 
   //update
@@ -46,8 +57,8 @@ class LaporCon {
       if (barang.imagePath != "") {
         updateData['imagePath'] = barang.imagePath;
       }
-      if (barang.lokasi != "") {
-        updateData['lokasi'] = barang.lokasi;
+      if (barang.telepon != "") {
+        updateData['telepon'] = barang.telepon;
       }
       if (barang.kehilangan != "") {
         updateData['kehilangan'] = barang.kehilangan;
@@ -60,18 +71,18 @@ class LaporCon {
           .collection('laporan')
           .doc(documentId)
           .update(updateData);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Laporan berhasil terupdate!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan sudah terupdate!')));
       Navigator.of(context).pop();
     } catch (e) {
       print('Error updating document: $e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error updating document')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan gagal terupdate!')));
     }
   }
 
   //delete
-  static Future<void> deleteKompetisi(String id) async {
-    await FirebaseFirestore.instance.collection('barang').doc(id).delete();
+  static Future<void> deleteLaporan(String id) async {
+    await FirebaseFirestore.instance.collection('laporan').doc(id).delete();
   }
 }

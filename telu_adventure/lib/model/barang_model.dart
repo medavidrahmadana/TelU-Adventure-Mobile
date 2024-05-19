@@ -5,13 +5,13 @@ class Barang {
   final String imagePath; // Path gambar lokal
   final String type;
   final String deskripsi;
-  final String lokasi;
+  final String telepon;
   final String kehilangan;
   final String status;
 
   Barang({
     required this.deskripsi,
-    required this.lokasi,
+    required this.telepon,
     required this.nama,
     required this.imagePath,
     required this.type,
@@ -24,7 +24,7 @@ class Barang {
         'imagePath': imagePath,
         'type': type,
         'deskripsi': deskripsi,
-        'lokasi': lokasi,
+        'telepon': telepon,
         'kehilangan': kehilangan,
         'status': status,
       };

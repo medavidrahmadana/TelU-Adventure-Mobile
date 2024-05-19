@@ -4,12 +4,12 @@ import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/model/barang_model.dart';
 
 class modal_barang extends StatelessWidget {
-  final String documentId; // Assuming you pass the document ID to the modal
+  final String documentId; // Mengasumsikan Anda meneruskan ID dokumen ke modal
   final TextEditingController _namaBarangController = TextEditingController();
   final TextEditingController _deskripsiBarangController =
       TextEditingController();
   final List<String> _statusOptions = ['Sudah', 'Belum'];
-  String _selectedStatus = 'Belum'; // Default value
+  String _selectedStatus = 'Belum'; // Nilai default
 
   modal_barang({Key? key, required this.documentId}) : super(key: key);
 
@@ -17,9 +17,9 @@ class modal_barang extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.white,
-      insetPadding: EdgeInsets.symmetric(horizontal: 25), // Set inset padding
+      insetPadding: EdgeInsets.symmetric(horizontal: 25), // Atur inset padding
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9, // Lebar container utama
+        width: MediaQuery.of(context).size.width * 0.9, // Lebar kontainer utama
         padding: EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -40,7 +40,37 @@ class modal_barang extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 30), // Untuk keseimbangan
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        try {
+                          LaporCon.deleteLaporan(
+                              documentId); // Memanggil fungsi deleteKompetisi
+                          Navigator.of(context)
+                              .pop(); // Menutup modal setelah menghapus
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Laporan berhasil dihapus'),
+                              duration: Duration(seconds: 2), // Durasi snackbar
+                            ),
+                          );
+                        } catch (error) {
+                          print('Error deleting laporan: $error');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Gagal menghapus laporan'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+
+                    SizedBox(width: 10), // Untuk keseimbangan
+                  ],
+                ),
               ],
             ),
             SizedBox(height: 15),
@@ -110,10 +140,10 @@ class modal_barang extends StatelessWidget {
                 Future.delayed(Duration.zero, () {
                   Barang _barang = Barang(
                     nama: _namaBarangController.text,
-                    type: '', // You may want to handle this differently
+                    type: '', // Anda mungkin ingin menanganinya secara berbeda
                     deskripsi: _deskripsiBarangController.text,
-                    imagePath: '', // Since image is removed
-                    lokasi: '', // Since lokasi is removed
+                    imagePath: '', // Karena gambar dihapus
+                    telepon: '', // Karena lokasi dihapus
                     kehilangan: FirebaseAuth.instance.currentUser!.uid,
                     status: _selectedStatus,
                   );

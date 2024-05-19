@@ -8,10 +8,11 @@ import 'package:telu_adventure/widget/modal_barang.dart';
 import '../widget/modal_lapor.dart';
 
 class lapor_page extends StatelessWidget {
+  // Contoh nilai UID
   final LaporCon _laporCon = LaporCon();
   int _loadedItems = 3; // Jumlah awal item yang akan ditampilkan
   int _loadThreshold = 3; // Jumlah item yang akan dimuat setiap kali di-scroll
-
+  String uid = FirebaseAuth.instance.currentUser!.uid;
   lapor_page({Key? key}) : super(key: key);
 
   @override
@@ -144,29 +145,70 @@ class lapor_page extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            '8',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '4',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '4',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          StreamBuilder(
+                            stream: _laporCon.getlaporan(uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError ||
+                                  snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              }
+                              List<DocumentSnapshot> docs = snapshot.data!.docs;
+                              int totalItems = docs.length;
+                              int sudahItems = docs
+                                  .where((doc) => doc['status'] == 'Sudah')
+                                  .length;
+                              int belumItems = docs
+                                  .where((doc) => doc['status'] == 'Belum')
+                                  .length;
+                              return Container(
+                                width: 250,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 25.0),
+                                        child: Text(
+                                          '$totalItems',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 60,
+                                      child: Center(
+                                        child: Text(
+                                          '$sudahItems',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 45.0),
+                                      child: Text(
+                                        '$belumItems',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -232,7 +274,7 @@ class lapor_page extends StatelessWidget {
                               height: 20,
                               alignment: Alignment.center,
                               child: Text(
-                                'Cari',
+                                'Lapor',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
@@ -262,7 +304,7 @@ class lapor_page extends StatelessWidget {
                               height: 20,
                               alignment: Alignment.center,
                               child: Text(
-                                'Lapor',
+                                'Cari',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -286,7 +328,7 @@ class lapor_page extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 405, left: 25),
                     child: Text(
-                      'List Barang Dicari',
+                      'List Barang',
                       style: TextStyle(
                         fontFamily: 'inter',
                         fontSize: 20,
@@ -296,7 +338,7 @@ class lapor_page extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 410.0, left: 135),
+                    padding: const EdgeInsets.only(top: 410.0, left: 195),
                     child: Container(
                       width: 50,
                       height: 50,
@@ -401,8 +443,9 @@ class lapor_page extends StatelessWidget {
   }
 
   Widget _buildKarirList(BuildContext context) {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
-      stream: _laporCon.getlaporan(),
+      stream: _laporCon.getlaporan(uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text(snapshot.error.toString());
