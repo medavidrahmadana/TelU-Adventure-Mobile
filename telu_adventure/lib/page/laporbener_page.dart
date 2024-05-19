@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:telu_adventure/page/forum_notifikasi.dart';
+import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/page/login_page.dart';
 
 class Barang {
