@@ -120,7 +120,7 @@ class modal_barang extends StatelessWidget {
                   LaporCon.updateFirestore(context, documentId, _barang);
                 });
               },
-            ),
+            )
           ],
         ),
       ),

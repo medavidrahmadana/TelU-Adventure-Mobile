@@ -7,12 +7,12 @@ import 'package:telu_adventure/widget/modal_barang.dart';
 
 import '../widget/modal_lapor.dart';
 
-class LaporPage extends StatelessWidget {
+class lapor_page extends StatelessWidget {
   final LaporCon _laporCon = LaporCon();
   int _loadedItems = 3; // Jumlah awal item yang akan ditampilkan
   int _loadThreshold = 3; // Jumlah item yang akan dimuat setiap kali di-scroll
 
-  LaporPage({Key? key}) : super(key: key);
+  lapor_page({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class LaporPage extends StatelessWidget {
                                     (context, animation, secondaryAnimation) {
                                   return Stack(
                                     children: <Widget>[
-                                      LaporPage(),
+                                      lapor_page(),
                                       SlideTransition(
                                         position: Tween<Offset>(
                                           begin: Offset(1.0, 0.0),
@@ -296,7 +296,7 @@ class LaporPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 410.0, left: 70),
+                    padding: const EdgeInsets.only(top: 410.0, left: 135),
                     child: Container(
                       width: 50,
                       height: 50,
@@ -317,15 +317,14 @@ class LaporPage extends StatelessWidget {
                                   (context, animation, secondaryAnimation) {
                                 return Stack(
                                   children: <Widget>[
-                                    LaporPage(),
+                                    lapor_page(),
                                     SlideTransition(
                                       position: Tween<Offset>(
                                         begin: Offset(0, 0),
                                         end: Offset(0, 0),
                                       ).animate(animation),
-                                      child: modal_barang(
-                                          documentId:
-                                              ''), // Adjust this line to pass the correct documentId
+                                      child:
+                                          modal_lapor(), // Adjust this line to pass the correct documentId
                                     ),
                                   ],
                                 );
@@ -494,7 +493,7 @@ class LaporPage extends StatelessWidget {
               width: 100,
               height: 45,
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                   data['type'],
                   style: TextStyle(
@@ -511,15 +510,33 @@ class LaporPage extends StatelessWidget {
                 angle: 90 * (22 / 7 / 180),
                 child: IconButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => modal_barang(
-                        documentId: doc.id,
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return Stack(
+                            children: <Widget>[
+                              lapor_page(),
+                              SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: Offset(0, 0),
+                                  end: Offset(0, 0),
+                                ).animate(animation),
+                                child: modal_barang(
+                                  documentId: doc.id,
+                                ), // Adjust this line to pass the correct documentId
+                              ),
+                            ],
+                          );
+                        },
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return child;
+                        },
                       ),
                     );
                   },
                   icon: Icon(Icons.more_vert),
-                  color: Colors.grey[500],
                   iconSize: 32,
                 ),
               ),

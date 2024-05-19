@@ -32,19 +32,37 @@ class LaporCon {
   static Future<void> updateFirestore(
       BuildContext context, String documentId, Barang barang) async {
     try {
+      Map<String, dynamic> updateData = {};
+
+      if (barang.nama != "") {
+        updateData['nama'] = barang.nama;
+      }
+      if (barang.type != "") {
+        updateData['type'] = barang.type;
+      }
+      if (barang.deskripsi != "") {
+        updateData['deskripsi'] = barang.deskripsi;
+      }
+      if (barang.imagePath != "") {
+        updateData['imagePath'] = barang.imagePath;
+      }
+      if (barang.lokasi != "") {
+        updateData['lokasi'] = barang.lokasi;
+      }
+      if (barang.kehilangan != "") {
+        updateData['kehilangan'] = barang.kehilangan;
+      }
+      if (barang.status != "") {
+        updateData['status'] = barang.status;
+      }
+
       await FirebaseFirestore.instance
-          .collection('barang')
+          .collection('laporan')
           .doc(documentId)
-          .update({
-        'nama': barang.nama,
-        'type': barang.type,
-        'deskripsi': barang.deskripsi,
-        'imagePath': barang.imagePath,
-        'lokasi': barang.lokasi,
-        'kehilangan': barang.kehilangan,
-        'status': barang.status,
-      });
-      Navigator.of(context).pop(); // Close the dialog on success
+          .update(updateData);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Laporan berhasil terupdate!')));
+      Navigator.of(context).pop();
     } catch (e) {
       print('Error updating document: $e');
       ScaffoldMessenger.of(context)
