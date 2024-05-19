@@ -6,13 +6,18 @@ class Barang {
   final String type;
   final String deskripsi;
   final String lokasi;
+  final String kehilangan;
+  final String status;
 
-  Barang(
-      {required this.deskripsi,
-      required this.lokasi,
-      required this.nama,
-      required this.imagePath,
-      required this.type});
+  Barang({
+    required this.deskripsi,
+    required this.lokasi,
+    required this.nama,
+    required this.imagePath,
+    required this.type,
+    required this.kehilangan,
+    required this.status,
+  });
 
   Map<String, dynamic> toMap() => {
         'nama': nama,
@@ -20,5 +25,7 @@ class Barang {
         'type': type,
         'deskripsi': deskripsi,
         'lokasi': lokasi,
+        'kehilangan': kehilangan,
+        'status': status,
       };
 }

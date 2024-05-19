@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/model/barang_model.dart';
@@ -163,6 +164,8 @@ class modal_lapor extends StatelessWidget {
                     deskripsi: _deskripsiBarangController.text,
                     imagePath: _imageBarangController.text,
                     lokasi: _lokasiBarangController.text,
+                    kehilangan: FirebaseAuth.instance.currentUser!.uid,
+                    status: "Belum",
                   );
                   LaporCon.addToFirestore(context, _barang);
                 });

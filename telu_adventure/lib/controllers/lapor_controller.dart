@@ -25,20 +25,31 @@ class LaporCon {
 
   //read
   Stream<QuerySnapshot> getlaporan() {
-    return _firestore.collection('lapor').snapshots();
+    return _firestore.collection('laporan').snapshots();
   }
 
   //update
-  static Future<Barang> updateKarir(
-      BuildContext context, barang, String id) async {
-    await FirebaseFirestore.instance
-        .collection('lapor')
-        .doc(id)
-        .update(barang.toMap());
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('barang terupdate updated successfully!')));
-    Navigator.pop(context);
-    return barang;
+  static Future<void> updateFirestore(
+      BuildContext context, String documentId, Barang barang) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('barang')
+          .doc(documentId)
+          .update({
+        'nama': barang.nama,
+        'type': barang.type,
+        'deskripsi': barang.deskripsi,
+        'imagePath': barang.imagePath,
+        'lokasi': barang.lokasi,
+        'kehilangan': barang.kehilangan,
+        'status': barang.status,
+      });
+      Navigator.of(context).pop(); // Close the dialog on success
+    } catch (e) {
+      print('Error updating document: $e');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error updating document')));
+    }
   }
 
   //delete
