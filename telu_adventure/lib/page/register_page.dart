@@ -5,6 +5,7 @@ import 'login_page.dart';
 class RegisterPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController displayNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,9 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 50), // Jarak antara judul dan field pertama
             Padding(
-              padding: const EdgeInsets.only(top: 50.0, right: 260),
+              padding: const EdgeInsets.only(right: 260),
               child: Text(
                 'Email',
                 style: TextStyle(
@@ -56,6 +58,7 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 10), // Jarak antara field pertama dan field kedua
             Container(
               width: 300,
               height: 150,
@@ -68,20 +71,46 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 16), // Jarak antara field kedua dan field ketiga
             Padding(
-              padding: const EdgeInsets.only(right: 230),
-              child: Container(
-                child: Text(
-                  'Password',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Inter',
-                    color: Colors.grey[600],
-                  ),
+              padding: const EdgeInsets.only(right: 180),
+              child: Text(
+                'Nama',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Inter',
+                  color: Colors.grey[600],
                 ),
               ),
             ),
+            SizedBox(height: 10), // Jarak antara field ketiga dan field keempat
+            Container(
+              width: 300,
+              height: 150,
+              padding: EdgeInsets.only(top: 16.0),
+              child: TextField(
+                controller: displayNameController,
+                decoration: InputDecoration(
+                  labelText: 'Masukkan nama',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            SizedBox(height: 16), // Jarak antara field keempat dan field kelima
+            Padding(
+              padding: const EdgeInsets.only(right: 230),
+              child: Text(
+                'Password',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Inter',
+                  color: Colors.grey[600],
+                ),
+              ),
+            ),
+            SizedBox(height: 10), // Jarak antara field kelima dan tombol Daftar
             Container(
               width: 300,
               height: 150,
@@ -95,13 +124,13 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20), // Jarak antara field dan tombol Daftar
             ElevatedButton(
               onPressed: () {
                 _registerWithEmailAndPassword(
                   usernameController.text,
                   passwordController.text,
-                  usernameController.text,
+                  displayNameController.text,
                   context,
                 );
               },
@@ -124,7 +153,9 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(
+                height:
+                    20), // Jarak antara tombol Daftar dan teks Masuk sekarang
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

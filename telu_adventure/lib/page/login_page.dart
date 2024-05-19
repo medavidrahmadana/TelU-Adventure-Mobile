@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
+import 'package:telu_adventure/controllers/auth_controller.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/widget/nav_button.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {
   final FirebaseAuth _firebaseAuth;
-
   LoginPage({Key? key, FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         super(key: key);
