@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
+import 'package:telu_adventure/model/achievement_model.dart';
 
 class HomeController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -43,26 +44,22 @@ class HomeController {
     return jadwalList;
   }
 
-  Future<List<Tugas>> getTugas() async {
-    List<Tugas> tugasList = [Tugas(
-       namaTugas: 'Quiz minggu 6',
-       namaMatkul: 'Tatulim SE 45.01',
-       icon: 'assets/img/quiz.png',
-       deadline: '1d 11j 12m 04d')];
+  Future<List<Achievement>> getAchievement(String userId) async {
+    List<Achievement> achievementList = [];
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('tugas').get();
+      QuerySnapshot querySnapshot = await _firestore.collection('achievements').where('UID', isEqualTo: userId).get();
       querySnapshot.docs.forEach((doc) {
-        Tugas tugas = Tugas(
-          namaTugas: doc['namaTugas'] ?? '',
-          namaMatkul: doc['namaMatkul'] ?? '',
-          icon: doc['icon']??'',
-          deadline: doc['deadline'] ?? '',
+        Achievement achievement = Achievement(
+          UID: doc['UID'] ?? '',
+          namaAchievement: doc['namaAchievement'] ?? '',
+          gambarAchievement: doc['gambarAchievement'] ?? '',
+          status: doc['status'] ?? '',
         );
-        tugasList.add(tugas);
+        achievementList.add(achievement);
       });
     } catch (e) {
-      print('Error fetching tugas: $e');
+      print('Error fetching Achievement: $e');
     }
-    return tugasList;
+    return achievementList;
   }
 }

@@ -10,6 +10,7 @@ import 'package:telu_adventure/controllers/home_controller.dart';
 import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
+import 'package:telu_adventure/model/achievement_model.dart';
 
 HomeController _controller = HomeController();
 
