@@ -12,9 +12,8 @@ class HomeController {
       QuerySnapshot querySnapshot = await _firestore.collection('beasiswa').get();
       querySnapshot.docs.forEach((doc) {
         Beasiswa beasiswa = Beasiswa(
-          namaBeasiswa: doc['nama'] ?? '',
+          namaBeasiswa: doc['namaBeasiswa'] ?? '',
           image: doc['image'] ?? '',
-          status: doc['status'] ?? '',
           deskripsi: doc['deskripsi'] ?? '',
         );
         beasiswaList.add(beasiswa);
@@ -45,7 +44,11 @@ class HomeController {
   }
 
   Future<List<Tugas>> getTugas() async {
-    List<Tugas> tugasList = [];
+    List<Tugas> tugasList = [Tugas(
+       namaTugas: 'Quiz minggu 6',
+       namaMatkul: 'Tatulim SE 45.01',
+       icon: 'assets/img/quiz.png',
+       deadline: '1d 11j 12m 04d')];
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('tugas').get();
       querySnapshot.docs.forEach((doc) {
@@ -54,7 +57,6 @@ class HomeController {
           namaMatkul: doc['namaMatkul'] ?? '',
           icon: doc['icon']??'',
           deadline: doc['deadline'] ?? '',
-          status: doc['status'] ?? '',
         );
         tugasList.add(tugas);
       });

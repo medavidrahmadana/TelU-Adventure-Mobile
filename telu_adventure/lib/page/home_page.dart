@@ -8,91 +8,93 @@ import 'package:telu_adventure/page/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:telu_adventure/controllers/home_controller.dart';
 import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
+import 'package:telu_adventure/model/beasiswa_model.dart';
+import 'package:telu_adventure/model/tugas_model.dart';
 
 
 HomeController _controller = HomeController();
 
-class Tugas {
-  final String nama;
-  final String deskripsi;
-  final String imagePath;
-  final String waktu;
+// class Tugas {
+//   final String nama;
+//   final String deskripsi;
+//   final String imagePath;
+//   final String waktu;
 
-  Tugas(
-      {required this.nama,
-      required this.deskripsi,
-      required this.imagePath,
-      required this.waktu});
-}
+//   Tugas(
+//       {required this.nama,
+//       required this.deskripsi,
+//       required this.imagePath,
+//       required this.waktu});
+// }
 
-List<Tugas> dataList = [
-  Tugas(
-      nama: 'Quiz Minggu 3',
-      deskripsi: 'Manajemen Proyek IT SE 45.01',
-      imagePath: 'assets/img/quiz.png',
-      waktu: '1d 11j 12m 04d'),
-  Tugas(
-      nama: 'assesment CLO 1',
-      deskripsi: 'PBO SE 45.01',
-      imagePath: 'assets/img/task.png',
-      waktu: '1d 11j 12m 04d'),
-  Tugas(
-      nama: 'Quiz minggu 4',
-      deskripsi: 'Tatulim SE 45.01',
-      imagePath: 'assets/img/quiz.png',
-      waktu: '1d 11j 12m 04d'),
-  Tugas(
-      nama: 'Quiz Minggu 4',
-      deskripsi: 'Manajemen Proyek IT SE 45.01',
-      imagePath: 'assets/img/quiz.png',
-      waktu: '1d 11j 12m 04d'),
-  Tugas(
-      nama: 'assesment CLO 3',
-      deskripsi: 'PBO SE 45.01',
-      imagePath: 'assets/img/task.png',
-      waktu: '1d 11j 12m 04d'),
-  Tugas(
-      nama: 'Quiz minggu 6',
-      deskripsi: 'Tatulim SE 45.01',
-      imagePath: 'assets/img/quiz.png',
-      waktu: '1d 11j 12m 04d')
-];
+// List<Tugas> dataList = [
+//   Tugas(
+//       nama: 'Quiz Minggu 3',
+//       deskripsi: 'Manajemen Proyek IT SE 45.01',
+//       imagePath: 'assets/img/quiz.png',
+//       waktu: '1d 11j 12m 04d'),
+//   Tugas(
+//       nama: 'assesment CLO 1',
+//       deskripsi: 'PBO SE 45.01',
+//       imagePath: 'assets/img/task.png',
+//       waktu: '1d 11j 12m 04d'),
+//   Tugas(
+//       nama: 'Quiz minggu 4',
+//       deskripsi: 'Tatulim SE 45.01',
+//       imagePath: 'assets/img/quiz.png',
+//       waktu: '1d 11j 12m 04d'),
+//   Tugas(
+//       nama: 'Quiz Minggu 4',
+//       deskripsi: 'Manajemen Proyek IT SE 45.01',
+//       imagePath: 'assets/img/quiz.png',
+//       waktu: '1d 11j 12m 04d'),
+//   Tugas(
+//       nama: 'assesment CLO 3',
+//       deskripsi: 'PBO SE 45.01',
+//       imagePath: 'assets/img/task.png',
+//       waktu: '1d 11j 12m 04d'),
+//   Tugas(
+//       nama: 'Quiz minggu 6',
+//       deskripsi: 'Tatulim SE 45.01',
+//       imagePath: 'assets/img/quiz.png',
+//       waktu: '1d 11j 12m 04d')
+// ];
 
-class Beasiswa {
-  final String nama;
-  final String deskripsi;
-  final String imagePath;
+// class Beasiswa {
+//   final String nama;
+//   final String deskripsi;
+//   final String imagePath;
 
-  Beasiswa(
-      {required this.nama, required this.deskripsi, required this.imagePath});
-}
+//   Beasiswa(
+//       {required this.nama, required this.deskripsi, required this.imagePath});
+// }
 
-List<Beasiswa> dataList1 = [
-  Beasiswa(
-      nama: 'Oksigen Education 2023',
-      deskripsi: '21 Juli 2022 - 27 Juli 2022',
-      imagePath: 'assets/img/oksigen.jpeg'),
-  Beasiswa(
-      nama: 'Oksigen Education 2023',
-      deskripsi: '21 Juli 2022 - 27 Juli 2022',
-      imagePath: 'assets/img/oksigen.jpeg'),
-  Beasiswa(
-      nama: 'Oksigen Education 2023',
-      deskripsi: '21 Juli 2022 - 27 Juli 2022',
-      imagePath: 'assets/img/oksigen.jpeg'),
-  Beasiswa(
-      nama: 'Oksigen Education 2023',
-      deskripsi: '21 Juli 2022 - 27 Juli 2022',
-      imagePath: 'assets/img/oksigen.jpeg'),
-  Beasiswa(
-      nama: 'Oksigen Education 2023',
-      deskripsi: '21 Juli 2022 - 27 Juli 2022',
-      imagePath: 'assets/img/oksigen.jpeg'),
-  Beasiswa(
-      nama: 'Oksigen Education 2023',
-      deskripsi: '21 Juli 2022 - 27 Juli 2022',
-      imagePath: 'assets/img/oksigen.jpeg')
-];
+// List<Beasiswa> dataList1 = [
+//   Beasiswa(
+//       nama: 'Oksigen Education 2023',
+//       deskripsi: '21 Juli 2022 - 27 Juli 2022',
+//       imagePath: 'assets/img/oksigen.jpeg'),
+//   Beasiswa(
+//       nama: 'Oksigen Education 2023',
+//       deskripsi: '21 Juli 2022 - 27 Juli 2022',
+//       imagePath: 'assets/img/oksigen.jpeg'),
+//   Beasiswa(
+//       nama: 'Oksigen Education 2023',
+//       deskripsi: '21 Juli 2022 - 27 Juli 2022',
+//       imagePath: 'assets/img/oksigen.jpeg'),
+//   Beasiswa(
+//       nama: 'Oksigen Education 2023',
+//       deskripsi: '21 Juli 2022 - 27 Juli 2022',
+//       imagePath: 'assets/img/oksigen.jpeg'),
+//   Beasiswa(
+//       nama: 'Oksigen Education 2023',
+//       deskripsi: '21 Juli 2022 - 27 Juli 2022',
+//       imagePath: 'assets/img/oksigen.jpeg'),
+//   Beasiswa(
+//       nama: 'Oksigen Education 2023',
+//       deskripsi: '21 Juli 2022 - 27 Juli 2022',
+//       imagePath: 'assets/img/oksigen.jpeg')
+// ];
 
 int currentListIndex = 0;
 int currentPage = 0;
@@ -107,13 +109,14 @@ class home_page extends StatefulWidget {
 class _home_pageState extends State<home_page> {
   @override
   Widget build(BuildContext context) {
-    final List<Tugas> currentData = dataList;
+    
+    // final List<Tugas> currentData = tugasList;
 
-    final List<List<Tugas>> pages = [];
-    for (int i = 0; i < currentData.length; i += 4) {
-      pages.add(currentData.sublist(
-          i, i + 4 > currentData.length ? currentData.length : i + 4));
-    }
+    // final List<List<Tugas>> pages = [];
+    // for (int i = 0; i < currentData.length; i += 4) {
+    //   pages.add(currentData.sublist(
+    //       i, i + 4 > currentData.length ? currentData.length : i + 4));
+    // }
     return MaterialApp(
       home: Scaffold(
         body: SingleChildScrollView(
@@ -165,32 +168,39 @@ class _home_pageState extends State<home_page> {
                   ),
                   SizedBox(height: 20.0),
                   SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: FutureBuilder<List<jadwalPelajaran>>(
-                      future: _controller.getJadwalPelajaran() , // Menggunakan home_controller
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          List<jadwalPelajaran> jadwalList = snapshot.data ?? [];
-                          return Row(
-                            children: jadwalList.map((jadwal) {
-                              return SizedBox(
-                                width: 200, // Lebar masing-masing item
-                                child: ModulOption(
-                                  imagePath: 'assets/img/Map.png', // Ganti dengan gambar yang sesuai
-                                  topText: jadwal.namaMatkul,
-                                  bottomTexts: [jadwal.namaGedung, jadwal.ruangan, jadwal.waktu],
-                                ),
-                              );
-                            }).toList(),
-                          );
-                        }
-                      },
-                    ),
+  scrollDirection: Axis.horizontal,
+  child: FutureBuilder<List<jadwalPelajaran>>(
+    future: _controller.getJadwalPelajaran(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return CircularProgressIndicator();
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        List<jadwalPelajaran> jadwalList = snapshot.data ?? [];
+        return Padding(
+          padding: EdgeInsets.only(left: 20.0, right: 20.0), // Atur jarak kiri dan kanan
+          child: Row(
+            children: List.generate(jadwalList.length, (index) {
+              // Check if it's not the last item to add space after it
+              return Padding(
+                padding: EdgeInsets.only(right: index < jadwalList.length - 1 ? 20.0 : 0.0),
+                child: SizedBox(
+                  width: 300, // Lebar masing-masing item
+                  child: ModulOption(
+                    imagePath: 'assets/img/Map.png', // Ganti dengan gambar yang sesuai
+                    topText: jadwalList[index].namaMatkul,
+                    bottomTexts: [jadwalList[index].namaGedung, jadwalList[index].ruangan, jadwalList[index].waktu],
                   ),
+                ),
+              );
+            }),
+          ),
+        );
+      }
+    },
+  ),
+),
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -272,117 +282,116 @@ class _home_pageState extends State<home_page> {
                     ),
                   ),
 
-                  ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    itemExtent: 100.0,
-                    shrinkWrap: true,
-                    itemCount:
-                        pages[currentPage].length + (pages.length > 1 ? 1 : 0),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == pages[currentPage].length &&
-                          pages.length > 1) {
-                        // Tampilkan pagination
-                        return Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              pages.length,
-                              (pageIndex) => Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 25.0, left: 3.0, right: 3.0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      currentPage = pageIndex;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    padding: EdgeInsets.all(5.0),
-                                    backgroundColor: currentPage == pageIndex
-                                        ? Color(0xFFA11E22)
-                                        : Colors.white,
-                                    minimumSize: Size(35, 50),
-                                  ),
-                                  child: Text(
-                                    (pageIndex + 1).toString(),
-                                    style: TextStyle(
-                                      color: currentPage == pageIndex
-                                          ? Colors.white
-                                          : Color(0xFFA11E22),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        final Tugas = dataList[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                child: Image.asset(
-                                  Tugas.imagePath,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Tugas.nama,
-                                      style: TextStyle(fontSize: 16),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      Tugas.deskripsi,
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.grey),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'waktu Tersisa',
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    '1d 11j 12m 04d',
-                                    style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                  ),
+//                   ListView.builder(
+//   padding: EdgeInsets.symmetric(vertical: 8.0),
+//   itemExtent: 100.0,
+//   shrinkWrap: true,
+//   itemCount: pages[currentPage].length + (pages.length > 1 ? 1 : 0),
+//   itemBuilder: (BuildContext context, int index) {
+//     if (index == pages[currentPage].length && pages.length > 1) {
+//       // Tampilkan pagination
+//       return Center(
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: List.generate(
+//             pages.length,
+//             (pageIndex) => Padding(
+//               padding: const EdgeInsets.only(top: 25.0, left: 3.0, right: 3.0),
+//               child: ElevatedButton(
+//                 onPressed: () {
+//                   setState(() {
+//                     currentPage = pageIndex;
+//                   });
+//                 },
+//                 style: ElevatedButton.styleFrom(
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(10.0),
+//                   ),
+//                   padding: EdgeInsets.all(5.0),
+//                   backgroundColor: currentPage == pageIndex
+//                       ? Color(0xFFA11E22)
+//                       : Colors.white,
+//                   minimumSize: Size(35, 50),
+//                 ),
+//                 child: Text(
+//                   (pageIndex + 1).toString(),
+//                   style: TextStyle(
+//                     color: currentPage == pageIndex
+//                         ? Colors.white
+//                         : Color(0xFFA11E22),
+//                     fontSize: 14,
+//                     fontWeight: FontWeight.w900,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       );
+//     } else {
+//       final tugas = pages[currentPage][index];
+//       return Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+//         child: Row(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Container(
+//               width: 50,
+//               height: 50,
+//               child: tugas.icon != null
+//                   ? Image.network(
+//                       tugas.icon,
+//                       fit: BoxFit.cover,
+//                     )
+//                   : Container(
+//                       color: Colors.grey,
+//                     ),
+//             ),
+//             SizedBox(width: 10),
+//             Expanded(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     tugas.namaTugas,
+//                     style: TextStyle(fontSize: 16),
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                   Text(
+//                     tugas.namaMatkul,
+//                     style: TextStyle(fontSize: 12, color: Colors.grey),
+//                     maxLines: 2,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             SizedBox(width: 10),
+//             Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   'Waktu Tersisa',
+//                   style: TextStyle(
+//                     fontSize: 16.0,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 Text(
+//                   tugas.deadline,
+//                   style: TextStyle(
+//                     fontSize: 12.0,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       );
+//     }
+//   },
+// ),
+
 
                   SizedBox(height: 20),
                   Padding(
@@ -404,109 +413,81 @@ class _home_pageState extends State<home_page> {
                       ],
                     ),
                   ), // Atur jarak antara ListView
-                  ListView.builder(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    itemExtent:
-                        70.0, // Asumsi tinggi kotak adalah 120.0, sesuaikan sesuai kebutuhan Anda
-                    shrinkWrap: true,
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) {
-                      final Beasiswa = dataList1[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white, // Warna latar belakang kotak
-                            borderRadius: BorderRadius.circular(
-                                10.0), // Sudut bulat kotak
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey
-                                    .withOpacity(0.5), // Warna bayangan
-                                spreadRadius: 3, // Radius penyebaran bayangan
-                                blurRadius: 5, // Radius kabur bayangan
-                                offset: Offset(0, 3), // Offset bayangan
-                              ),
-                            ],
+                SingleChildScrollView(
+  scrollDirection: Axis.vertical,
+  child: FutureBuilder<List<Beasiswa>>(
+    future: _controller.getBeasiswa(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(
+          child: CircularProgressIndicator(),
+        ); // Menampilkan indikator loading di tengah saat data sedang dimuat
+      } else if (snapshot.hasError) {
+        return Center(
+          child: Text('Error: ${snapshot.error}'),
+        ); // Menampilkan pesan kesalahan di tengah jika terjadi error
+      } else {
+        List<Beasiswa> beasiswaList = snapshot.data ?? []; // Mendapatkan data beasiswa
+        return Column(
+          children: beasiswaList.map((beasiswa) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                width: double.infinity, // Lebar kontainer mengikuti lebar layar
+                decoration: BoxDecoration(
+                  color: Colors.white, // Warna latar belakang kotak
+                  borderRadius: BorderRadius.circular(10.0), // Sudut bulat kotak
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5), // Warna bayangan
+                      spreadRadius: 3, // Radius penyebaran bayangan
+                      blurRadius: 5, // Radius kabur bayangan
+                      offset: Offset(0, 3), // Offset bayangan
+                    ),
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 100, // Tinggi gambar
+                      child: Image.asset(
+                        beasiswa.image, // URL gambar beasiswa
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10,),
+                          Text(
+                            beasiswa.namaBeasiswa,
+                            style: TextStyle(fontSize: 16),
                           ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(
-                                        10.0), // Sudut bulat atas kiri
-                                    bottomLeft: Radius.circular(
-                                        10.0), // Sudut bulat bawah kiri
-                                  ),
-                                  image: DecorationImage(
-                                    image: AssetImage(Beasiswa.imagePath),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Beasiswa.nama,
-                                      style: TextStyle(fontSize: 16),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      Beasiswa.deskripsi,
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.grey),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 1),
-                              TextButton(
-                                onPressed: () {
-                                  // Implementasi aksi yang dijalankan saat tombol ditekan
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .center, // Menempatkan row di tengah secara horizontal
-                                  children: [
-                                    Transform.rotate(
-                                      angle: 0, // Sudut rotasi 0 derajat
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Color(
-                                              0xFFA11E22), // Warna latar belakang teks
-                                          borderRadius: BorderRadius.circular(
-                                              8.0), // Radius sudut kotak
-                                        ),
-                                        padding: EdgeInsets.all(
-                                            8.0), // Padding untuk memberi ruang di sekitar teks
-                                        child: Text(
-                                          'Lihat',
-                                          style: TextStyle(
-                                            fontSize: 16, // Ukuran teks
-                                            color: Colors.white, // Warna teks
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          Text(
+                            beasiswa.deskripsi,
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      }
+    },
+  ),
+)
+
+
+
                 ],
               ),
               Column(
