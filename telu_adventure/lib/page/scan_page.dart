@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'forum_dashboard.dart';
-import 'forum_notifikasi.dart';
+import '../widget/forum_notifikasi.dart';
 
 class ScanPage extends StatefulWidget {
   final CameraDescription camera;

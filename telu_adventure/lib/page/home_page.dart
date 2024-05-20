@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:telu_adventure/page/forum_notifikasi.dart';
+import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/login_page.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
@@ -10,7 +10,6 @@ import 'package:telu_adventure/controllers/home_controller.dart';
 import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
-
 
 HomeController _controller = HomeController();
 
