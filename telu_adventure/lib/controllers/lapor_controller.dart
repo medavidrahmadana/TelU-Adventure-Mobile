@@ -23,8 +23,6 @@ class LaporCon {
     }
   }
 
-// Constructor
-
   Stream<QuerySnapshot> getlaporan(String uid) {
     return _firestore
         .collection('laporan')
