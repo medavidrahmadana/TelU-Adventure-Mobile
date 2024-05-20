@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -6,18 +10,85 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _fullName = 'Indonesia U-23 vs Korea U-23';
-  String _email = 'indololosolimpiade@afc.com';
-  String _password = '********'; // Password diisi dengan tanda bintang sementara
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ImagePicker _picker = ImagePicker();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  // Fungsi untuk menangani perubahan foto profil
-  void _changeProfilePhoto() {
-    // Tambahkan logika untuk mengubah foto profil
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  // Memuat profil pengguna saat ini
+  void _loadUserProfile() {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      _nameController.text = user.displayName ?? '';
+      _emailController.text = user.email ?? '';
+      
+    }
+  }
+
+   // Fungsi untuk menangani perubahan foto profil
+  void _changeProfilePhoto() async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
+    try {
+      // Memilih gambar dari galeri
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        File file = File(pickedFile.path);
+
+        // Unggah gambar ke Firebase Storage
+        String fileName = 'profile_photos/${user.uid}.jpg';
+        UploadTask uploadTask = FirebaseStorage.instance.ref(fileName).putFile(file);
+
+        TaskSnapshot snapshot = await uploadTask;
+        String photoURL = await snapshot.ref.getDownloadURL();
+
+        // Perbarui URL foto profil pengguna
+        await user.updatePhotoURL(photoURL);
+        // Reload pengguna untuk memastikan perubahan disimpan
+        await user.reload();
+        user = _auth.currentUser;
+
+        setState(() {});
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Foto profil berhasil diperbarui.')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal mengubah foto profil: $e')));
+    }
   }
 
   // Fungsi untuk menyimpan perubahan pada profil
-  void _saveProfile() {
-    // Tambahkan logika untuk menyimpan profil
+  void _saveProfile() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      try {
+        // Update nama tampilan
+        if (_nameController.text.isNotEmpty) {
+          await user.updateDisplayName(_nameController.text);
+        }
+
+        // Update email
+        if (_emailController.text.isNotEmpty && _emailController.text != user.email) {
+          await user.updateEmail(_emailController.text);
+        }
+
+        // Reload pengguna untuk memastikan perubahan disimpan
+        await user.reload();
+        user = _auth.currentUser;
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profil berhasil diperbarui.')));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal memperbarui profil: $e')));
+      }
+    }
   }
 
   @override
@@ -40,7 +111,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/img/Fadhil.png'), // Ganti dengan foto profil yang sesuai
+                      backgroundImage: _auth.currentUser?.photoURL != null
+                        ? NetworkImage(_auth.currentUser!.photoURL!)
+                        : AssetImage('assets/img/Fadhil.png') as ImageProvider,
                     ),
                     Positioned(
                       bottom: 0,
@@ -64,11 +137,11 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 20.0),
             Text('Full Name', style: TextStyle(fontSize: 18.0)),
             TextFormField(
-              initialValue: _fullName,
+              initialValue: _nameController.text,
               style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
               onChanged: (value) {
                 setState(() {
-                  _fullName = value;
+                  _nameController.text = value;
                 });
               },
               decoration: InputDecoration(
@@ -80,11 +153,12 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 20.0),
             Text('Email', style: TextStyle(fontSize: 18.0)),
             TextFormField(
-              initialValue: _email,
+              initialValue: _emailController.text,
               style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
+              enabled: false,
               onChanged: (value) {
                 setState(() {
-                  _email = value;
+                  _emailController.text = value;
                 });
               },
               decoration: InputDecoration(
@@ -93,23 +167,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), // Ganti gaya garis input
               ),
             ),
-            SizedBox(height: 20.0),
-            Text('Password', style: TextStyle(fontSize: 18.0)),
-            TextFormField(
-              initialValue: _password,
-              style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
-              obscureText: true,
-              onChanged: (value) {
-                setState(() {
-                  _password = value;
-                });
-              },
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), // Ganti gaya garis input
-              ),
-            ),
+            // SizedBox(height: 20.0),
+            // Text('Password', style: TextStyle(fontSize: 18.0)),
+            // TextFormField(
+            //   initialValue: _password,
+            //   style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
+            //   obscureText: true,
+            //   onChanged: (value) {
+            //     setState(() {
+            //       _password = value;
+            //     });
+            //   },
+            //   decoration: InputDecoration(
+            //     filled: true,
+            //     fillColor: Colors.grey[200],
+            //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            //   ),
+            // ),
             SizedBox(height: 20.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
