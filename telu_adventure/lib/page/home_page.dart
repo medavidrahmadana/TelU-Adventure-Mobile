@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:telu_adventure/page/forum_notifikasi.dart';
+import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/login_page.dart';
 import 'package:telu_adventure/page/achievement_page.dart';
@@ -8,7 +8,6 @@ import 'package:telu_adventure/page/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:telu_adventure/controllers/home_controller.dart';
 import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
-
 
 HomeController _controller = HomeController();
 
@@ -167,22 +166,30 @@ class _home_pageState extends State<home_page> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: FutureBuilder<List<jadwalPelajaran>>(
-                      future: _controller.getJadwalPelajaran() , // Menggunakan home_controller
+                      future: _controller
+                          .getJadwalPelajaran(), // Menggunakan home_controller
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
-                          List<jadwalPelajaran> jadwalList = snapshot.data ?? [];
+                          List<jadwalPelajaran> jadwalList =
+                              snapshot.data ?? [];
                           return Row(
                             children: jadwalList.map((jadwal) {
                               return SizedBox(
                                 width: 200, // Lebar masing-masing item
                                 child: ModulOption(
-                                  imagePath: 'assets/img/Map.png', // Ganti dengan gambar yang sesuai
+                                  imagePath:
+                                      'assets/img/Map.png', // Ganti dengan gambar yang sesuai
                                   topText: jadwal.namaMatkul,
-                                  bottomTexts: [jadwal.namaGedung, jadwal.ruangan, jadwal.waktu],
+                                  bottomTexts: [
+                                    jadwal.namaGedung,
+                                    jadwal.ruangan,
+                                    jadwal.waktu
+                                  ],
                                 ),
                               );
                             }).toList(),

@@ -23,26 +23,64 @@ class LaporCon {
     }
   }
 
-  //read
-  Stream<QuerySnapshot> getlaporan() {
-    return _firestore.collection('lapor').snapshots();
+  Stream<QuerySnapshot> getlaporan(String uid) {
+    return _firestore
+        .collection('laporan')
+        .where('kehilangan', isEqualTo: uid) // Filter berdasarkan uid
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getlaporanbystatus() {
+    return _firestore
+        .collection('laporan')
+        .where('status', isEqualTo: "Belum") // Filter berdasarkan uid
+        .snapshots();
   }
 
   //update
-  static Future<Barang> updateKarir(
-      BuildContext context, barang, String id) async {
-    await FirebaseFirestore.instance
-        .collection('lapor')
-        .doc(id)
-        .update(barang.toMap());
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('barang terupdate updated successfully!')));
-    Navigator.pop(context);
-    return barang;
+  static Future<void> updateFirestore(
+      BuildContext context, String documentId, Barang barang) async {
+    try {
+      Map<String, dynamic> updateData = {};
+
+      if (barang.nama != "") {
+        updateData['nama'] = barang.nama;
+      }
+      if (barang.type != "") {
+        updateData['type'] = barang.type;
+      }
+      if (barang.deskripsi != "") {
+        updateData['deskripsi'] = barang.deskripsi;
+      }
+      if (barang.imagePath != "") {
+        updateData['imagePath'] = barang.imagePath;
+      }
+      if (barang.telepon != "") {
+        updateData['telepon'] = barang.telepon;
+      }
+      if (barang.kehilangan != "") {
+        updateData['kehilangan'] = barang.kehilangan;
+      }
+      if (barang.status != "") {
+        updateData['status'] = barang.status;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('laporan')
+          .doc(documentId)
+          .update(updateData);
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan sudah terupdate!')));
+      Navigator.of(context).pop();
+    } catch (e) {
+      print('Error updating document: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan gagal terupdate!')));
+    }
   }
 
   //delete
-  static Future<void> deleteKompetisi(String id) async {
-    await FirebaseFirestore.instance.collection('barang').doc(id).delete();
+  static Future<void> deleteLaporan(String id) async {
+    await FirebaseFirestore.instance.collection('laporan').doc(id).delete();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_jawab.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
-import 'forum_notifikasi.dart';
+import '../widget/forum_notifikasi.dart';
 
 class forum_dashboard extends StatelessWidget {
   forum_dashboard({super.key});
