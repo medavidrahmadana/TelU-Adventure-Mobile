@@ -354,7 +354,9 @@ class ProfilePicture extends StatelessWidget {
       },
       child: CircleAvatar(
         radius: 50.0,
-        backgroundImage: AssetImage('assets/img/Fadhil.png'),
+        backgroundImage: FirebaseAuth.instance.currentUser!.photoURL!= null 
+        ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
+        : AssetImage('assets/img/Fadhil.png') as ImageProvider,
       ),
     );
   }
