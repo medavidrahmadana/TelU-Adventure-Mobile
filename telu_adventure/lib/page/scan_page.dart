@@ -123,8 +123,10 @@ class _ScanPageState extends State<ScanPage> {
             flex: 1,
             child: Center(
               child: (result != null)
-                  ? Text(
-                      'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                  ? Center(
+                      child: Text(
+                          'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}'),
+                    )
                   : Text('Scan a code'),
             ),
           )
@@ -141,7 +143,29 @@ class _ScanPageState extends State<ScanPage> {
       setState(() {
         result = scanData;
       });
+      _showDialog(scanData);
     });
+  }
+
+  void _showDialog(Barcode scanData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('QR Code Result'),
+          content: Text(
+              'Barcode Type: ${describeEnum(scanData.format)}\nData: ${scanData.code}'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
