@@ -179,26 +179,6 @@ class _home_pageState extends State<home_page> {
                         Column(
                           children: [
                             Text(
-                              'Tugas',
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                color: Color(0xFFA11E22),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Text(
                               'Beasiswa',
                               style: TextStyle(
                                 fontSize: 24.0,
@@ -229,12 +209,12 @@ class _home_pageState extends State<home_page> {
         return Column(
           children: beasiswaList.map((beasiswa) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.all(20.0),
               child: Container(
                 width: double.infinity, // Lebar kontainer mengikuti lebar layar
                 decoration: BoxDecoration(
                   color: Colors.white, // Warna latar belakang kotak
-                  borderRadius: BorderRadius.circular(10.0), // Sudut bulat kotak
+                  borderRadius: BorderRadius.circular(20.0), // Sudut bulat kotak
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5), // Warna bayangan
@@ -247,11 +227,14 @@ class _home_pageState extends State<home_page> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 100, // Tinggi gambar
-                      child: Image.asset(
-                        beasiswa.image, // URL gambar beasiswa
-                        fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: SizedBox(
+                        height: 100, // Tinggi gambar
+                        child: Image.asset(
+                          beasiswa.image, // URL gambar beasiswa
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Padding(

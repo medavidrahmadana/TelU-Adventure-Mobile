@@ -5,6 +5,7 @@ import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
 import '../page/scan_page.dart';
+import 'package:telu_adventure/page/cari_page.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _NavButtonState extends State<NavButton> {
   late PageStorageBucket _bucket;
   late Widget _currentScreen;
   List<Widget> _children = [];
+  bool _isCariPage = true;
 
   @override
   void initState() {
@@ -48,6 +50,17 @@ class _NavButtonState extends State<NavButton> {
     setState(() {
       _currentIndex = index;
       _currentScreen = _children[index];
+    });
+  }
+
+  void _toggleLaporPage() {
+    setState(() {
+      if (_isCariPage) {
+        _currentScreen = lapor_page();
+      } else {
+        _currentScreen = cari_page();
+      }
+      _isCariPage = !_isCariPage; // Toggle halaman
     });
   }
 
@@ -164,30 +177,24 @@ class _NavButtonState extends State<NavButton> {
                         ],
                       )),
                   MaterialButton(
-                      minWidth: 40,
-                      onPressed: () {
-                        setState(() {
-                          _currentScreen = lapor_page();
-                          _currentIndex = 3;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.assignment,
-                            color:
-                                _currentIndex == 3 ? Colors.red : Colors.grey,
+                    minWidth: 40,
+                    onPressed: _toggleLaporPage,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.assignment,
+                          color: _currentIndex == 3 ? Colors.red : Colors.grey,
+                        ),
+                        Text(
+                          _isCariPage ? 'Cari' : 'Lapor',
+                          style: TextStyle(
+                            color: _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),
-                          Text(
-                            'Lapor',
-                            style: TextStyle(
-                              color:
-                                  _currentIndex == 3 ? Colors.red : Colors.grey,
-                            ),
-                          )
-                        ],
-                      ))
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ],
