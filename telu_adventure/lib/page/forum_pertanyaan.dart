@@ -72,10 +72,18 @@ class forum_pertanyaan extends StatelessWidget {
             SizedBox(height: 10),
             Container(
               margin: EdgeInsets.only(left: 20.0),
-              child: Text(
-                'Apa yang anda ingin tanyakan?',
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Apa yang anda ingin tanyakan?',
+                  hintStyle: TextStyle(
+                    color: Color(0xFF969696),
+                    fontSize: 16.0,
+                  ),
+                  border: InputBorder.none,
+                ),
                 style: TextStyle(
-                  color: Color(0xFF969696),
+                  color:
+                      Colors.black, // Ganti dengan warna teks yang diinginkan
                   fontSize: 16.0,
                 ),
               ),
