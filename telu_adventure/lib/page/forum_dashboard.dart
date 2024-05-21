@@ -271,17 +271,19 @@ class forum_dashboard extends StatelessWidget {
                                                 secondaryAnimation) {
                                               return Stack(
                                                 children: <Widget>[
-                                                  forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
+                                                  forum_dashboard(),
                                                   SlideTransition(
                                                     position: Tween<Offset>(
-                                                      begin: const Offset(0.0,
-                                                          1.0), // Mulai dari bawah layar
-                                                      end: const Offset(0.0,
-                                                          0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
+                                                      begin: const Offset(
+                                                          0.0, 1.0),
+                                                      end: const Offset(
+                                                          0.0, 0.1),
                                                     ).animate(animation),
                                                     child: ClipRect(
-                                                      child:
-                                                          forum_jawab(), // forum_jawab yang terbuka sebagian
+                                                      child: forum_jawab(
+                                                        documentId:
+                                                            pertanyaan.id,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],

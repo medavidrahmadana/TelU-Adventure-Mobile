@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/model/barang_model.dart';
+import 'package:telu_adventure/model/jawab_model.dart';
 import 'package:telu_adventure/model/pertanyaan_model.dart';
 
 class forumCon {
@@ -20,6 +21,23 @@ class forumCon {
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Pertanyaan gagal terkirim!')));
+      Navigator.pop(context); // Assuming this is in a new screen
+    }
+  }
+
+  static Future<void> addjawab(
+      BuildContext context, jawab_model pertanyaan) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("jawab")
+          .add(pertanyaan.toMap());
+      // Show success message or navigate to another screen
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Jawaban sudah terkirim!')));
+      Navigator.pop(context);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Jawaban gagal terkirim!')));
       Navigator.pop(context); // Assuming this is in a new screen
     }
   }

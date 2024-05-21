@@ -32,11 +32,12 @@ class DatabaseHelper {
       },
     );
   }
+
   Future<void> deleteDatabase() async {
-  final dbPath = await getDatabasesPath();
-  final dbName = join(dbPath, 'user.db'); // Ganti 'user.db' dengan nama database yang digunakan
-  await databaseFactory.deleteDatabase(dbName);
-}
+    final db = await database;
+    await db.delete('user');
+    print('Deleted all users');
+  }
 
   Future<void> insertUser(String email, String uid) async {
     final db = await database;

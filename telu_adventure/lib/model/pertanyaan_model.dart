@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class pertanyaan_model {
   final String id;
-  final String pertanyaan; // Path gambar lokal
+  final String pertanyaan;
   final String userid;
   final String nama;
   final String urlimg;
@@ -17,12 +17,20 @@ class pertanyaan_model {
     required this.waktu,
   });
 
+  pertanyaan_model.fromDocumentSnapshot(QueryDocumentSnapshot snapshot)
+      : id = snapshot.id,
+        pertanyaan = snapshot['pertanyaan'],
+        userid = snapshot['userid'],
+        nama = snapshot['nama'],
+        urlimg = snapshot['urlimg'],
+        waktu = snapshot['waktu'];
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'pertanyaan': pertanyaan,
         'userid': userid,
         'nama': nama,
         'urlimg': urlimg,
-        'waktu' : waktu,
+        'waktu': waktu,
       };
 }
