@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/page/home_page.dart';
+import '../Handler/DatabaseHelper.dart';
+import '../widget/nav_button.dart';
 import 'login_page.dart';
 
 class landing_page extends StatelessWidget {
@@ -63,11 +66,23 @@ class landing_page extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       top: 650, bottom: 20), // Padding untuk tombol
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
+                    onPressed: () async {
+                      bool isEmpty = await DatabaseHelper().isDatabaseEmpty();
+                      if (isEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NavButton()),
+                        );
+                      }
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => LoginPage()),
+                      // );
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

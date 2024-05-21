@@ -7,6 +7,7 @@ import 'package:telu_adventure/widget/modal_barang.dart';
 
 import '../widget/modal_lapor.dart';
 import 'cari_page.dart';
+import 'profile_page.dart';
 
 class lapor_page extends StatelessWidget {
   // Contoh nilai UID
@@ -48,15 +49,8 @@ class lapor_page extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                        image: DecorationImage(
-                          image: AssetImage('assets/img/Fadhil.png'),
-                          fit: BoxFit.cover,
-                        ),
+                      child: Center(
+                        child: ProfilePicture(),
                       ),
                     ),
                     Padding(
@@ -591,6 +585,27 @@ class lapor_page extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ProfilePicture extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigasi ke halaman profil saat gambar profil ditekan
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfilePage()),
+        );
+      },
+      child: CircleAvatar(
+        radius: 50.0,
+        backgroundImage: FirebaseAuth.instance.currentUser!.photoURL != null
+            ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
+            : AssetImage('assets/img/Fadhil.png') as ImageProvider,
       ),
     );
   }

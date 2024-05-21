@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentica
 import 'package:telu_adventure/controllers/auth_controller.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/widget/nav_button.dart';
+import '../Handler/DatabaseHelper.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -24,7 +25,7 @@ class LoginPage extends StatelessWidget {
         password: password,
       );
 
-      // Navigasi ke halaman lapor_page setelah login berhasil
+      await DatabaseHelper().insertUser(email, userCredential.user!.uid);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => NavButton()),

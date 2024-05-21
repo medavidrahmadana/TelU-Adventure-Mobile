@@ -49,15 +49,8 @@ class cari_page extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9),
-                        image: DecorationImage(
-                          image: AssetImage('assets/img/Fadhil.png'),
-                          fit: BoxFit.cover,
-                        ),
+                      child: Center(
+                        child: ProfilePicture(),
                       ),
                     ),
                     Padding(

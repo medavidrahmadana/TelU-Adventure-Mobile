@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/login_page.dart';
@@ -26,7 +28,6 @@ class home_page extends StatefulWidget {
 class _home_pageState extends State<home_page> {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
         body: SingleChildScrollView(
@@ -78,39 +79,52 @@ class _home_pageState extends State<home_page> {
                   ),
                   SizedBox(height: 20.0),
                   SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  child: FutureBuilder<List<jadwalPelajaran>>(
-    future: _controller.getJadwalPelajaran(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return CircularProgressIndicator();
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        List<jadwalPelajaran> jadwalList = snapshot.data ?? [];
-        return Padding(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0), // Atur jarak kiri dan kanan
-          child: Row(
-            children: List.generate(jadwalList.length, (index) {
-              // Check if it's not the last item to add space after it
-              return Padding(
-                padding: EdgeInsets.only(right: index < jadwalList.length - 1 ? 20.0 : 0.0),
-                child: SizedBox(
-                  width: 300, // Lebar masing-masing item
-                  child: ModulOption(
-                    imagePath: 'assets/img/Map.png', // Ganti dengan gambar yang sesuai
-                    topText: jadwalList[index].namaMatkul,
-                    bottomTexts: [jadwalList[index].namaGedung, jadwalList[index].ruangan, jadwalList[index].waktu],
+                    scrollDirection: Axis.horizontal,
+                    child: FutureBuilder<List<jadwalPelajaran>>(
+                      future: _controller.getJadwalPelajaran(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          List<jadwalPelajaran> jadwalList =
+                              snapshot.data ?? [];
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                left: 20.0,
+                                right: 20.0), // Atur jarak kiri dan kanan
+                            child: Row(
+                              children:
+                                  List.generate(jadwalList.length, (index) {
+                                // Check if it's not the last item to add space after it
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      right: index < jadwalList.length - 1
+                                          ? 20.0
+                                          : 0.0),
+                                  child: SizedBox(
+                                    width: 300, // Lebar masing-masing item
+                                    child: ModulOption(
+                                      imagePath:
+                                          'assets/img/Map.png', // Ganti dengan gambar yang sesuai
+                                      topText: jadwalList[index].namaMatkul,
+                                      bottomTexts: [
+                                        jadwalList[index].namaGedung,
+                                        jadwalList[index].ruangan,
+                                        jadwalList[index].waktu
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
-                ),
-              );
-            }),
-          ),
-        );
-      }
-    },
-  ),
-),
                   SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -191,84 +205,96 @@ class _home_pageState extends State<home_page> {
                       ],
                     ),
                   ), // Atur jarak antara ListView
-                SingleChildScrollView(
-  scrollDirection: Axis.vertical,
-  child: FutureBuilder<List<Beasiswa>>(
-    future: _controller.getBeasiswa(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(
-          child: CircularProgressIndicator(),
-        ); // Menampilkan indikator loading di tengah saat data sedang dimuat
-      } else if (snapshot.hasError) {
-        return Center(
-          child: Text('Error: ${snapshot.error}'),
-        ); // Menampilkan pesan kesalahan di tengah jika terjadi error
-      } else {
-        List<Beasiswa> beasiswaList = snapshot.data ?? []; // Mendapatkan data beasiswa
-        return Column(
-          children: beasiswaList.map((beasiswa) {
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                width: double.infinity, // Lebar kontainer mengikuti lebar layar
-                decoration: BoxDecoration(
-                  color: Colors.white, // Warna latar belakang kotak
-                  borderRadius: BorderRadius.circular(20.0), // Sudut bulat kotak
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // Warna bayangan
-                      spreadRadius: 3, // Radius penyebaran bayangan
-                      blurRadius: 5, // Radius kabur bayangan
-                      offset: Offset(0, 3), // Offset bayangan
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: FutureBuilder<List<Beasiswa>>(
+                      future: _controller.getBeasiswa(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          ); // Menampilkan indikator loading di tengah saat data sedang dimuat
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error: ${snapshot.error}'),
+                          ); // Menampilkan pesan kesalahan di tengah jika terjadi error
+                        } else {
+                          List<Beasiswa> beasiswaList =
+                              snapshot.data ?? []; // Mendapatkan data beasiswa
+                          return Column(
+                            children: beasiswaList.map((beasiswa) {
+                              return Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Container(
+                                  width: double
+                                      .infinity, // Lebar kontainer mengikuti lebar layar
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .white, // Warna latar belakang kotak
+                                    borderRadius: BorderRadius.circular(
+                                        20.0), // Sudut bulat kotak
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey
+                                            .withOpacity(0.5), // Warna bayangan
+                                        spreadRadius:
+                                            3, // Radius penyebaran bayangan
+                                        blurRadius: 5, // Radius kabur bayangan
+                                        offset: Offset(0, 3), // Offset bayangan
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: SizedBox(
+                                          height: 100, // Tinggi gambar
+                                          child: Image.asset(
+                                            beasiswa
+                                                .image, // URL gambar beasiswa
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              beasiswa.namaBeasiswa,
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            Text(
+                                              beasiswa.deskripsi,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
                     ),
-                  ],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: SizedBox(
-                        height: 100, // Tinggi gambar
-                        child: Image.asset(
-                          beasiswa.image, // URL gambar beasiswa
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10,),
-                          Text(
-                            beasiswa.namaBeasiswa,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            beasiswa.deskripsi,
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
-        );
-      }
-    },
-  ),
-)
-
-
-
+                  )
                 ],
               ),
               Column(
@@ -303,11 +329,17 @@ class _home_pageState extends State<home_page> {
                               Icons.logout,
                               color: Colors.orange,
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              // Delete the SQLite database
+                              await deleteDatabase(
+                                  join(await getDatabasesPath(), 'user'));
+
+                              // Navigate to the login page
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
                             },
                           ),
                         ),
@@ -337,9 +369,9 @@ class ProfilePicture extends StatelessWidget {
       },
       child: CircleAvatar(
         radius: 50.0,
-        backgroundImage: FirebaseAuth.instance.currentUser!.photoURL!= null 
-        ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
-        : AssetImage('assets/img/Fadhil.png') as ImageProvider,
+        backgroundImage: FirebaseAuth.instance.currentUser!.photoURL != null
+            ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
+            : AssetImage('assets/img/Fadhil.png') as ImageProvider,
       ),
     );
   }
