@@ -33,6 +33,9 @@ class forumCon {
           id: doc['id'] ?? '',
           pertanyaan: doc['pertanyaan'] ?? '',
           userid: doc['userid'] ?? '',
+          nama: doc['nama'] ?? '',
+          urlimg: doc['urlimg'] ?? '',
+          waktu: doc['waktu'] ?? '',
         );
         pertanyaan_list.add(pertanyaan);
       });

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class forum_jawab extends StatelessWidget {
@@ -36,16 +37,20 @@ class forum_jawab extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Row(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 12.0, left: 20.0),
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFDA696C),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Image.asset('assets/img/forum-image1.png'),
+                  Padding(
+                    padding: const EdgeInsets.only(left : 15.0),
+                    child: Container(
+                      width: 45,
+                      height: 45,
+                      child: CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage:
+                            FirebaseAuth.instance.currentUser!.photoURL != null
+                                ? NetworkImage(
+                                    FirebaseAuth.instance.currentUser!.photoURL!)
+                                : AssetImage('assets/img/Fadhil.png')
+                                    as ImageProvider,
+                      ),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -56,7 +61,7 @@ class forum_jawab extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             top: 10), // Padding untuk 'Fadhil'
                         child: Text(
-                          'Fadhil',
+                          FirebaseAuth.instance.currentUser?.displayName?? "",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
