@@ -3,6 +3,7 @@ import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
 import 'package:telu_adventure/model/achievement_model.dart';
+import 'package:telu_adventure/model/userdetail_model.dart';
 
 class HomeController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -10,7 +11,8 @@ class HomeController {
   Future<List<Beasiswa>> getBeasiswa() async {
     List<Beasiswa> beasiswaList = [];
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('beasiswa').get();
+      QuerySnapshot querySnapshot =
+          await _firestore.collection('beasiswa').get();
       querySnapshot.docs.forEach((doc) {
         Beasiswa beasiswa = Beasiswa(
           namaBeasiswa: doc['namaBeasiswa'] ?? '',
@@ -28,7 +30,8 @@ class HomeController {
   Future<List<jadwalPelajaran>> getJadwalPelajaran() async {
     List<jadwalPelajaran> jadwalList = [];
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('jadwalPelajaran').get();
+      QuerySnapshot querySnapshot =
+          await _firestore.collection('jadwalPelajaran').get();
       querySnapshot.docs.forEach((doc) {
         jadwalPelajaran jadwal = jadwalPelajaran(
           namaMatkul: doc['namaMatkul'] ?? '',
@@ -44,10 +47,20 @@ class HomeController {
     return jadwalList;
   }
 
+  Stream<QuerySnapshot> getgedung(String uid) {
+    return _firestore
+        .collection('laporan')
+        .where('uid', isEqualTo: uid) // Filter berdasarkan uid
+        .snapshots();
+  }
+
   Future<List<Achievement>> getAchievement(String userId) async {
     List<Achievement> achievementList = [];
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('achievements').where('UID', isEqualTo: userId).get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('achievements')
+          .where('UID', isEqualTo: userId)
+          .get();
       querySnapshot.docs.forEach((doc) {
         Achievement achievement = Achievement(
           UID: doc['UID'] ?? '',

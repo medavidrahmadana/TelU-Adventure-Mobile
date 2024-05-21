@@ -1,53 +1,61 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/model/barang_model.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class modal_barang extends StatefulWidget {
+class ModalBarang extends StatefulWidget {
   final String documentId;
 
-  modal_barang({Key? key, required this.documentId}) : super(key: key);
+  ModalBarang({Key? key, required this.documentId}) : super(key: key);
 
   @override
-  _modal_barangState createState() => _modal_barangState();
+  _ModalBarangState createState() => _ModalBarangState();
 }
 
-class _modal_barangState extends State<modal_barang> {
+class _ModalBarangState extends State<ModalBarang> {
   final TextEditingController _namaBarangController = TextEditingController();
-  final TextEditingController _deskripsiBarangController =
-      TextEditingController();
+  final TextEditingController _deskripsiBarangController = TextEditingController();
   final List<String> _statusOptions = ['Sudah', 'Belum'];
   String _selectedStatus = 'Belum';
 
-  static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
+    _loadData();
     initializeNotifications();
   }
 
-  Future<void> initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('logo');
+  Future<void> _loadData() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance.collection('laporan').doc(widget.documentId).get();
+      final data = snapshot.data()!;
+      setState(() {
+        _namaBarangController.text = data['nama'] ?? '';
+        _selectedStatus = data['status'] ?? 'Belum';
+        _deskripsiBarangController.text = data['deskripsi'] ?? '';
+      });
+    } catch (e) {
+      print('Error loading data: $e');
+    }
+  }
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+  Future<void> initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('logo');
+
+    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'Test Notif', // Ganti dengan ID channel Anda
-      'Barang Ditemukan', // Ganti dengan nama channel Anda
+      'Test Notif',
+      'Barang Ditemukan',
       description: 'notif ketika status barang sudah ditemukan',
       importance: Importance.high,
     );
 
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
+    await _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -56,21 +64,17 @@ class _modal_barangState extends State<modal_barang> {
     required String body,
     required String payload,
   }) async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'your_channel_id', // Ganti dengan ID channel Anda
-      'your_channel_name', // Ganti dengan nama channel Anda
+    const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
       channelDescription: 'your_channel_description',
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
       icon: 'logo',
     );
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
-    await _flutterLocalNotificationsPlugin.show(
-        0, title, body, notificationDetails,
-        payload: payload);
+    const NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
+    await _flutterLocalNotificationsPlugin.show(0, title, body, notificationDetails, payload: payload);
   }
 
   @override
@@ -104,9 +108,9 @@ class _modal_barangState extends State<modal_barang> {
                   children: [
                     IconButton(
                       icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
+                      onPressed: () async {
                         try {
-                          LaporCon.deleteLaporan(widget.documentId);
+                          await LaporCon.deleteLaporan(widget.documentId);
                           Navigator.of(context).pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -176,11 +180,8 @@ class _modal_barangState extends State<modal_barang> {
             SizedBox(height: 15),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFBB371A)),
-                minimumSize: MaterialStateProperty.all<Size>(
-                  Size(double.infinity, 50),
-                ),
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFBB371A)),
+                minimumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 50)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(11),

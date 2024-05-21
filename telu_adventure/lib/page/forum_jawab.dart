@@ -1,8 +1,49 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:telu_adventure/controllers/forum_controller.dart';
+import 'package:intl/intl.dart';
 
-class forum_jawab extends StatelessWidget {
-  forum_jawab({Key? key}) : super(key: key);
+import '../model/jawab_model.dart';
+
+class forum_jawab extends StatefulWidget {
+  final String documentId;
+
+  forum_jawab({Key? key, required this.documentId}) : super(key: key);
+
+  @override
+  _forum_jawabState createState() => _forum_jawabState();
+}
+
+class _forum_jawabState extends State<forum_jawab> {
+  forumCon _forumcon = forumCon();
+
+  String _pertanyaan = '';
+  final TextEditingController _jawabanController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _loadPertanyaan();
+  }
+
+  Future<void> _loadPertanyaan() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('forum')
+          .where('id', isEqualTo: widget.documentId)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        final data = snapshot.docs.first.data();
+        setState(() {
+          _pertanyaan = data['pertanyaan'] ?? '';
+        });
+      } else {
+        print('No document found with id: ${widget.documentId}');
+      }
+    } catch (e) {
+      print('Error loading pertanyaan: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +79,19 @@ class forum_jawab extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left : 15.0),
+                    padding: const EdgeInsets.only(left: 15.0),
                     child: Container(
                       width: 45,
                       height: 45,
                       child: CircleAvatar(
                         radius: 50.0,
-                        backgroundImage:
-                            FirebaseAuth.instance.currentUser!.photoURL != null
-                                ? NetworkImage(
-                                    FirebaseAuth.instance.currentUser!.photoURL!)
-                                : AssetImage('assets/img/Fadhil.png')
-                                    as ImageProvider,
+                        backgroundImage: FirebaseAuth
+                                    .instance.currentUser!.photoURL !=
+                                null
+                            ? NetworkImage(
+                                FirebaseAuth.instance.currentUser!.photoURL!)
+                            : AssetImage('assets/img/Fadhil.png')
+                                as ImageProvider,
                       ),
                     ),
                   ),
@@ -61,7 +103,7 @@ class forum_jawab extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             top: 10), // Padding untuk 'Fadhil'
                         child: Text(
-                          FirebaseAuth.instance.currentUser?.displayName?? "",
+                          FirebaseAuth.instance.currentUser?.displayName ?? "",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -81,7 +123,7 @@ class forum_jawab extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Emangnya di asrama ada cerita horor ya?\nSoalnya aku mau asrama nanti',
+                    _pertanyaan,
                     style: TextStyle(
                       color: Color(0xFF1E1E1E),
                       fontSize: 16.0,
@@ -92,6 +134,7 @@ class forum_jawab extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(left: 3.0),
                     child: TextField(
+                      controller: _jawabanController, // Add controller here
                       decoration: InputDecoration(
                         hintText: 'Tulis jawaban kamu',
                         hintStyle: TextStyle(
@@ -130,7 +173,28 @@ class forum_jawab extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Future.delayed(Duration.zero, () {
+                          DateTime now = DateTime.now();
+                          String formattedDate = DateFormat('dd-MM-yyyy')
+                              .format(
+                                  now); // Format tanggal sesuai keinginan Anda
+
+                          jawab_model jawab = jawab_model(
+                            idpertanyaan: widget.documentId,
+                            jawaban: _jawabanController
+                                .text, // Anda mungkin ingin menanganinya secara berbeda
+                            userid: FirebaseAuth.instance.currentUser!.uid,
+                            nama: FirebaseAuth
+                                    .instance.currentUser?.displayName ??
+                                'User',
+                            urlimg:
+                                FirebaseAuth.instance.currentUser!.photoURL!,
+                            waktu:
+                                formattedDate, // Menentukan waktu dengan nilai formattedDate
+                          );
+
+                          forumCon.addjawab(context, jawab);
+                        });
                       },
                       style: ButtonStyle(
                         backgroundColor:

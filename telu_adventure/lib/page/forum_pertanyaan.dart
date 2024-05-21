@@ -6,7 +6,6 @@ import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/model/barang_model.dart';
 import 'package:intl/intl.dart';
 
-
 import '../controllers/forum_controller.dart';
 import '../model/pertanyaan_model.dart';
 
@@ -128,15 +127,19 @@ class forum_pertanyaan extends StatelessWidget {
                       final random = Random();
                       int randomNumber = random.nextInt(100);
                       DateTime now = DateTime.now();
-                      String formattedDate = DateFormat('dd-MM-yyyy').format(now); // Format tanggal sesuai keinginan Anda
+                      String formattedDate = DateFormat('dd-MM-yyyy')
+                          .format(now); // Format tanggal sesuai keinginan Anda
 
                       pertanyaan_model forum = pertanyaan_model(
                         id: randomNumber.toString(),
-                        pertanyaan: _controller.text, // Anda mungkin ingin menanganinya secara berbeda
+                        pertanyaan: _controller
+                            .text, // Anda mungkin ingin menanganinya secara berbeda
                         userid: FirebaseAuth.instance.currentUser!.uid,
-                        nama: FirebaseAuth.instance.currentUser?.displayName ?? 'User',
+                        nama: FirebaseAuth.instance.currentUser?.displayName ??
+                            'User',
                         urlimg: FirebaseAuth.instance.currentUser!.photoURL!,
-                        waktu: formattedDate, // Menentukan waktu dengan nilai formattedDate
+                        waktu:
+                            formattedDate, // Menentukan waktu dengan nilai formattedDate
                       );
 
                       forumCon.addToFirestore(context, forum);
