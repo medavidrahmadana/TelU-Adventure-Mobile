@@ -83,13 +83,24 @@ class forum_jawab extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 30.0), // Menambahkan jarak antara teks
-                  Text(
-                    'Tulis jawaban kamu',
-                    style: TextStyle(
-                      color: Color(0xFF969696),
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
+                  SizedBox(height: 10.0), // Menambahkan jarak antara teks
+                  Container(
+                    margin: EdgeInsets.only(left: 3.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Tulis jawaban kamu',
+                        hintStyle: TextStyle(
+                          color: Color(0xFF969696),
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ],
