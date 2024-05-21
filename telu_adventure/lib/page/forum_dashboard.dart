@@ -1,19 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_jawab.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import '../widget/forum_notifikasi.dart';
+import 'package:telu_adventure/model/pertanyaan_model.dart';
+import 'package:telu_adventure/controllers/forum_controller.dart';
+
+forumCon _controller = forumCon();
 
 class forum_dashboard extends StatelessWidget {
-  forum_dashboard({super.key});
-
-  final GlobalKey notificationKey = GlobalKey();
-  final GlobalKey profileKey = GlobalKey();
-  final GlobalKey questionUserKey = GlobalKey();
-  final GlobalKey questionUserTapKey = GlobalKey();
-  final GlobalKey userQuestionerKey = GlobalKey();
-  final GlobalKey userQuestionKey = GlobalKey();
-  final GlobalKey answerButtonKey = GlobalKey();
-  final GlobalKey cardUserAnswerKey = GlobalKey();
+  forum_dashboard({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +42,6 @@ class forum_dashboard extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      key: notificationKey,
                       icon: const Icon(
                         Icons.notifications,
                         color: Colors.white,
@@ -72,7 +67,7 @@ class forum_dashboard extends StatelessWidget {
                             },
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {
-                              return child;
+                              return child!;
                             },
                           ),
                         );
@@ -101,24 +96,19 @@ class forum_dashboard extends StatelessWidget {
                 Container(
                   width: 45,
                   height: 45,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFDA696C),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/img/forum-image1.png', // Path ke file gambar di dalam folder assets
-                      key: profileKey,
-                      width:
-                          30, // Sesuaikan dengan ukuran gambar yang diinginkan
-                      height: 30,
-                    ),
+                  child: CircleAvatar(
+                    radius: 50.0,
+                    backgroundImage:
+                        FirebaseAuth.instance.currentUser!.photoURL != null
+                            ? NetworkImage(
+                                FirebaseAuth.instance.currentUser!.photoURL!)
+                            : AssetImage('assets/img/Fadhil.png')
+                                as ImageProvider,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: GestureDetector(
-                    key: questionUserTapKey,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -147,7 +137,6 @@ class forum_dashboard extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      key: questionUserKey,
                       height: 45,
                       decoration: BoxDecoration(
                         color: const Color(0xFFF5F5F5),
@@ -172,176 +161,179 @@ class forum_dashboard extends StatelessWidget {
                 const SizedBox(width: 16),
               ],
             ),
-            const SizedBox(height: 25), // jarak
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(2, (index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 35.0, // jarak padding kanan kiri
-                          vertical: 1.0,
-                        ),
-                        child: Container(
-                          key: userQuestionerKey,
-                          child: Row(
+              child: FutureBuilder<List<pertanyaan_model>>(
+                future: _controller.getPertanyaan(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    List<pertanyaan_model> pertanyaan_list =
+                        snapshot.data ?? [];
+                    return ListView.builder(
+                      itemCount: pertanyaan_list.length,
+                      itemBuilder: (context, index) {
+                        pertanyaan_model pertanyaan = pertanyaan_list[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 35.0, vertical: 10.0),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              SizedBox(height: 25),
                               Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFFFD966),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'A',
-                                    style: TextStyle(
-                                      color: Color(
-                                          0xFF1E1E1E), // Warna huruf abu-abu gelap
-                                      fontWeight: FontWeight
-                                          .bold, // Membuat huruf tebal
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              const Expanded(
-                                child: Column(
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      'Abdul Hamid',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                    Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFFD966),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Image.network(
+                                        pertanyaan.urlimg,
+                                        fit: BoxFit
+                                            .cover, // Opsional, sesuaikan sesuai kebutuhan
                                       ),
                                     ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'bertanya · ',
-                                          style: TextStyle(
-                                            color: Colors.grey,
+                                    const SizedBox(width: 20),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            pertanyaan.nama,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          '3 jam',
-                                          style: TextStyle(
-                                            color: Colors.grey,
+                                          SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'bertanya · ',
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              Text(
+                                                pertanyaan.waktu,
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
+                                    const Icon(Icons.more_vert),
                                   ],
                                 ),
                               ),
-                              const Icon(Icons.more_vert),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 35.0), // jarak padding kanan kiri
-                        child: Column(
-                          key: userQuestionKey,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Emangnya di asrama ada cerita horor ya? Soalnya aku mau asrama nanti',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            const Row(
-                              children: [
-                                Text(
-                                  'Belum ada jawaban',
-                                  style: TextStyle(
-                                    color: Color(0xFF797979),
+                              SizedBox(height: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    pertanyaan.pertanyaan,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton.icon(
-                                key: answerButtonKey,
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (context, animation,
-                                          secondaryAnimation) {
-                                        return Stack(
-                                          children: <Widget>[
-                                            forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
-                                            SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: const Offset(0.0,
-                                                    1.0), // Mulai dari bawah layar
-                                                end: const Offset(0.0,
-                                                    0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
-                                              ).animate(animation),
-                                              child: ClipRect(
-                                                child:
-                                                    forum_jawab(), // forum_jawab yang terbuka sebagian
-                                              ),
-                                            ),
-                                          ],
+                                  SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Belum ada jawaban',
+                                        style: TextStyle(
+                                          color: Color(0xFF797979),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: OutlinedButton.icon(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return Stack(
+                                                children: <Widget>[
+                                                  forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
+                                                  SlideTransition(
+                                                    position: Tween<Offset>(
+                                                      begin: const Offset(0.0,
+                                                          1.0), // Mulai dari bawah layar
+                                                      end: const Offset(0.0,
+                                                          0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
+                                                    ).animate(animation),
+                                                    child: ClipRect(
+                                                      child:
+                                                          forum_jawab(), // forum_jawab yang terbuka sebagian
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Color(0xFFCA292E),
-                                ),
-                                label: const Text(
-                                  'Jawab',
-                                  style: TextStyle(
-                                    color: Color(0xFFCA292E),
-                                  ),
-                                ),
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          10.0), // Mengatur border radius
-                                    ),
-                                  ),
-                                  side: MaterialStateProperty.resolveWith(
-                                      (states) {
-                                    if (states
-                                        .contains(MaterialState.pressed)) {
-                                      return const BorderSide(
-                                          color: Colors.red,
-                                          width:
-                                              2); // Warna outline saat tombol ditekan
-                                    }
-                                    return const BorderSide(
+                                      icon: const Icon(
+                                        Icons.edit,
                                         color: Color(0xFFCA292E),
-                                        width: 1); // Warna outline default
-                                  }),
-                                  // Tambahan properti lain seperti warna, padding, dll dapat ditambahkan di sini
-                                ),
+                                      ),
+                                      label: const Text(
+                                        'Jawab',
+                                        style: TextStyle(
+                                          color: Color(0xFFCA292E),
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // Mengatur border radius
+                                          ),
+                                        ),
+                                        side: MaterialStateProperty.resolveWith(
+                                            (states) {
+                                          if (states.contains(
+                                              MaterialState.pressed)) {
+                                            return const BorderSide(
+                                                color: Colors.red,
+                                                width:
+                                                    2); // Warna outline saat tombol ditekan
+                                          }
+                                          return const BorderSide(
+                                              color: Color(0xFFCA292E),
+                                              width:
+                                                  1); // Warna outline default
+                                        }),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  }),
-                ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ),
           ],
