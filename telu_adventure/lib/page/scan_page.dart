@@ -113,7 +113,7 @@ class _ScanPageState extends State<ScanPage> {
               overlay: QrScannerOverlayShape(
                 borderColor: Colors.red,
                 borderRadius: 10,
-                borderLength: 30,
+                borderLength: 25,
                 borderWidth: 10,
                 cutOutSize: 300,
               ),
@@ -152,12 +152,44 @@ class _ScanPageState extends State<ScanPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('QR Code Result'),
-          content: Text(
-              'Barcode Type: ${describeEnum(scanData.format)}\nData: ${scanData.code}'),
+          title: Text(
+            'Quest',
+            style: TextStyle(
+              fontSize: 24.0, // Ukuran font untuk judul
+              fontWeight: FontWeight.bold, // Membuat teks tebal
+            ),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 5.0), // Padding untuk kanan dan kiri
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Data: ${scanData.code}',
+                  style: TextStyle(
+                    fontSize: 16.0, // Ukuran font untuk konten
+                  ),
+                ),
+                SizedBox(height: 18), // Jarak antara teks dan TextField
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Jawab', // Label untuk TextField
+                  ),
+                ),
+              ],
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  fontSize: 18.0, // Ukuran font untuk tombol OK
+                  fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
