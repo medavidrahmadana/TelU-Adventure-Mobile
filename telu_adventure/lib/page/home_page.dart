@@ -14,6 +14,8 @@ import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
 import 'package:telu_adventure/model/achievement_model.dart';
 
+import '../Handler/DatabaseHelper.dart';
+
 HomeController _controller = HomeController();
 
 int currentListIndex = 0;
@@ -332,8 +334,7 @@ class _home_pageState extends State<home_page> {
                             ),
                             onPressed: () async {
                               // Delete the SQLite database
-                              await deleteDatabase(
-                                  join(await getDatabasesPath(), 'user'));
+                              await DatabaseHelper().deleteDatabase();
 
                               // Navigate to the login page
                               Navigator.push(
