@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class forum_jawab extends StatelessWidget {
-  const forum_jawab({Key? key}) : super(key: key);
+  forum_jawab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

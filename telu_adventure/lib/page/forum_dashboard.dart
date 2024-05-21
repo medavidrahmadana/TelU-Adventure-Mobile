@@ -6,21 +6,14 @@ import '../widget/forum_notifikasi.dart';
 class forum_dashboard extends StatelessWidget {
   forum_dashboard({super.key});
 
-  GlobalKey notificationKey = GlobalKey();
-
-  GlobalKey profileKey = GlobalKey();
-
-  GlobalKey questionUserKey = GlobalKey();
-
-  GlobalKey questionUserTapKey = GlobalKey();
-
-  GlobalKey userQuestionerKey = GlobalKey();
-
-  GlobalKey userQuestionKey = GlobalKey();
-
-  GlobalKey answerButtonKey = GlobalKey();
-
-  GlobalKey cardUserAnswerKey = GlobalKey();
+  final GlobalKey notificationKey = GlobalKey();
+  final GlobalKey profileKey = GlobalKey();
+  final GlobalKey questionUserKey = GlobalKey();
+  final GlobalKey questionUserTapKey = GlobalKey();
+  final GlobalKey userQuestionerKey = GlobalKey();
+  final GlobalKey userQuestionKey = GlobalKey();
+  final GlobalKey answerButtonKey = GlobalKey();
+  final GlobalKey cardUserAnswerKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +135,7 @@ class forum_dashboard extends StatelessWidget {
                                     end: const Offset(0.0,
                                         0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
                                   ).animate(animation),
-                                  child: const ClipRect(
+                                  child: ClipRect(
                                     child:
                                         forum_pertanyaan(), // forum_pertanyaan yang terbuka sebagian
                                   ),
@@ -180,251 +173,177 @@ class forum_dashboard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 25), // jarak
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 35.0, // jarak padding kanan kiri
-                vertical: 1.0,
-              ),
-              child: Container(
-                key: userQuestionerKey,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 45,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFD966),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'A',
-                          style: TextStyle(
-                            color:
-                                Color(0xFF1E1E1E), // Warna huruf abu-abu gelap
-                            fontWeight: FontWeight.bold, // Membuat huruf tebal
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Abdul Hamid',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Text(
-                                'bertanya · ',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                '3 jam',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(Icons.more_vert),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 35.0), // jarak padding kanan kiri
-              child: Column(
-                key: userQuestionKey,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Emangnya di asrama ada cerita horor ya? Soalnya aku mau asrama nanti',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Row(
-                    children: [
-                      Text(
-                        'Belum ada jawaban',
-                        style: TextStyle(
-                          color: Color(0xFF797979),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      key: answerButtonKey,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                              return Stack(
-                                children: <Widget>[
-                                  forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
-                                  SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(
-                                          0.0, 1.0), // Mulai dari bawah layar
-                                      end: const Offset(0.0,
-                                          0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
-                                    ).animate(animation),
-                                    child: const ClipRect(
-                                      child:
-                                          forum_jawab(), // forum_jawab yang terbuka sebagian
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Color(0xFFCA292E),
-                      ),
-                      label: const Text(
-                        'Jawab',
-                        style: TextStyle(
-                          color: Color(0xFFCA292E),
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                10.0), // Mengatur border radius
-                          ),
-                        ),
-                        side: MaterialStateProperty.resolveWith((states) {
-                          if (states.contains(MaterialState.pressed)) {
-                            return const BorderSide(
-                                color: Colors.red,
-                                width: 2); // Warna outline saat tombol ditekan
-                          }
-                          return const BorderSide(
-                              color: Color(0xFFCA292E),
-                              width: 1); // Warna outline default
-                        }),
-                        // Tambahan properti lain seperti warna, padding, dll dapat ditambahkan di sini
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Card(
-              key: cardUserAnswerKey,
-              margin: const EdgeInsets.symmetric(
-                  horizontal: 30), // jarak padding kanan kiri
-              child: Padding(
-                padding: const EdgeInsets.all(
-                    14.0), // padding kanan kiri 30 maka edge insert 14, dan jika 20 makan edge inset 16
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFD966),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              'assets/img/forum-image2.png', // Path ke file gambar di dalam folder assets
-                              semanticLabel: 'gambar_user_jawab',
-                              width:
-                                  45, // Sesuaikan dengan ukuran gambar yang diinginkan
-                              height: 45,
-                            ),
-                          ),
+                  children: List.generate(2, (index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 35.0, // jarak padding kanan kiri
+                          vertical: 1.0,
                         ),
-                        const SizedBox(width: 20),
-                        const Expanded(
-                          child: Column(
+                        child: Container(
+                          key: userQuestionerKey,
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Ambatukam',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                width: 45,
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFD966),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'A',
+                                    style: TextStyle(
+                                      color: Color(
+                                          0xFF1E1E1E), // Warna huruf abu-abu gelap
+                                      fontWeight: FontWeight
+                                          .bold, // Membuat huruf tebal
+                                    ),
+                                  ),
                                 ),
                               ),
-                              SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Menjawab · ',
-                                    style: TextStyle(
-                                      color: Colors.grey,
+                              const SizedBox(width: 20),
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Abdul Hamid',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    '5 jam',
-                                    style: TextStyle(
-                                      color: Colors.grey,
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'bertanya · ',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Text(
+                                          '3 jam',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
+                              const Icon(Icons.more_vert),
                             ],
                           ),
                         ),
-                        const Icon(Icons.more_vert),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Saran jalan ke masjid telkom lewat mana ya yang cepet?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      children: [
-                        Text(
-                          'Kalau maksudnya cepat dari segi jarak tempuh\nmaupun waktu, saya menyarankan anda untuk\nmemilih lewat GKU, lalu lurus melewati gedung\nrektorat, ambil jalan kiri menuju gate 3.\nSesudahnya, belok kanan untuk lewat ke\ngedung cacuk, lurus terus dan anda sampai di\nmasjid.',
-                          style: TextStyle(
-                            color: Color(0xFF1E1E1E),
-                          ),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 35.0), // jarak padding kanan kiri
+                        child: Column(
+                          key: userQuestionKey,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Emangnya di asrama ada cerita horor ya? Soalnya aku mau asrama nanti',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            const Row(
+                              children: [
+                                Text(
+                                  'Belum ada jawaban',
+                                  style: TextStyle(
+                                    color: Color(0xFF797979),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              width: double.infinity,
+                              child: OutlinedButton.icon(
+                                key: answerButtonKey,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
+                                        return Stack(
+                                          children: <Widget>[
+                                            forum_dashboard(), // Menampilkan forum_dashboard di belakang forum_pertanyaan
+                                            SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: const Offset(0.0,
+                                                    1.0), // Mulai dari bawah layar
+                                                end: const Offset(0.0,
+                                                    0.1), // Berhenti saat terbuka sebagian (misalnya 0.6)
+                                              ).animate(animation),
+                                              child: ClipRect(
+                                                child:
+                                                    forum_jawab(), // forum_jawab yang terbuka sebagian
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Color(0xFFCA292E),
+                                ),
+                                label: const Text(
+                                  'Jawab',
+                                  style: TextStyle(
+                                    color: Color(0xFFCA292E),
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          10.0), // Mengatur border radius
+                                    ),
+                                  ),
+                                  side: MaterialStateProperty.resolveWith(
+                                      (states) {
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return const BorderSide(
+                                          color: Colors.red,
+                                          width:
+                                              2); // Warna outline saat tombol ditekan
+                                    }
+                                    return const BorderSide(
+                                        color: Color(0xFFCA292E),
+                                        width: 1); // Warna outline default
+                                  }),
+                                  // Tambahan properti lain seperti warna, padding, dll dapat ditambahkan di sini
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
+                      );
+                    }
+                  }),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,7 +1,16 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/controllers/lapor_controller.dart';
+import 'package:telu_adventure/model/barang_model.dart';
+
+import '../controllers/forum_controller.dart';
+import '../model/pertanyaan_model.dart';
 
 class forum_pertanyaan extends StatelessWidget {
-  const forum_pertanyaan({Key? key}) : super(key: key);
+  forumCon _forumcon = forumCon();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +54,16 @@ class forum_pertanyaan extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
-                      child: Image.asset('assets/img/forum-image1.png'),
+                      child: CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage: FirebaseAuth
+                                    .instance.currentUser!.photoURL !=
+                                null
+                            ? NetworkImage(
+                                FirebaseAuth.instance.currentUser!.photoURL!)
+                            : AssetImage('assets/img/Fadhil.png')
+                                as ImageProvider,
+                      ),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -53,10 +71,9 @@ class forum_pertanyaan extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10), // Padding untuk 'Fadhil'
+                        padding: const EdgeInsets.only(top: 10),
                         child: Text(
-                          'Fadhil',
+                          FirebaseAuth.instance.currentUser?.displayName ?? '',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -73,6 +90,7 @@ class forum_pertanyaan extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 20.0),
               child: TextField(
+                controller: _controller,
                 decoration: InputDecoration(
                   hintText: 'Apa yang anda ingin tanyakan?',
                   hintStyle: TextStyle(
@@ -104,7 +122,17 @@ class forum_pertanyaan extends StatelessWidget {
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Aksi yang ingin dilakukan saat tombol ditekan
+                    Future.delayed(Duration.zero, () {
+                      final random = Random();
+                      int randomNumber = random.nextInt(100);
+                      pertanyaan_model forum = pertanyaan_model(
+                        id: randomNumber.toString(),
+                        pertanyaan: _controller
+                            .text, // Anda mungkin ingin menanganinya secara berbeda
+                        userid: FirebaseAuth.instance.currentUser!.uid,
+                      );
+                      forumCon.addToFirestore(context, forum);
+                    });
                   },
                   style: ButtonStyle(
                     backgroundColor:
