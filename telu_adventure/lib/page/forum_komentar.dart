@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/controllers/forum_controller.dart';
 
 class forum_komentar extends StatefulWidget {
   final String documentId;
@@ -7,10 +8,13 @@ class forum_komentar extends StatefulWidget {
   forum_komentar({Key? key, required this.documentId}) : super(key: key);
 
   @override
-  _forum_komentar createState() => _forum_komentar();
+  _ForumKomentarState createState() => _ForumKomentarState();
 }
 
-class _forum_komentar extends State<forum_komentar> {
+class _ForumKomentarState extends State<forum_komentar> {
+  forumCon _con = forumCon();
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _pertanyaan = '';
   String _nama = '';
   String _urlimg = '';
@@ -24,7 +28,7 @@ class _forum_komentar extends State<forum_komentar> {
 
   Future<void> _loadPertanyaan() async {
     try {
-      final snapshot = await FirebaseFirestore.instance
+      final snapshot = await _firestore
           .collection('forum')
           .where('id', isEqualTo: widget.documentId)
           .get();
@@ -125,33 +129,39 @@ class _forum_komentar extends State<forum_komentar> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 12),
-                const Row(
-                  children: [
-                    Text(
-                      'Belum ada jawaban',
-                      style: TextStyle(
-                        color: Color(0xFF797979),
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: ListView(
-                    children: List.generate(10, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(15.0),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text('Komentar ${index + 1}'),
-                        ),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _con.getJawab(widget.documentId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return Center(child: Text('Belum ada komentar'));
+                      }
+                      final comments = snapshot.data!.docs;
+                      return ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          final commentData =
+                              comments[index].data() as Map<String, dynamic>;
+                          final komentar =
+                              commentData['jawaban'] ?? 'Komentar tanpa teks';
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(15.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(komentar),
+                            ),
+                          );
+                        },
                       );
-                    }),
+                    },
                   ),
                 ),
               ],

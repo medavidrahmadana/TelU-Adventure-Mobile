@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:telu_adventure/controllers/scan_controller.dart';
+import 'package:telu_adventure/model/scan_model.dart';
+import '../widget/scan_notif.dart';
 import 'forum_dashboard.dart';
 import '../widget/forum_notifikasi.dart';
 
@@ -17,7 +21,8 @@ class ScanPage extends StatefulWidget {
 class _ScanPageState extends State<ScanPage> {
   late QRViewController qrController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  final TextEditingController isiController = TextEditingController();
+  final TextEditingController jawabController = TextEditingController();
   Barcode? result;
 
   @override
@@ -71,13 +76,15 @@ class _ScanPageState extends State<ScanPage> {
                               (context, animation, secondaryAnimation) {
                             return Stack(
                               children: <Widget>[
-                                forum_dashboard(),
+                                ScanPage(
+                                    camera: widget
+                                        .camera), // Use widget.camera here
                                 SlideTransition(
                                   position: Tween<Offset>(
                                     begin: const Offset(1.0, 0.0),
                                     end: const Offset(0.2, 0.0),
                                   ).animate(animation),
-                                  child: const forum_notifikasi(),
+                                  child: const scan_notif(),
                                 ),
                               ],
                             );
@@ -173,6 +180,7 @@ class _ScanPageState extends State<ScanPage> {
                 ),
                 SizedBox(height: 18), // Jarak antara teks dan TextField
                 TextField(
+                  controller: jawabController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Jawab', // Label untuk TextField
@@ -191,6 +199,14 @@ class _ScanPageState extends State<ScanPage> {
                 ),
               ),
               onPressed: () {
+                Future.delayed(Duration.zero, () {
+                  scan_model _barang = scan_model(
+                    uid: FirebaseAuth.instance.currentUser!.uid,
+                    isi: scanData.code ?? "Unknown", // Fixed this line
+                    jawab: jawabController.text,
+                  );
+                  ScanCon.addToFirestore(context, _barang);
+                });
                 Navigator.of(context).pop();
               },
             ),
