@@ -49,7 +49,7 @@ class HomeController {
 
   Stream<QuerySnapshot> getgedung(String uid) {
     return _firestore
-        .collection('laporan')
+        .collection('userdetail')
         .where('uid', isEqualTo: uid) // Filter berdasarkan uid
         .snapshots();
   }

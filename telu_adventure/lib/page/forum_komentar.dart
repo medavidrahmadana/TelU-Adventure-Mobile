@@ -1,10 +1,49 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
+class forum_komentar extends StatefulWidget {
+  final String documentId;
+
+  forum_komentar({Key? key, required this.documentId}) : super(key: key);
+
+  @override
+  _forum_komentar createState() => _forum_komentar();
 }
 
-class MyApp extends StatelessWidget {
+class _forum_komentar extends State<forum_komentar> {
+  String _pertanyaan = '';
+  String _nama = '';
+  String _urlimg = '';
+  String _waktu = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPertanyaan();
+  }
+
+  Future<void> _loadPertanyaan() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('forum')
+          .where('id', isEqualTo: widget.documentId)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        final data = snapshot.docs.first.data();
+        setState(() {
+          _pertanyaan = data['pertanyaan'] ?? '';
+          _nama = data['nama'] ?? '';
+          _urlimg = data['urlimg'] ?? '';
+          _waktu = data['waktu'] ?? '';
+        });
+      } else {
+        print('No document found with id: ${widget.documentId}');
+      }
+    } catch (e) {
+      print('Error loading pertanyaan: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,17 +78,19 @@ class MyApp extends StatelessWidget {
                         color: const Color(0xFFFFD966),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Center(
-                        child: Image.asset('assets/img/forum-image1.png'),
+                      child: Image.network(
+                        _urlimg,
+                        fit: BoxFit
+                            .cover, // Opsional, sesuaikan sesuai kebutuhan
                       ),
                     ),
                     const SizedBox(width: 20),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Abdul Hamid',
+                            _nama,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -64,13 +105,7 @@ class MyApp extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '3 jam',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                ' 22/05/2024',
+                                _waktu,
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),
@@ -84,8 +119,8 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Emangnya di asrama ada cerita horor ya? Soalnya aku mau asrama nanti',
+                Text(
+                  _pertanyaan,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),

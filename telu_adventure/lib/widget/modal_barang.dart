@@ -5,22 +5,24 @@ import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/model/barang_model.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class ModalBarang extends StatefulWidget {
+class modal_barang extends StatefulWidget {
   final String documentId;
 
-  ModalBarang({Key? key, required this.documentId}) : super(key: key);
+  modal_barang({Key? key, required this.documentId}) : super(key: key);
 
   @override
   _ModalBarangState createState() => _ModalBarangState();
 }
 
-class _ModalBarangState extends State<ModalBarang> {
+class _ModalBarangState extends State<modal_barang> {
   final TextEditingController _namaBarangController = TextEditingController();
-  final TextEditingController _deskripsiBarangController = TextEditingController();
+  final TextEditingController _deskripsiBarangController =
+      TextEditingController();
   final List<String> _statusOptions = ['Sudah', 'Belum'];
   String _selectedStatus = 'Belum';
 
-  static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin
+      _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -31,7 +33,10 @@ class _ModalBarangState extends State<ModalBarang> {
 
   Future<void> _loadData() async {
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('laporan').doc(widget.documentId).get();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('laporan')
+          .doc(widget.documentId)
+          .get();
       final data = snapshot.data()!;
       setState(() {
         _namaBarangController.text = data['nama'] ?? '';
@@ -44,18 +49,23 @@ class _ModalBarangState extends State<ModalBarang> {
   }
 
   Future<void> initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('logo');
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('logo');
 
-    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'Test Notif',
       'Barang Ditemukan',
-      description: 'notif ketika status barang sudah ditemukan',
+      description: 'Selamat Barang Anda Sudah Ketemu',
       importance: Importance.high,
     );
 
-    await _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+    await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -64,7 +74,8 @@ class _ModalBarangState extends State<ModalBarang> {
     required String body,
     required String payload,
   }) async {
-    const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
       channelDescription: 'your_channel_description',
@@ -73,8 +84,10 @@ class _ModalBarangState extends State<ModalBarang> {
       ticker: 'ticker',
       icon: 'logo',
     );
-    const NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
-    await _flutterLocalNotificationsPlugin.show(0, title, body, notificationDetails, payload: payload);
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    await _flutterLocalNotificationsPlugin
+        .show(0, title, body, notificationDetails, payload: payload);
   }
 
   @override
@@ -180,8 +193,10 @@ class _ModalBarangState extends State<ModalBarang> {
             SizedBox(height: 15),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFBB371A)),
-                minimumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 50)),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Color(0xFFBB371A)),
+                minimumSize:
+                    MaterialStateProperty.all<Size>(Size(double.infinity, 50)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(11),
@@ -198,11 +213,13 @@ class _ModalBarangState extends State<ModalBarang> {
               onPressed: () {
                 String selectedStatus = _selectedStatus;
 
-                showSimpleNotification(
-                  title: 'telu adventure',
-                  body: 'Status barang: $selectedStatus',
-                  payload: "This is simple data",
-                );
+                if (selectedStatus == 'Sudah') {
+                  showSimpleNotification(
+                    title: 'telu adventure',
+                    body: 'Selamat Barang Anda Sudah ditemukan',
+                    payload: "",
+                  );
+                }
 
                 Future.delayed(Duration.zero, () {
                   Barang _barang = Barang(

@@ -382,138 +382,164 @@ class ProfilePicture extends StatelessWidget {
 class InfoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 20.0),
-      padding: EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    '5',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Color(0xFFA11E22),
-                      fontWeight: FontWeight.bold,
+    String uid =
+        FirebaseAuth.instance.currentUser!.uid; // Get the current user UID
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: _controller.getgedung(uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('No data available'));
+        } else {
+          // Extract data from the snapshot
+          var data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+          String perkuliahan = data['gedungk'] ?? "";
+          String kantin = data['kantin'] ?? "";
+          String nonPerkuliahan = data['gedungnk'] ?? "";
+
+          return Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          '$perkuliahan',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Color(0xFFA11E22),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'G. Perkuliahan',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    'G. Perkuliahan',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
+                    Column(
+                      children: [
+                        Text(
+                          '$kantin',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Color(0xFFA11E22),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Kantin',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    '2',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Color(0xFFA11E22),
-                      fontWeight: FontWeight.bold,
+                    Column(
+                      children: [
+                        Text(
+                          '$nonPerkuliahan',
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Color(0xFFA11E22),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'G. Non Perkuliahan',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    'Kantin',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    '2',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Color(0xFFA11E22),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'G. Non Perkuliahan',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle event when explorasi button is pressed
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color(0xFFA11E22)), // Warna latar merah
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10.0), // Kurangi radius sudut
+                  ],
+                ),
+                SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle event when explorasi button is pressed
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color(0xFFA11E22)), // Warna latar merah
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Kurangi radius sudut
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'Explorasi',
+                          style: TextStyle(
+                              color: Colors.white), // Warna teks putih
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    'Explorasi',
-                    style: TextStyle(color: Colors.white), // Warna teks putih
-                  ),
-                ),
-              ),
-              SizedBox(width: 10), // Spacer
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle event when kesehatan button is pressed
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.white), // Warna latar putih
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(0.0), // Kurangi radius sudut
+                    SizedBox(width: 10), // Spacer
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle event when kesehatan button is pressed
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.white), // Warna latar putih
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  0.0), // Kurangi radius sudut
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'Kesehatan',
+                          style: TextStyle(
+                              color: Colors.black), // Warna teks hitam
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    'Kesehatan',
-                    style: TextStyle(color: Colors.black), // Warna teks hitam
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }

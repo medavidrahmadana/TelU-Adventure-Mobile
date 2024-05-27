@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_jawab.dart';
+import 'package:telu_adventure/page/forum_komentar.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import '../widget/forum_notifikasi.dart';
 import 'package:telu_adventure/model/pertanyaan_model.dart';
@@ -251,10 +252,23 @@ class forum_dashboard extends StatelessWidget {
                                   SizedBox(height: 12),
                                   Row(
                                     children: [
-                                      Text(
-                                        'Belum ada jawaban',
-                                        style: TextStyle(
-                                          color: Color(0xFF797979),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  forum_komentar(
+                                                documentId: pertanyaan.id,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          'Lihat Komentar',
+                                          style: TextStyle(
+                                            color: Color(0xFF797979),
+                                          ),
                                         ),
                                       ),
                                     ],
