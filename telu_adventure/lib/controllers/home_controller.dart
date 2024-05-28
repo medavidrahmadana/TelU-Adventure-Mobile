@@ -54,25 +54,31 @@ class HomeController {
         .snapshots();
   }
 
-  Future<List<Achievement>> getAchievement(String userId) async {
-    List<Achievement> achievementList = [];
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('achievements')
-          .where('UID', isEqualTo: userId)
-          .get();
-      querySnapshot.docs.forEach((doc) {
-        Achievement achievement = Achievement(
-          UID: doc['UID'] ?? '',
-          namaAchievement: doc['namaAchievement'] ?? '',
-          gambarAchievement: doc['gambarAchievement'] ?? '',
-          status: doc['status'] ?? '',
-        );
-        achievementList.add(achievement);
-      });
-    } catch (e) {
-      print('Error fetching Achievement: $e');
-    }
-    return achievementList;
+ Stream<QuerySnapshot> getAchievement(String UID) {
+    return _firestore
+        .collection('achievement')
+        .where('UID', isEqualTo: UID) // Filter berdasarkan uid
+        .snapshots();
   }
+  // Future<List<Achievement>> getAchievement(String UID) async {
+  //   List<Achievement> achievementList = [];
+  //   try {
+  //     QuerySnapshot querySnapshot = await _firestore
+  //         .collection('achievements')
+  //         .where('UID', isEqualTo: UID) // Ganti 'UID' dengan 'uid' jika di Firestore menggunakan huruf kecil
+  //         .get();
+  //     querySnapshot.docs.forEach((doc) {
+  //       Achievement achievement = Achievement(
+  //         UID: doc['UID'] ?? '', // Gunakan doc['UID'] atau doc['uid'] sesuai dengan yang ada di Firestore
+  //         namaAchievement: doc['namaAchievement'] ?? '',
+  //         gambarAchievement: doc['gambarAchievement'] ?? '',
+  //         status: doc['status'] ?? '',
+  //       );
+  //       achievementList.add(achievement);
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching Achievement: $e');
+  //   }
+  //   return achievementList;
+  // }
 }
