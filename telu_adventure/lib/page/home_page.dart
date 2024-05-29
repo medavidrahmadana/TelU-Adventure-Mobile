@@ -29,6 +29,7 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
+  String UID = FirebaseAuth.instance.currentUser!.uid; 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -151,7 +152,7 @@ class _home_pageState extends State<home_page> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => achievement_page()),
+                                  builder: (context) => achievement_page(UID: '',)),
                             );
                           },
                           child: Text(
