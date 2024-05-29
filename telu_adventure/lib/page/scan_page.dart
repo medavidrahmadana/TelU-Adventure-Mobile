@@ -184,6 +184,7 @@ class _ScanPageState extends State<ScanPage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Jawab', // Label untuk TextField
+                    hintText: 'Jawab Siap Jika Text diatas Clue',
                   ),
                 ),
               ],

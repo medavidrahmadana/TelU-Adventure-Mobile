@@ -635,9 +635,7 @@ class ModulOption extends StatelessWidget {
                 ),
                 SizedBox(height: 10.0), // Spasi antara bottom text dan tombol
                 ElevatedButton(
-                  onPressed: () {
-                    // Handle event when navigasi button is pressed
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, // Warna latar belakang putih
                   ),

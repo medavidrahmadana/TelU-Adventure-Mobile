@@ -58,52 +58,59 @@ class cari_page extends StatelessWidget {
                       child: Container(
                         width: 50,
                         height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFEED1D1),
-                          borderRadius: BorderRadius.circular(9),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.notifications,
-                            color: Colors.orange,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                  return Stack(
-                                    children: <Widget>[
-                                      cari_page(),
-                                      SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: Offset(1.0, 0.0),
-                                          end: Offset(0.2, 0.0),
-                                        ).animate(animation),
-                                        child: forum_notifikasi(),
-                                      ),
-                                    ],
-                                  );
-                                },
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return child;
-                                },
-                              ),
-                            );
-                          },
-                        ),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(bottom: 30.0, right: 20),
+                    //   child: Container(
+                    //     width: 50,
+                    //     height: 50,
+                    //     decoration: BoxDecoration(
+                    //       color: Color(0xFFEED1D1),
+                    //       borderRadius: BorderRadius.circular(9),
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           color: Colors.black,
+                    //           spreadRadius: 1,
+                    //           blurRadius: 5,
+                    //           offset: Offset(0, 2),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     child: IconButton(
+                    //       icon: Icon(
+                    //         Icons.notifications,
+                    //         color: Colors.orange,
+                    //       ),
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //           context,
+                    //           PageRouteBuilder(
+                    //             pageBuilder:
+                    //                 (context, animation, secondaryAnimation) {
+                    //               return Stack(
+                    //                 children: <Widget>[
+                    //                   cari_page(),
+                    //                   SlideTransition(
+                    //                     position: Tween<Offset>(
+                    //                       begin: Offset(1.0, 0.0),
+                    //                       end: Offset(0.2, 0.0),
+                    //                     ).animate(animation),
+                    //                     child: forum_notifikasi(),
+                    //                   ),
+                    //                 ],
+                    //               );
+                    //             },
+                    //             transitionsBuilder: (context, animation,
+                    //                 secondaryAnimation, child) {
+                    //               return child;
+                    //             },
+                    //           ),
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(
