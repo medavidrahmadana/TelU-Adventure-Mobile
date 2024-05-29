@@ -49,6 +49,13 @@ class forumCon {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getJawablogin(String uid) {
+    return _firestore
+        .collection('jawab')
+        .where('uid', isEqualTo: uid)
+        .snapshots();
+  }
+
   Future<List<pertanyaan_model>> getPertanyaan() async {
     List<pertanyaan_model> pertanyaan_list = [];
     try {

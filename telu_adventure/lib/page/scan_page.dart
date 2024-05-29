@@ -183,8 +183,8 @@ class _ScanPageState extends State<ScanPage> {
                   controller: jawabController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Jawab',
-                    hintText: 'Jawab Siap Jika Text diatas Clue', // Label untuk TextField
+                    labelText: 'Jawab', // Label untuk TextField
+                    hintText: 'Jawab Siap Jika Text diatas Clue',
                   ),
                 ),
               ],

@@ -6,6 +6,7 @@ import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/widget/modal_barang.dart';
 
 import '../widget/modal_lapor.dart';
+import '../widget/nav_button.dart';
 import 'cari_page.dart';
 import 'profile_page.dart';
 
