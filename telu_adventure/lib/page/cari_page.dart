@@ -53,7 +53,7 @@ class cari_page extends StatelessWidget {
                         child: ProfilePicture(),
                       ),
                     ),
-                    Padding(
+                      Padding(
                       padding: const EdgeInsets.only(bottom: 30.0, right: 20),
                       child: Container(
                         width: 50,

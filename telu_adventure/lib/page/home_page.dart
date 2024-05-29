@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:telu_adventure/page/map_page.dart';
 import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/login_page.dart';
@@ -29,7 +30,6 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
-  String UID = FirebaseAuth.instance.currentUser!.uid; 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -152,7 +152,7 @@ class _home_pageState extends State<home_page> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => achievement_page(UID: '',)),
+                                  builder: (context) => achievement_page()),
                             );
                           },
                           child: Text(
@@ -636,7 +636,13 @@ class ModulOption extends StatelessWidget {
                 ),
                 SizedBox(height: 10.0), // Spasi antara bottom text dan tombol
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => map_page()),
+                    );
+                    // Handle event when navigasi button is pressed
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, // Warna latar belakang putih
                   ),

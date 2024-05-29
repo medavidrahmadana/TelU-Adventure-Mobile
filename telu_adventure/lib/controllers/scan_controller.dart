@@ -14,12 +14,10 @@ class ScanCon {
     try {
       await FirebaseFirestore.instance.collection("quest").add(scan.toMap());
       // Show success message or navigate to another screen
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Pertanyaan sudah terkirim!')));
+      
       Navigator.pop(context);
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Pertanyaan gagal terkirim!')));
+     
       Navigator.pop(context); // Assuming this is in a new screen
     }
   }
