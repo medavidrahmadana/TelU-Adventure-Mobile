@@ -164,8 +164,8 @@ class _ScanPageState extends State<ScanPage> {
     if (code != null && code.contains('.')) {
       List<String> parts = code.split('.');
       if (parts.length > 1) {
-        message = parts[0];
-        id = parts[1];
+        id = parts[0]; // Bagian sebelum titik diassign ke variabel id
+        message = parts[1]; // Bagian setelah titik diassign ke variabel message
       }
     }
     if (id == "1") {
