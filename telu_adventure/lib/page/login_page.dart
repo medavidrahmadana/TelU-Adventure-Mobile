@@ -4,9 +4,14 @@ import 'package:telu_adventure/controllers/auth_controller.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/widget/nav_button.dart';
 import '../Handler/DatabaseHelper.dart';
+import '../controllers/userdetail_controller.dart';
+import '../model/userdetail_model.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {
+  AuthService _authService = AuthService();
+  usercon _usercon = usercon();
+
   final FirebaseAuth _firebaseAuth;
   LoginPage({Key? key, FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
@@ -141,8 +146,18 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Panggil method _signInWithEmailAndPassword saat tombol login ditekan
+              onPressed: () async {
+                bool sudah = await _usercon
+                    .getJumlah(FirebaseAuth.instance.currentUser!.uid);
+                if (sudah == false) {
+                  udetail_model _userdail = udetail_model(
+                    uid: FirebaseAuth.instance.currentUser!.uid,
+                    gedungk: '0',
+                    gedungnk: '0',
+                    kantin: '0',
+                  );
+                  await AuthService.addToFirestore(context, _userdail);
+                }
                 _signInWithEmailAndPassword(email, password, context);
               },
               style: ButtonStyle(

@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:telu_adventure/controllers/scan_controller.dart';
 import 'package:telu_adventure/model/scan_model.dart';
+import '../controllers/userdetail_controller.dart';
 import '../widget/scan_notif.dart';
 import 'forum_dashboard.dart';
 import '../widget/forum_notifikasi.dart';
@@ -21,7 +22,6 @@ class ScanPage extends StatefulWidget {
 class _ScanPageState extends State<ScanPage> {
   late QRViewController qrController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  final TextEditingController isiController = TextEditingController();
   final TextEditingController jawabController = TextEditingController();
   Barcode? result;
 
@@ -76,9 +76,7 @@ class _ScanPageState extends State<ScanPage> {
                               (context, animation, secondaryAnimation) {
                             return Stack(
                               children: <Widget>[
-                                ScanPage(
-                                    camera: widget
-                                        .camera), // Use widget.camera here
+                                ScanPage(camera: widget.camera),
                                 SlideTransition(
                                   position: Tween<Offset>(
                                     begin: const Offset(1.0, 0.0),
@@ -131,8 +129,7 @@ class _ScanPageState extends State<ScanPage> {
             child: Center(
               child: (result != null)
                   ? Center(
-                      child: Text(
-                          'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}'),
+                      child: Text('Data: ${result!.code}'),
                     )
                   : Text('Scan a code'),
             ),
@@ -155,66 +152,225 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   void _showDialog(Barcode scanData) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Quest',
-            style: TextStyle(
-              fontSize: 24.0, // Ukuran font untuk judul
-              fontWeight: FontWeight.bold, // Membuat teks tebal
-            ),
-          ),
-          content: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 5.0), // Padding untuk kanan dan kiri
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'Data: ${scanData.code}',
-                  style: TextStyle(
-                    fontSize: 16.0, // Ukuran font untuk konten
-                  ),
-                ),
-                SizedBox(height: 18), // Jarak antara teks dan TextField
-                TextField(
-                  controller: jawabController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Jawab', // Label untuk TextField
-                    hintText: 'Jawab Siap Jika Text diatas Clue',
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'OK',
-                style: TextStyle(
-                  fontSize: 18.0, // Ukuran font untuk tombol OK
-                  fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
-                ),
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    String? code = scanData.code;
+    String message = "Unknown";
+    String id = "Unknown";
+    String? gedung = "0";
+    String? gedungnk = "0";
+    String? kantin = "0";
+    usercon _usercon = usercon();
+    _usercon.getLaporan(uid);
+    if (code != null && code.contains('.')) {
+      List<String> parts = code.split('.');
+      if (parts.length > 1) {
+        message = parts[0];
+        id = parts[1];
+      }
+    }
+    if (id == "1") {
+      //gedung
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Adventurer',
+              style: TextStyle(
+                fontSize: 24.0, // Ukuran font untuk judul
+                fontWeight: FontWeight.bold, // Membuat teks tebal
               ),
-              onPressed: () {
-                Future.delayed(Duration.zero, () {
-                  scan_model _barang = scan_model(
-                    uid: FirebaseAuth.instance.currentUser!.uid,
-                    isi: scanData.code ?? "Unknown", // Fixed this line
-                    jawab: jawabController.text,
-                  );
-                  ScanCon.addToFirestore(context, _barang);
-                });
-                Navigator.of(context).pop();
-              },
             ),
-          ],
-        );
-      },
-    );
+            content: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 5.0), // Padding untuk kanan dan kiri
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Gedung: $message',
+                    style: TextStyle(
+                      fontSize: 16.0, // Ukuran font untuk konten
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontSize: 18.0, // Ukuran font untuk tombol OK
+                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
+                  ),
+                ),
+                onPressed: () {
+                  int Gedung = int.parse(gedung) + 1;
+                  String newgedung = Gedung.toString();
+                  _usercon.updateLaporan(uid, newgedung, gedungnk, kantin);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (id == "2") {
+      //gedungnk
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Adventurer',
+              style: TextStyle(
+                fontSize: 24.0, // Ukuran font untuk judul
+                fontWeight: FontWeight.bold, // Membuat teks tebal
+              ),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 5.0), // Padding untuk kanan dan kiri
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Gedung: $message',
+                    style: TextStyle(
+                      fontSize: 16.0, // Ukuran font untuk konten
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontSize: 18.0, // Ukuran font untuk tombol OK
+                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
+                  ),
+                ),
+                onPressed: () {
+                  int Gedungnk = int.parse(gedungnk) + 1;
+                  String newgedungnk = Gedungnk.toString();
+                  _usercon.updateLaporan(uid, gedung, newgedungnk, kantin);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (id == "3") {
+      //kantin
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Adventurer',
+              style: TextStyle(
+                fontSize: 24.0, // Ukuran font untuk judul
+                fontWeight: FontWeight.bold, // Membuat teks tebal
+              ),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 5.0), // Padding untuk kanan dan kiri
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Gedung: $message',
+                    style: TextStyle(
+                      fontSize: 16.0, // Ukuran font untuk konten
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontSize: 18.0, // Ukuran font untuk tombol OK
+                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
+                  ),
+                ),
+                onPressed: () {
+                  int Kantin = int.parse(kantin) + 1;
+                  String newKantin = Kantin.toString();
+                  _usercon.updateLaporan(uid, gedung, gedungnk, newKantin);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Quest',
+              style: TextStyle(
+                fontSize: 24.0, // Ukuran font untuk judul
+                fontWeight: FontWeight.bold, // Membuat teks tebal
+              ),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 5.0), // Padding untuk kanan dan kiri
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Message: $message',
+                    style: TextStyle(
+                      fontSize: 16.0, // Ukuran font untuk konten
+                    ),
+                  ),
+                  SizedBox(height: 18), // Jarak antara teks dan TextField
+                  TextField(
+                    controller: jawabController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Jawab', // Label untuk TextField
+                      hintText: 'Jawab Lah Travelers',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontSize: 18.0, // Ukuran font untuk tombol OK
+                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
+                  ),
+                ),
+                onPressed: () {
+                  Future.delayed(Duration.zero, () {
+                    scan_model _barang = scan_model(
+                      uid: FirebaseAuth.instance.currentUser!.uid,
+                      isi: code ?? "Unknown",
+                      jawab: jawabController.text,
+                    );
+                    ScanCon.addToFirestore(context, _barang);
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
