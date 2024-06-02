@@ -168,7 +168,7 @@ class _ScanPageState extends State<ScanPage> {
         message = parts[1]; // Bagian setelah titik diassign ke variabel message
       }
     }
-    if (id == "1") {
+    if (message == "1") {
       //gedung
       showDialog(
         context: context,
@@ -188,7 +188,7 @@ class _ScanPageState extends State<ScanPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Gedung: $message',
+                    'Gedung: $id',
                     style: TextStyle(
                       fontSize: 16.0, // Ukuran font untuk konten
                     ),
@@ -215,7 +215,7 @@ class _ScanPageState extends State<ScanPage> {
           );
         },
       );
-    } else if (id == "2") {
+    } else if (message == "2") {
       //gedungnk
       showDialog(
         context: context,
@@ -235,7 +235,7 @@ class _ScanPageState extends State<ScanPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Gedung: $message',
+                    'Gedung: $id',
                     style: TextStyle(
                       fontSize: 16.0, // Ukuran font untuk konten
                     ),
@@ -262,7 +262,7 @@ class _ScanPageState extends State<ScanPage> {
           );
         },
       );
-    } else if (id == "3") {
+    } else if (message == "3") {
       //kantin
       showDialog(
         context: context,
@@ -282,7 +282,7 @@ class _ScanPageState extends State<ScanPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Gedung: $message',
+                    'Gedung: $id',
                     style: TextStyle(
                       fontSize: 16.0, // Ukuran font untuk konten
                     ),
@@ -328,7 +328,7 @@ class _ScanPageState extends State<ScanPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Message: $message',
+                    'Message: $id',
                     style: TextStyle(
                       fontSize: 16.0, // Ukuran font untuk konten
                     ),
