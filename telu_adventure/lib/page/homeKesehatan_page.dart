@@ -14,7 +14,7 @@ import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
 import 'package:telu_adventure/model/achievement_model.dart';
-import 'package:telu_adventure/page/homeKesehatan_page.dart';
+import 'package:telu_adventure/page/home_page.dart';
 
 import '../Handler/DatabaseHelper.dart';
 
@@ -23,14 +23,14 @@ HomeController _controller = HomeController();
 int currentListIndex = 0;
 int currentPage = 0;
 
-class home_page extends StatefulWidget {
-  const home_page({Key? key}) : super(key: key);
+class homeKesehatan_page extends StatefulWidget {
+  const homeKesehatan_page({Key? key}) : super(key: key);
 
   @override
-  State<home_page> createState() => _home_pageState();
+  State<homeKesehatan_page> createState() => _home_pageState();
 }
 
-class _home_pageState extends State<home_page> {
+class _home_pageState extends State<homeKesehatan_page> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -491,11 +491,15 @@ class InfoBox extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Handle event when explorasi button is pressed
-                        },
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => home_page()),
+                            );                        
+                          },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              Color(0xFFA11E22)), // Warna latar merah
+                              Colors.white), // Warna latar merah
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -507,7 +511,7 @@ class InfoBox extends StatelessWidget {
                         child: Text(
                           'Explorasi',
                           style: TextStyle(
-                              color: Colors.white), // Warna teks putih
+                              color: Colors.black), // Warna teks putih
                         ),
                       ),
                     ),
@@ -515,15 +519,11 @@ class InfoBox extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => homeKesehatan_page()),
-                            );
+                          // Handle event when kesehatan button is pressed
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              Colors.white), // Warna latar putih
+                              Color(0xFFA11E22)), // Warna latar putih
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -535,7 +535,7 @@ class InfoBox extends StatelessWidget {
                         child: Text(
                           'Kesehatan',
                           style: TextStyle(
-                              color: Colors.black), // Warna teks hitam
+                              color: Colors.white), // Warna teks hitam
                         ),
                       ),
                     ),

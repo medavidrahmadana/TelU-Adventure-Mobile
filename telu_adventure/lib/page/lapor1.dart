@@ -4,19 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/widget/modal_barang.dart';
-import 'package:telu_adventure/page/cari_page.dart';
 
 import '../widget/modal_lapor.dart';
 import 'cari_page.dart';
 import 'profile_page.dart';
 
-class lapor_page extends StatelessWidget {
+class lapor1 extends StatelessWidget {
   // Contoh nilai UID
   final LaporCon _laporCon = LaporCon();
   int _loadedItems = 3; // Jumlah awal item yang akan ditampilkan
   int _loadThreshold = 3; // Jumlah item yang akan dimuat setiap kali di-scroll
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  lapor_page({Key? key}) : super(key: key);
+  lapor1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -366,7 +365,7 @@ class lapor_page extends StatelessWidget {
                                   (context, animation, secondaryAnimation) {
                                 return Stack(
                                   children: <Widget>[
-                                    lapor_page(),
+                                    lapor1(),
                                     SlideTransition(
                                       position: Tween<Offset>(
                                         begin: Offset(0, 0),
@@ -566,7 +565,7 @@ class lapor_page extends StatelessWidget {
                         pageBuilder: (context, animation, secondaryAnimation) {
                           return Stack(
                             children: <Widget>[
-                              lapor_page(),
+                              lapor1(),
                               SlideTransition(
                                 position: Tween<Offset>(
                                   begin: Offset(0, 0),
