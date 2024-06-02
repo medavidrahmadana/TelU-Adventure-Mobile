@@ -53,7 +53,7 @@ class _NavButtonState extends State<NavButton> {
         case 0:
           _currentScreen = _isHomePage ? home_page() : homeKesehatan_page();
           break;
-        case 4:
+        case 3:
           _currentScreen = _isCariPage ? lapor_page() : cari_page();
           break;
         default:
@@ -192,7 +192,7 @@ class _NavButtonState extends State<NavButton> {
                     onPressed: () {
                       setState(() {
                         _toggleLaporPage();
-                        _currentIndex = 4;
+                        _currentIndex = 3;
                       });
                     },
                     child: Column(
@@ -201,12 +201,12 @@ class _NavButtonState extends State<NavButton> {
                         Icon(
                           Icons.assignment,
                           color:
-                              _currentIndex == 4 ? Colors.red : Colors.grey,
+                              _currentIndex == 3 ? Colors.red : Colors.grey,
                         ),
                         Text(
                           'Lapor',
                           style: TextStyle(
-                            color: _currentIndex == 4 ? Colors.red : Colors.grey,
+                            color: _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),
                         ),
                       ],
