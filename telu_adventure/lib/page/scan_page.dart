@@ -156,11 +156,7 @@ class _ScanPageState extends State<ScanPage> {
     String? code = scanData.code;
     String message = "Unknown";
     String id = "Unknown";
-    String? gedung = "0";
-    String? gedungnk = "0";
-    String? kantin = "0";
     usercon _usercon = usercon();
-    _usercon.getLaporan(uid);
     if (code != null && code.contains('.')) {
       List<String> parts = code.split('.');
       if (parts.length > 1) {
@@ -168,7 +164,7 @@ class _ScanPageState extends State<ScanPage> {
         message = parts[1]; // Bagian setelah titik diassign ke variabel message
       }
     }
-    if (message == "1") {
+    if (message == " 1") {
       //gedung
       showDialog(
         context: context,
@@ -205,17 +201,30 @@ class _ScanPageState extends State<ScanPage> {
                     fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
                   ),
                 ),
-                onPressed: () {
-                  int Gedung = int.parse(gedung) + 1;
-                  String newgedung = Gedung.toString();
-                  _usercon.updateLaporan(uid, newgedung, gedungnk, kantin);
+                onPressed: () async {
+                  try {
+                    var result = await _usercon.getGedung(uid);
+                    String? gedungk = result['gedungk'];
+                    String? gedungnk = result['gedungnk'];
+                    String? kantin = result['kantin'];
+                    if (gedungk != null && gedungnk != null && kantin != null) {
+                      int Gedung = int.parse(gedungk) + 1;
+                      String newgedung = Gedung.toString();
+                      await _usercon.updateGedung(
+                          uid, newgedung, gedungnk, kantin);
+                    } else {
+                      print('Error: One of the values is null');
+                    }
+                  } catch (e) {
+                    print('Error: $e');
+                  }
                 },
               ),
             ],
           );
         },
       );
-    } else if (message == "2") {
+    } else if (message == " 2") {
       //gedungnk
       showDialog(
         context: context,
@@ -252,17 +261,30 @@ class _ScanPageState extends State<ScanPage> {
                     fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
                   ),
                 ),
-                onPressed: () {
-                  int Gedungnk = int.parse(gedungnk) + 1;
-                  String newgedungnk = Gedungnk.toString();
-                  _usercon.updateLaporan(uid, gedung, newgedungnk, kantin);
+                onPressed: () async {
+                  try {
+                    var result = await _usercon.getGedung(uid);
+                    String? gedungk = result['gedungk'];
+                    String? gedungnk = result['gedungnk'];
+                    String? kantin = result['kantin'];
+                    if (gedungk != null && gedungnk != null && kantin != null) {
+                      int Gedungnk = int.parse(gedungnk) + 1;
+                      String newgedungnk = Gedungnk.toString();
+                      await _usercon.updateGedung(
+                          uid, gedungk, newgedungnk, kantin);
+                    } else {
+                      print('Error: One of the values is null');
+                    }
+                  } catch (e) {
+                    print('Error: $e');
+                  }
                 },
               ),
             ],
           );
         },
       );
-    } else if (message == "3") {
+    } else if (message == " 3") {
       //kantin
       showDialog(
         context: context,
@@ -299,10 +321,23 @@ class _ScanPageState extends State<ScanPage> {
                     fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
                   ),
                 ),
-                onPressed: () {
-                  int Kantin = int.parse(kantin) + 1;
-                  String newKantin = Kantin.toString();
-                  _usercon.updateLaporan(uid, gedung, gedungnk, newKantin);
+                onPressed: () async {
+                  try {
+                    var result = await _usercon.getGedung(uid);
+                    String? gedungk = result['gedungk'];
+                    String? gedungnk = result['gedungnk'];
+                    String? kantin = result['kantin'];
+                    if (gedungk != null && gedungnk != null && kantin != null) {
+                      int Kantin = int.parse(kantin) + 1;
+                      String newKantin = Kantin.toString();
+                      await _usercon.updateGedung(
+                          uid, gedungk, gedungnk, newKantin);
+                    } else {
+                      print('Error: One of the values is null');
+                    }
+                  } catch (e) {
+                    print('Error: $e');
+                  }
                 },
               ),
             ],

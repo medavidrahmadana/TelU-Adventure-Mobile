@@ -17,34 +17,28 @@ class usercon {
     }
   }
 
-  void getLaporan(String uid) {
-    String gedung;
-    String gedungnk;
-    String kantin;
-
-    _firestore
+  Future<Map<String, String?>> getGedung(String uid) async {
+    var querySnapshot = await _firestore
         .collection('userdetail')
         .where('uid', isEqualTo: uid)
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        var data = snapshot.docs.first.data() as Map<String, dynamic>;
-
-        // Assuming your document has fields 'gedung', 'gedungnk', and 'kantin'
-        gedung = data['gedung'];
-        gedungnk = data['gedungnk'];
-        kantin = data['kantin'];
-
-        print('Gedung: $gedung');
-        print('Gedung NK: $gedungnk');
-        print('Kantin: $kantin');
-      } else {
-        print('No documents found for uid: $uid');
-      }
-    });
+        .get();
+    if (querySnapshot.docs.isNotEmpty) {
+      var documentSnapshot = querySnapshot.docs.first;
+      return {
+        'gedungk': documentSnapshot['gedungk'] as String?,
+        'gedungnk': documentSnapshot['gedungnk'] as String?,
+        'kantin': documentSnapshot['kantin'] as String?,
+      };
+    } else {
+      return {
+        'gedungk': '0',
+        'gedungnk': '0',
+        'kantin': '0',
+      };
+    }
   }
 
-  Future<void> updateLaporan(String uid, String newGedung, String newGedungnk,
+  Future<void> updateGedung(String uid, String newGedung, String newGedungnk,
       String newKantin) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -55,7 +49,7 @@ class usercon {
       if (querySnapshot.docs.isNotEmpty) {
         DocumentReference docRef = querySnapshot.docs.first.reference;
         await docRef.update({
-          'gedung': newGedung,
+          'gedungk': newGedung,
           'gedungnk': newGedungnk,
           'kantin': newKantin,
         });
