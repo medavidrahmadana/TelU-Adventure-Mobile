@@ -391,12 +391,12 @@ class _ScanPageState extends State<ScanPage> {
                 ),
                 onPressed: () {
                   Future.delayed(Duration.zero, () {
-                    scan_model _barang = scan_model(
+                    scan_model _scan = scan_model(
                       uid: FirebaseAuth.instance.currentUser!.uid,
                       isi: code ?? "Unknown",
                       jawab: jawabController.text,
                     );
-                    ScanCon.addToFirestore(context, _barang);
+                    ScanCon.addToFirestore(context, _scan);
                   });
                   Navigator.of(context).pop();
                 },

@@ -54,10 +54,10 @@ class HomeController {
         .snapshots();
   }
 
- Stream<QuerySnapshot> getAchievement(String UID) {
+ Stream<QuerySnapshot> getAchievement() {
     return _firestore
         .collection('achievement')
-        .where('UID', isEqualTo: UID) // Filter berdasarkan uid
+        // .where('UID', isEqualTo: UID) // Filter berdasarkan uid
         .snapshots();
   }
   // Future<List<Achievement>> getAchievement(String UID) async {
