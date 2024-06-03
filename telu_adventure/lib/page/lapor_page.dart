@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/widget/modal_barang.dart';
+import 'package:telu_adventure/page/cari_page.dart';
 
 import '../widget/modal_lapor.dart';
 import '../widget/nav_button.dart';

@@ -510,30 +510,6 @@ class InfoBox extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10), // Spacer
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Handle event when kesehatan button is pressed
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.white), // Warna latar putih
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  0.0), // Kurangi radius sudut
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Kesehatan',
-                          style: TextStyle(
-                              color: Colors.black), // Warna teks hitam
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],

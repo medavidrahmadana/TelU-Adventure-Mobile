@@ -1,23 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Achievement {
-  final String UID;
+  final String id;
   final String namaAchievement; 
   final String gambarAchievement;
-  final String status;
+  final String syarat;
+
 
 
   Achievement(
-      {required this.UID,
+      {required this.id,
       required this.namaAchievement,
       required this.gambarAchievement,
-      required this.status,
+      required this.syarat,
+
 });
 
   Map<String, dynamic> toMap() => {
-        'UID': UID,
+        'id': id,
         'namaAchievement': namaAchievement,
         'gambarAchievement': gambarAchievement,
-        'status': status,
+        'syarat': syarat,
       };
 }

@@ -62,4 +62,11 @@ class usercon {
       print('Error updating document: $e');
     }
   }
+
+  Stream<QuerySnapshot> getQuestbyID(String uid) {
+    return _firestore
+        .collection('quest')
+        .where('uid', isEqualTo: uid) // Filter berdasarkan uid
+        .snapshots();
+  }
 }

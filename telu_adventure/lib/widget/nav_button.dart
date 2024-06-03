@@ -55,8 +55,11 @@ class _NavButtonState extends State<NavButton> {
 
   void _toggleLaporPage() {
     setState(() {
-      // Menggunakan ternary operator untuk memilih halaman yang tepat
-      _currentScreen = _isCariPage ? cari_page() : lapor_page();
+      if (_isCariPage) {
+        _currentScreen = lapor_page();
+      } else {
+        _currentScreen = cari_page();
+      }
       _isCariPage = !_isCariPage; // Toggle halaman
     });
   }
@@ -186,8 +189,7 @@ class _NavButtonState extends State<NavButton> {
                         Text(
                           _isCariPage ? 'Cari' : 'Lapor',
                           style: TextStyle(
-                            color:
-                                _currentIndex == 3 ? Colors.red : Colors.grey,
+                            color: _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),
                         )
                       ],
