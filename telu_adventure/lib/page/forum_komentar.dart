@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/controllers/forum_controller.dart';
 import 'package:telu_adventure/page/forum_dashboard.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class forum_komentar extends StatefulWidget {
   final String documentId;
