@@ -6,7 +6,6 @@ import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
 import '../page/scan_page.dart';
 import 'package:telu_adventure/page/cari_page.dart';
-import 'package:telu_adventure/page/homeKesehatan_page.dart';
 
 class NavButton extends StatefulWidget {
   NavButton({Key? key}) : super(key: key);
@@ -22,7 +21,6 @@ class _NavButtonState extends State<NavButton> {
   late Widget _currentScreen;
   List<Widget> _children = [];
   bool _isCariPage = true;
-  bool _isHomePage = true;
 
   @override
   void initState() {
@@ -39,6 +37,8 @@ class _NavButtonState extends State<NavButton> {
       _children = [
         home_page(),
         map_page(),
+        // MapCard(),
+        // course_page(),
         ScanPage(camera: _camera),
         forum_dashboard(),
         lapor_page(),
@@ -49,30 +49,18 @@ class _NavButtonState extends State<NavButton> {
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
-      switch (index) {
-        case 0:
-          _currentScreen = _isHomePage ? home_page() : homeKesehatan_page();
-          break;
-        case 3:
-          _currentScreen = _isCariPage ? lapor_page() : cari_page();
-          break;
-        default:
-          _currentScreen = _children[index];
-      }
-    });
-  }
-
-  void _toggleHomePage() {
-    setState(() {
-      _isHomePage = !_isHomePage;
-      _currentScreen = _isHomePage ? home_page() : homeKesehatan_page();
+      _currentScreen = _children[index];
     });
   }
 
   void _toggleLaporPage() {
     setState(() {
-      _isCariPage = !_isCariPage;
-      _currentScreen = _isCariPage ? lapor_page() : cari_page();
+      if (_isCariPage) {
+        _currentScreen = lapor_page();
+      } else {
+        _currentScreen = cari_page();
+      }
+      _isCariPage = !_isCariPage; // Toggle halaman
     });
   }
 
@@ -85,7 +73,8 @@ class _NavButtonState extends State<NavButton> {
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100.0),
+          borderRadius: BorderRadius.circular(
+              100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
         ),
         child: Icon(Icons.qr_code_scanner_rounded),
         onPressed: () {
@@ -108,110 +97,105 @@ class _NavButtonState extends State<NavButton> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        _toggleHomePage();
-                        _currentIndex = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.home,
-                          color:
-                              _currentIndex == 0 ? Colors.red : Colors.grey,
-                        ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color: _currentIndex == 0 ? Colors.red : Colors.grey,
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = home_page();
+                          _currentIndex = 0;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.home,
+                            color:
+                                _currentIndex == 0 ? Colors.red : Colors.grey,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          Text(
+                            'Home',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 0 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      )),
                   MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        _currentScreen = map_page();
-                        _currentIndex = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.map,
-                          color:
-                              _currentIndex == 1 ? Colors.red : Colors.grey,
-                        ),
-                        Text(
-                          'Map',
-                          style: TextStyle(
-                            color: _currentIndex == 1 ? Colors.red : Colors.grey,
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = map_page();
+                          _currentIndex = 1;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.map,
+                            color:
+                                _currentIndex == 1 ? Colors.red : Colors.grey,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          Text(
+                            'Map',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 1 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      ))
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        _currentScreen = forum_dashboard();
-                        _currentIndex = 2;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.chat,
-                          color:
-                              _currentIndex == 2 ? Colors.red : Colors.grey,
-                        ),
-                        Text(
-                          'Forum',
-                          style: TextStyle(
-                            color: _currentIndex == 2 ? Colors.red : Colors.grey,
+                      minWidth: 40,
+                      onPressed: () {
+                        setState(() {
+                          _currentScreen = forum_dashboard();
+                          _currentIndex = 2;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.chat,
+                            color:
+                                _currentIndex == 2 ? Colors.red : Colors.grey,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          Text(
+                            'Forum',
+                            style: TextStyle(
+                              color:
+                                  _currentIndex == 2 ? Colors.red : Colors.grey,
+                            ),
+                          )
+                        ],
+                      )),
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        _toggleLaporPage();
-                        _currentIndex = 3;
-                      });
-                    },
+                    onPressed: _toggleLaporPage,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.assignment,
-                          color:
-                              _currentIndex == 3 ? Colors.red : Colors.grey,
+                          color: _currentIndex == 3 ? Colors.red : Colors.grey,
                         ),
                         Text(
-                          'Lapor',
+                          _isCariPage ? 'Cari' : 'Lapor',
                           style: TextStyle(
-                            color: _currentIndex == 3 ? Colors.red : Colors.grey,
+                            color:
+                                _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),
-                        ),
+                        )
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ],

@@ -14,7 +14,6 @@ import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
 import 'package:telu_adventure/model/achievement_model.dart';
-import 'package:telu_adventure/page/homeKesehatan_page.dart';
 
 import '../Handler/DatabaseHelper.dart';
 
@@ -508,34 +507,6 @@ class InfoBox extends StatelessWidget {
                           'Explorasi',
                           style: TextStyle(
                               color: Colors.white), // Warna teks putih
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10), // Spacer
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => homeKesehatan_page()),
-                            );
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.white), // Warna latar putih
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  0.0), // Kurangi radius sudut
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Kesehatan',
-                          style: TextStyle(
-                              color: Colors.black), // Warna teks hitam
                         ),
                       ),
                     ),
