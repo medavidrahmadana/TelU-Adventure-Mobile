@@ -88,8 +88,6 @@ class _AchievementPageState extends State<achievement_page> {
                 falseCount++;
                 return ModulAch(botText1: doc['namaAchievement'], botText2: "()", imagePath: doc['gambarAchievement'], status: false,);
               }
-
-
             }).toList();
             allCount = trueCount + falseCount;
             return Column(
