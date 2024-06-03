@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/controllers/forum_controller.dart';
+import 'package:telu_adventure/page/forum_dashboard.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class forum_komentar extends StatefulWidget {
   final String documentId;
@@ -52,6 +54,25 @@ class _ForumKomentarState extends State<forum_komentar> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => forum_dashboard()),
+              );
+            },
+          ),
+          title: Text(
+            'Forum Komentar',
+            style: TextStyle(
+              fontSize: 24, // Ukuran font
+              fontWeight: FontWeight.bold, // Font tebal
+            ),
+          ),
+          // Jika ingin menambahkan aksi lainnya di AppBar, bisa disesuaikan di sini
+        ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -61,16 +82,16 @@ class _ForumKomentarState extends State<forum_komentar> {
                 const SizedBox(
                   height: 20,
                 ), // Menambahkan jarak antara bagian atas halaman dan konten
-                const Text(
-                  'Forum Komentar',
-                  style: TextStyle(
-                    fontSize: 24, // Ukuran font
-                    fontWeight: FontWeight.bold, // Font tebal
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ), // Menambahkan jarak antara judul dan konten
+                // const Text(
+                //   'Forum Komentar',
+                //   style: TextStyle(
+                //     fontSize: 24, // Ukuran font
+                //     fontWeight: FontWeight.bold, // Font tebal
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 30,
+                // ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,19 +165,52 @@ class _ForumKomentarState extends State<forum_komentar> {
                       return ListView.builder(
                         itemCount: comments.length,
                         itemBuilder: (context, index) {
-                          final commentData =
-                              comments[index].data() as Map<String, dynamic>;
-                          final komentar =
+                          final commentData = comments[index];
+                          final name = commentData['nama'] ?? 'Anonymous';
+                          final profilePic = commentData['urlimg'] ?? '';
+                          final time = commentData['waktu'] ?? '';
+                          final comment =
                               commentData['jawaban'] ?? 'Komentar tanpa teks';
+
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(15.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(komentar),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(profilePic),
+                                  radius: 20.0,
+                                ),
+                                SizedBox(width: 10.0),
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(15.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          name,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          time,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5.0),
+                                        Text(comment),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
