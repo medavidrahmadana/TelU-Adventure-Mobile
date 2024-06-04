@@ -5,7 +5,6 @@ import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
 import '../page/scan_page.dart';
-import 'package:telu_adventure/page/cari_page.dart';
 
 class NavButton extends StatefulWidget {
   const NavButton({super.key});
@@ -20,7 +19,6 @@ class _NavButtonState extends State<NavButton> {
   late PageStorageBucket _bucket;
   late Widget _currentScreen;
   List<Widget> _children = [];
-  bool _isCariPage = true;
 
   @override
   void initState() {
@@ -41,7 +39,7 @@ class _NavButtonState extends State<NavButton> {
         // course_page(),
         ScanPage(camera: _camera),
         forum_dashboard(),
-        lapor_page(),
+        const lapor_page(),
       ];
     });
   }
@@ -50,19 +48,6 @@ class _NavButtonState extends State<NavButton> {
     setState(() {
       _currentIndex = index;
       _currentScreen = _children[index];
-    });
-  }
-
-  void _toggleLaporPage() {
-    setState(() {
-      if (_isCariPage) {
-        _currentScreen = lapor_page();
-        _currentIndex = 3;
-      } else {
-        _currentScreen = cari_page();
-        _currentIndex = 3;
-      }
-      _isCariPage = !_isCariPage; // Toggle halaman
     });
   }
 
@@ -173,7 +158,12 @@ class _NavButtonState extends State<NavButton> {
                       )),
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: _toggleLaporPage,
+                    onPressed: () {
+                      setState(() {
+                        _currentScreen = const lapor_page();
+                        _currentIndex = 3;
+                      });
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -182,7 +172,7 @@ class _NavButtonState extends State<NavButton> {
                           color: _currentIndex == 3 ? Colors.red : Colors.grey,
                         ),
                         Text(
-                          _isCariPage ? 'Cari' : 'Lapor',
+                          'Lapor',
                           style: TextStyle(
                             color: _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),

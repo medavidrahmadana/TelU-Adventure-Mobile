@@ -7,18 +7,19 @@ class modal_lapor extends StatelessWidget {
   final TextEditingController _namaBarangController = TextEditingController();
   final TextEditingController _typeBarangController = TextEditingController();
   final TextEditingController _imageBarangController = TextEditingController();
-  final TextEditingController _deskripsiBarangController =
-      TextEditingController();
+  final TextEditingController _deskripsiBarangController = TextEditingController();
   final TextEditingController _lokasiBarangController = TextEditingController();
+
+  modal_lapor({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.white,
-      insetPadding: EdgeInsets.symmetric(horizontal: 25), // Set inset padding
+      insetPadding: const EdgeInsets.symmetric(horizontal: 25), // Set inset padding
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9, // Lebar container utama
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -26,22 +27,23 @@ class modal_lapor extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.close),
+                  key: const ValueKey('tombol-close-modal-key'),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                Text(
+                const Text(
                   'Lapor',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 30), // Untuk keseimbangan
+                const SizedBox(width: 30), // Untuk keseimbangan
               ],
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               controller: _namaBarangController,
               decoration: InputDecoration(
@@ -51,7 +53,7 @@ class modal_lapor extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: [
                 Expanded(
@@ -68,13 +70,13 @@ class modal_lapor extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: const Icon(Icons.arrow_drop_down),
                         onPressed: () {},
                       ),
                     ],
                   ),
                 ),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Expanded(
                   child: Stack(
                     alignment: Alignment.centerRight,
@@ -94,14 +96,14 @@ class modal_lapor extends StatelessWidget {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Color(0xFFBB371A),
+                            color: const Color(0xFFBB371A),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: IconButton(
                             onPressed: () {
                               // Handle camera icon press
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.camera_alt_outlined,
                               color: Colors.white,
                             ),
@@ -113,7 +115,7 @@ class modal_lapor extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               controller: _deskripsiBarangController,
               decoration: InputDecoration(
@@ -123,7 +125,7 @@ class modal_lapor extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               controller: _lokasiBarangController,
               decoration: InputDecoration(
@@ -133,23 +135,17 @@ class modal_lapor extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFBB371A)),
-                minimumSize: MaterialStateProperty.all<Size>(
-                  Size(double.infinity, 50),
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        11), // Atur radius sesuai keinginan
-                    // Tambahan properti untuk mengatur tepi (edge)
-                  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFBB371A),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11), // Atur radius sesuai keinginan
+                  // Tambahan properti untuk mengatur tepi (edge)
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Lapor',
                 style: TextStyle(
                   fontSize: 18,
@@ -158,7 +154,7 @@ class modal_lapor extends StatelessWidget {
               ),
               onPressed: () {
                 Future.delayed(Duration.zero, () {
-                  Barang _barang = Barang(
+                  Barang barang = Barang(
                     nama: _namaBarangController.text,
                     type: _typeBarangController.text,
                     deskripsi: _deskripsiBarangController.text,
@@ -167,7 +163,7 @@ class modal_lapor extends StatelessWidget {
                     kehilangan: FirebaseAuth.instance.currentUser!.uid,
                     status: "Belum",
                   );
-                  LaporCon.addToFirestore(context, _barang);
+                  LaporCon.addToFirestore(context, barang);
                 });
               },
             ),
