@@ -15,6 +15,7 @@ import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
 import 'package:telu_adventure/model/achievement_model.dart';
 
+
 import '../Handler/DatabaseHelper.dart';
 
 HomeController _controller = HomeController();
@@ -175,16 +176,8 @@ class _home_pageState extends State<home_page> {
                       children: [
                         SizedBox(width: 20.0),
                         ModulAch(
-                            topText: 'Still Free',
-                            imagePath: 'assets/img/scholar.png'),
-                        SizedBox(width: 10.0),
-                        ModulAch(
-                            topText: 'Task Master',
-                            imagePath: 'assets/img/task_achievement.png'),
-                        SizedBox(width: 10.0),
-                        ModulAch(
-                            topText: 'Food Place',
-                            imagePath: 'assets/img/restaurant.png'),
+                            topText: 'New Star',
+                            imagePath: 'assets/img/Achievement.png'),
                         SizedBox(width: 10.0),
                       ],
                     ),
@@ -644,48 +637,67 @@ class ModulAch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin:
-          EdgeInsets.all(10.0), // Tambahkan margin 10.0 di semua sisi container
-      padding: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize:
-            MainAxisSize.min, // Mengatur agar column menyesuaikan ukuran widget
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            imagePath,
-            width: 100,
-            height: 100,
-          ),
-          SizedBox(height: 10.0),
-          Padding(
-            padding: EdgeInsets.only(
-                bottom: 10.0), // Tambahkan jarak pada bagian bawah
-            child: Text(
-              topText,
-              textAlign:
-                  TextAlign.center, // Mengatur agar teks berada di tengah
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black, // Ubah warna teks menjadi hitam
+    return GestureDetector(
+      onTap: () {
+        // Tambahkan kode untuk menampilkan efek fireworks di sini
+        // Contoh: menampilkan dialog atau animasi fireworks
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Congratulations!"),
+              content: Text("You've achieved $topText!"),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("Close"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 100,
+              height: 100,
+            ),
+            SizedBox(height: 10.0),
+            Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                topText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

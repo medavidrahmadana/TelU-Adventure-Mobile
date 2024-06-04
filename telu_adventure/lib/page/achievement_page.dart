@@ -17,6 +17,7 @@ class _AchievementPageState extends State<achievement_page> {
   String? gedungnk;
   String? kantin;
   int jumlahquest = 0;
+  int achieve = 0;
 
   @override
   void initState() {
@@ -42,15 +43,18 @@ class _AchievementPageState extends State<achievement_page> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = HomeController();
     int trueCount = 0;
     int falseCount = 0;
     int allCount = 0;
+    int achieve = 0;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Progress Page'),
+        title: Text('Achievement Page'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: homeController.getAchievement(),
@@ -72,22 +76,139 @@ class _AchievementPageState extends State<achievement_page> {
                 gambarAchievement: doc['gambarAchievement'] ?? '',
                 syarat: doc['syarat'] ?? '',
               );
-              
+
               String syarat = achievement.syarat;
-              if ((syarat == gedungk && achievement.id == '3') || (syarat == gedungnk && achievement.id == '2') || (syarat == kantin && achievement.id == '4')) {
+              if ((syarat == gedungk && achievement.id == '3') ||
+                  (syarat == gedungnk && achievement.id == '2') ||
+                  (syarat == kantin && achievement.id == '4')) {
                 // Show achievement image
                 trueCount++;
-                return ModulAch(botText1: doc['namaAchievement'], botText2: "()", imagePath: doc['gambarAchievement'], status: true,);
-              } else if (gedungk == '3' && gedungnk == '5' && kantin == '7' && achievement.id == '1') {
+                String botText2 = (syarat == gedungk)
+                    ? '($gedungk/$syarat)'
+                    : (syarat == gedungnk)
+                        ? '($gedungnk/$syarat)'
+                        : '($kantin/$syarat)';
+                return ModulAch(
+                  botText1: doc['namaAchievement'],
+                  botText2: botText2,
+                  imagePath: doc['gambarAchievement'],
+                  status: true,
+                );
+              } else if (gedungk == '3' &&
+                  gedungnk == '5' &&
+                  kantin == '7' &&
+                  achievement.id == '1') {
+                achieve++;
+                achieve++;
+                achieve++;
                 trueCount++;
-                return ModulAch(botText1: doc['namaAchievement'], botText2: "()", imagePath: doc['gambarAchievement'], status: true,);
-              } else if (int.parse(syarat) <= jumlahquest && achievement.id == '5') {
+                String box = "($achieve / $syarat)";
+                return ModulAch(
+                  botText1: doc['namaAchievement'],
+                  botText2: box,
+                  imagePath: doc['gambarAchievement'],
+                  status: true,
+                );
+              } else if (
+                  achievement.id == '6') {
                 trueCount++;
-                return ModulAch(botText1: doc['namaAchievement'], botText2: "()", imagePath: doc['gambarAchievement'], status: true,);
-              }else {
+                String tugas = "($syarat)";
+                return ModulAch(
+                  botText1: doc['namaAchievement'],
+                  botText2: tugas,
+                  imagePath: doc['gambarAchievement'],
+                  status: true,
+                );
+                }
+                else if (int.parse(syarat) <= jumlahquest &&
+                  achievement.id == '5') {
+                trueCount++;
+                String task = "($jumlahquest/$syarat)";
+                return ModulAch(
+                  botText1: doc['namaAchievement'],
+                  botText2: task,
+                  imagePath: doc['gambarAchievement'],
+                  status: true,
+                );
+                }
+                else if ((syarat != gedungk && achievement.id == '3') ||
+                    (syarat != gedungnk && achievement.id == '2') ||
+                    (syarat != kantin && achievement.id == '4')) {
+                  falseCount++;
+
+                  // Show achievement image
+                  String botText2 = (syarat == gedungk)
+                      ? '($gedungk/$syarat)'
+                      : (syarat == gedungnk)
+                          ? '($gedungnk/$syarat)'
+                          : '($kantin/$syarat)';
+                  return ModulAch(
+                    botText1: doc['namaAchievement'],
+                    botText2: botText2,
+                    imagePath: doc['gambarAchievement'],
+                    status: false,
+                  );
+                } else if ((gedungk != '3' &&
+                  gedungnk == '5' &&
+                  kantin == '7' &&
+                  achievement.id == '1') || (gedungk == '3' &&
+                  gedungnk != '5' &&
+                  kantin == '7' &&
+                  achievement.id == '1') || (gedungk == '3' &&
+                  gedungnk == '5' &&
+                  kantin != '7' &&
+                  achievement.id == '1')) {
+                  achieve++;
+                  achieve++;
+                  falseCount++;
+                  String box = "($achieve / $syarat)";
+                  return ModulAch(
+                    botText1: doc['namaAchievement'],
+                    botText2: box,
+                    imagePath: doc['gambarAchievement'],
+                    status: false,
+                  );
+                }
+                else if ((gedungk != '3' &&
+                  gedungnk != '5' &&
+                  kantin == '7' &&
+                  achievement.id == '1') || (gedungk == '3' &&
+                  gedungnk != '5' &&
+                  kantin != '7' &&
+                  achievement.id == '1') || (gedungk != '3' &&
+                  gedungnk == '5' &&
+                  kantin != '7' &&
+                  achievement.id == '1')) {
+                  achieve++;
+                  falseCount++;
+                  String box = "($achieve / $syarat)";
+                  return ModulAch(
+                    botText1: doc['namaAchievement'],
+                    botText2: box,
+                    imagePath: doc['gambarAchievement'],
+                    status: false,
+                  );
+                } else if (int.parse(syarat) > jumlahquest &&
+                    achievement.id == '5') {
+                  falseCount++;
+
+                  String task = "($jumlahquest/$syarat)";
+                  return ModulAch(
+                    botText1: doc['namaAchievement'],
+                    botText2: task,
+                    imagePath: doc['gambarAchievement'],
+                    status: false,
+                  );
+              } else {
                 falseCount++;
-                return ModulAch(botText1: doc['namaAchievement'], botText2: "()", imagePath: doc['gambarAchievement'], status: false,);
+                return ModulAch(
+                  botText1: doc['namaAchievement'],
+                  botText2: "()",
+                  imagePath: doc['gambarAchievement'],
+                  status: false,
+                );
               }
+
             }).toList();
             allCount = trueCount + falseCount;
             return Column(
@@ -95,7 +216,8 @@ class _AchievementPageState extends State<achievement_page> {
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/img/Standing on top of mountain peak success achieved generated by ai.png'),
+                      image: AssetImage(
+                          'assets/img/Standing on top of mountain peak success achieved generated by ai.png'),
                       fit: BoxFit.fitWidth,
                     ),
                   ),
@@ -111,7 +233,10 @@ class _AchievementPageState extends State<achievement_page> {
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: GameXPBar(
                             maxWidth: 375.0,
-                            value: allCount == 0 ? 0 : (100 / allCount) * trueCount,  // Prevent division by zero
+                            value: allCount == 0
+                                ? 0
+                                : (100 / allCount) *
+                                    trueCount, // Prevent division by zero
                           ),
                         ),
                       ),
