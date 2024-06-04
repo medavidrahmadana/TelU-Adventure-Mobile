@@ -6,18 +6,30 @@ import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/widget/modal_barang.dart';
 import 'package:telu_adventure/page/cari_page.dart';
 
+import '../widget/modal_cari.dart';
 import '../widget/modal_lapor.dart';
 import '../widget/nav_button.dart';
 import 'cari_page.dart';
 import 'profile_page.dart';
 
-class lapor_page extends StatelessWidget {
+class lapor_page extends StatefulWidget {
+  const lapor_page({super.key});
+
+  @override
+  State<lapor_page> createState() => _lapor_pageState();
+}
+
+class _lapor_pageState extends State<lapor_page> {
   // Contoh nilai UID
   final LaporCon _laporCon = LaporCon();
-  int _loadedItems = 3; // Jumlah awal item yang akan ditampilkan
-  final int _loadThreshold = 3; // Jumlah item yang akan dimuat setiap kali di-scroll
+
+  int _loadedItems = 3;
+  // Jumlah awal item yang akan ditampilkan
+  final int _loadThreshold = 3;
+  // Jumlah item yang akan dimuat setiap kali di-scroll
   String? uid = FirebaseAuth.instance.currentUser?.uid;
-  lapor_page({super.key});
+  // Buat sebuah bool untuk tombol lapor dan cari
+  bool isLapor = true;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +96,7 @@ class lapor_page extends StatelessWidget {
                                 pageBuilder: (context, animation, secondaryAnimation) {
                                   return Stack(
                                     children: <Widget>[
-                                      lapor_page(),
+                                      const lapor_page(),
                                       SlideTransition(
                                         position: Tween<Offset>(
                                           begin: const Offset(1.0, 0.0),
@@ -142,7 +154,7 @@ class lapor_page extends StatelessWidget {
                         children: [
                           if (uid != null)
                             StreamBuilder(
-                              stream: _laporCon.getlaporan(uid!),
+                              stream: isLapor ? _laporCon.getlaporan(uid!) : _laporCon.getlaporanbystatus(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError ||
                                     snapshot.connectionState == ConnectionState.waiting) {
@@ -252,27 +264,30 @@ class lapor_page extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ElevatedButton(
+                            key: const ValueKey('tombol-halamanlapor-key'),
                             onPressed: () {
-                              // Add your button 1 action here
+                              setState(() {
+                                isLapor = true;
+                              });
                             },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFFBB371A)),
-                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                  side: const BorderSide(color: Color(0xFFBB371A)),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isLapor ? const Color(0xFFBB371A) : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                side: isLapor
+                                    ? const BorderSide(color: Color(0xFFBB371A))
+                                    : const BorderSide(color: Colors.white),
                               ),
-                              elevation: WidgetStateProperty.all<double>(5),
+                              elevation: 5,
                             ),
                             child: Container(
                               width: 70,
                               height: 20,
                               alignment: Alignment.center,
-                              child: const Text(
+                              child: Text(
                                 'Lapor',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: isLapor ? Colors.white : Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -282,29 +297,28 @@ class lapor_page extends StatelessWidget {
                           ElevatedButton(
                             key: const ValueKey('tombol-halamancari-key'),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => cari_page()),
-                              );
+                              setState(() {
+                                isLapor = false;
+                              });
                             },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                  side: const BorderSide(color: Colors.white),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isLapor ? Colors.white : const Color(0xFFBB371A),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                side: isLapor
+                                    ? const BorderSide(color: Colors.white)
+                                    : const BorderSide(color: Color(0xFFBB371A)),
                               ),
-                              elevation: WidgetStateProperty.all<double>(5),
+                              elevation: 5,
                             ),
                             child: Container(
                               width: 70,
                               height: 20,
                               alignment: Alignment.center,
-                              child: const Text(
+                              child: Text(
                                 'Cari',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: isLapor ? Colors.black : Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -319,96 +333,87 @@ class lapor_page extends StatelessWidget {
               ),
             ),
           ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 405, left: 25),
-                    child: Text(
-                      'List Barang',
-                      style: TextStyle(
-                        fontFamily: 'inter',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFBB371A),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 410.0, left: 195),
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 228, 226, 226),
-                          width: 2,
-                        ),
-                      ),
-                      child: IconButton(
-                        key: const ValueKey('tombol-tambah-lapor-key'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) {
-                                return Stack(
-                                  children: <Widget>[
-                                    lapor_page(),
-                                    SlideTransition(
-                                      position: Tween<Offset>(
-                                        begin: const Offset(0, 0),
-                                        end: const Offset(0, 0),
-                                      ).animate(animation),
-                                      child: modal_lapor(), // Adjust this line to pass the correct documentId
-                                    ),
-                                  ],
-                                );
-                              },
-                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                return child;
-                              },
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.add),
-                        color: const Color(0xFFBB371A),
-                        iconSize: 32,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Container(
-                  width: 350,
-                  height: 45,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFF5F5F5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(13),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Barang',
+          if (isLapor == true)
+            Column(
+              children: [
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 405, left: 25),
+                      child: Text(
+                        'List Barang',
                         style: TextStyle(
                           fontFamily: 'inter',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey[500],
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFBB371A),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 100.0, right: 60),
-                        child: Text(
-                          'Type',
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 410.0, left: 195),
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(13),
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 228, 226, 226),
+                            width: 2,
+                          ),
+                        ),
+                        child: IconButton(
+                          key: const ValueKey('tombol-tambah-lapor-key'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) {
+                                  return Stack(
+                                    children: <Widget>[
+                                      const lapor_page(),
+                                      SlideTransition(
+                                        position: Tween<Offset>(
+                                          begin: const Offset(0, 0),
+                                          end: const Offset(0, 0),
+                                        ).animate(animation),
+                                        child:
+                                            modal_lapor(), // Adjust this line to pass the correct documentId
+                                      ),
+                                    ],
+                                  );
+                                },
+                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                  return child;
+                                },
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.add),
+                          color: const Color(0xFFBB371A),
+                          iconSize: 32,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Container(
+                    width: 350,
+                    height: 45,
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          'Barang',
                           style: TextStyle(
                             fontFamily: 'inter',
                             fontSize: 14,
@@ -416,23 +421,104 @@ class lapor_page extends StatelessWidget {
                             color: Colors.grey[500],
                           ),
                         ),
-                      ),
-                      Transform.rotate(
-                        angle: 90 * (22 / 7 / 180),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert),
-                          color: Colors.grey[500],
-                          iconSize: 32,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 100.0, right: 60),
+                          child: Text(
+                            'Type',
+                            style: TextStyle(
+                              fontFamily: 'inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey[500],
+                            ),
+                          ),
                         ),
-                      )
-                    ],
+                        Transform.rotate(
+                          angle: 90 * (22 / 7 / 180),
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_vert),
+                            color: Colors.grey[500],
+                            iconSize: 32,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(child: _buildKarirList(context)),
-            ],
-          )
+                Expanded(child: _buildKarirList(context)),
+              ],
+            ),
+          if (isLapor == false)
+            Column(
+              children: [
+                const Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 405, left: 25),
+                      child: Text(
+                        'List Barang',
+                        style: TextStyle(
+                          fontFamily: 'inter',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFBB371A),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Container(
+                    width: 350,
+                    height: 45,
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          'Barang',
+                          style: TextStyle(
+                            fontFamily: 'inter',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 100.0, right: 60),
+                          child: Text(
+                            'Type',
+                            style: TextStyle(
+                              fontFamily: 'inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+                        Transform.rotate(
+                          angle: 90 * (22 / 7 / 180),
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_vert),
+                            color: Colors.grey[500],
+                            iconSize: 32,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(child: _buildKarirListCari(context)),
+              ],
+            ),
         ],
       ),
     );
@@ -475,6 +561,50 @@ class lapor_page extends StatelessWidget {
                 );
               }
               return _buildLaporItem(docs[index], context);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildKarirListCari(BuildContext context) {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    return StreamBuilder(
+      stream: _laporCon.getlaporanbystatus(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text('Loading...');
+        }
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text('Tidak ada data'));
+        }
+
+        final docs = snapshot.data!.docs;
+        return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification notification) {
+            if (notification is ScrollEndNotification &&
+                notification.metrics.pixels >= notification.metrics.maxScrollExtent &&
+                _loadedItems < docs.length) {
+              _loadedItems += _loadThreshold;
+              if (_loadedItems >= docs.length) {
+                _loadedItems = docs.length;
+              }
+            }
+            return false;
+          },
+          child: ListView.builder(
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              if (index >= _loadedItems) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return _buildLaporCariItem(docs[index], context);
             },
           ),
         );
@@ -553,13 +683,107 @@ class lapor_page extends StatelessWidget {
                         pageBuilder: (context, animation, secondaryAnimation) {
                           return Stack(
                             children: <Widget>[
-                              lapor_page(),
+                              const lapor_page(),
                               SlideTransition(
                                 position: Tween<Offset>(
                                   begin: const Offset(0, 0),
                                   end: const Offset(0, 0),
                                 ).animate(animation),
                                 child: modal_barang(
+                                  documentId: doc.id,
+                                ), // Adjust this line to pass the correct documentId
+                              ),
+                            ],
+                          );
+                        },
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          return child;
+                        },
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.more_vert),
+                  iconSize: 32,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLaporCariItem(DocumentSnapshot doc, BuildContext context) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, bottom: 10),
+      child: SizedBox(
+        width: 350,
+        height: 45,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 170,
+              height: 45,
+              child: Row(
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(13),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 228, 226, 226),
+                        width: 2,
+                      ),
+                    ),
+                    // child: Image.asset(
+                    //   data['imagePath'],
+                    //   fit: BoxFit.cover,
+                    // ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(data['nama'], style: const TextStyle(fontSize: 16)),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 100,
+              height: 45,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(
+                  data['type'],
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: "inter",
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 85,
+              height: 45,
+              child: Transform.rotate(
+                angle: 90 * (22 / 7 / 180),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return Stack(
+                            children: <Widget>[
+                              cari_page(),
+                              SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0, 0),
+                                  end: const Offset(0, 0),
+                                ).animate(animation),
+                                child: modal_cari(
                                   documentId: doc.id,
                                 ), // Adjust this line to pass the correct documentId
                               ),

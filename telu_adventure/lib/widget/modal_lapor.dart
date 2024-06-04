@@ -137,16 +137,12 @@ class modal_lapor extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFFBB371A)),
-                minimumSize: WidgetStateProperty.all<Size>(
-                  const Size(double.infinity, 50),
-                ),
-                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(11), // Atur radius sesuai keinginan
-                    // Tambahan properti untuk mengatur tepi (edge)
-                  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFBB371A),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11), // Atur radius sesuai keinginan
+                  // Tambahan properti untuk mengatur tepi (edge)
                 ),
               ),
               child: const Text(

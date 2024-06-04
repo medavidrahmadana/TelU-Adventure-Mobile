@@ -255,18 +255,16 @@ class cari_page extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => lapor_page()),
+                                MaterialPageRoute(builder: (context) => const lapor_page()),
                               );
                             },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                  side: const BorderSide(color: Colors.white),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                side: const BorderSide(color: Colors.white),
                               ),
-                              elevation: WidgetStateProperty.all<double>(5),
+                              elevation: 5,
                             ),
                             child: Container(
                               width: 70,
@@ -286,15 +284,13 @@ class cari_page extends StatelessWidget {
                             onPressed: () {
                               // Add your button 1 action here
                             },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFFBB371A)),
-                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                  side: const BorderSide(color: Colors.white),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFBB371A),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                side: const BorderSide(color: Colors.white),
                               ),
-                              elevation: WidgetStateProperty.all<double>(5),
+                              elevation: 5,
                             ),
                             child: Container(
                               width: 70,
@@ -384,7 +380,7 @@ class cari_page extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(child: _buildKarirList(context)),
+              Expanded(child: _buildKarirListCari(context)),
             ],
           )
         ],
@@ -392,7 +388,7 @@ class cari_page extends StatelessWidget {
     );
   }
 
-  Widget _buildKarirList(BuildContext context) {
+  Widget _buildKarirListCari(BuildContext context) {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     return StreamBuilder(
       stream: _laporCon.getlaporanbystatus(),
@@ -428,7 +424,7 @@ class cari_page extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-              return _buildLaporItem(docs[index], context);
+              return _buildLaporCariItem(docs[index], context);
             },
           ),
         );
@@ -443,7 +439,7 @@ class cari_page extends StatelessWidget {
     }
   }
 
-  Widget _buildLaporItem(DocumentSnapshot doc, BuildContext context) {
+  Widget _buildLaporCariItem(DocumentSnapshot doc, BuildContext context) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, bottom: 10),
