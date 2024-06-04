@@ -3,12 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:telu_adventure/controllers/scan_controller.dart';
-import 'package:telu_adventure/model/scan_model.dart';
+import 'package:telu_adventure/widget/scan_adventure.dart';
+import 'package:telu_adventure/widget/scan_quest.dart';
 import '../controllers/userdetail_controller.dart';
 import '../widget/scan_notif.dart';
-import 'forum_dashboard.dart';
-import '../widget/forum_notifikasi.dart';
 
 class ScanPage extends StatefulWidget {
   final CameraDescription camera;
@@ -72,8 +70,7 @@ class _ScanPageState extends State<ScanPage> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
+                          pageBuilder: (context, animation, secondaryAnimation) {
                             return Stack(
                               children: <Widget>[
                                 ScanPage(camera: widget.camera),
@@ -87,8 +84,7 @@ class _ScanPageState extends State<ScanPage> {
                               ],
                             );
                           },
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
                             return child;
                           },
                         ),
@@ -147,11 +143,11 @@ class _ScanPageState extends State<ScanPage> {
       setState(() {
         result = scanData;
       });
-      _showDialog(scanData);
+      _showModalScanData(scanData);
     });
   }
 
-  void _showDialog(Barcode scanData) {
+  void _showModalScanData(Barcode scanData) {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     String? code = scanData.code;
     String message = "Unknown";
@@ -165,243 +161,130 @@ class _ScanPageState extends State<ScanPage> {
       }
     }
     if (message == " 1") {
-      //gedung
-      showDialog(
+      // Gedung
+      showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Adventurer',
-              style: TextStyle(
-                fontSize: 24.0, // Ukuran font untuk judul
-                fontWeight: FontWeight.bold, // Membuat teks tebal
-              ),
-            ),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 5.0), // Padding untuk kanan dan kiri
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'Gedung: $id',
-                    style: TextStyle(
-                      fontSize: 16.0, // Ukuran font untuk konten
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    fontSize: 18.0, // Ukuran font untuk tombol OK
-                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
-                  ),
-                ),
-                onPressed: () async {
-                  try {
-                    var result = await _usercon.getGedung(uid);
-                    String? gedungk = result['gedungk'];
-                    String? gedungnk = result['gedungnk'];
-                    String? kantin = result['kantin'];
-                    if (gedungk != null && gedungnk != null && kantin != null) {
-                      int Gedung = int.parse(gedungk) + 1;
-                      String newgedung = Gedung.toString();
-                      await _usercon.updateGedung(
-                          uid, newgedung, gedungnk, kantin);
-                    } else {
-                      print('Error: One of the values is null');
-                    }
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                },
-              ),
-            ],
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return ScanAdventure(
+            imageUrl: '',
+            namaGedung: id,
+            onPressed: () async {
+              try {
+                var result = await _usercon.getGedung(uid);
+                String? gedungk = result['gedungk'];
+                String? gedungnk = result['gedungnk'];
+                String? kantin = result['kantin'];
+                if (gedungk != null && gedungnk != null && kantin != null) {
+                  int Gedung = int.parse(gedungk) + 1;
+                  String newgedung = Gedung.toString();
+                  await _usercon.updateGedung(uid, newgedung, gedungnk, kantin);
+                } else {
+                  print('Error: One of the values is null');
+                }
+              } catch (e) {
+                print('Error: $e');
+              }
+            },
           );
         },
       );
     } else if (message == " 2") {
-      //gedungnk
-      showDialog(
+      // Gedungnk
+      showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Adventurer',
-              style: TextStyle(
-                fontSize: 24.0, // Ukuran font untuk judul
-                fontWeight: FontWeight.bold, // Membuat teks tebal
-              ),
-            ),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 5.0), // Padding untuk kanan dan kiri
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'Gedung: $id',
-                    style: TextStyle(
-                      fontSize: 16.0, // Ukuran font untuk konten
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    fontSize: 18.0, // Ukuran font untuk tombol OK
-                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
-                  ),
-                ),
-                onPressed: () async {
-                  try {
-                    var result = await _usercon.getGedung(uid);
-                    String? gedungk = result['gedungk'];
-                    String? gedungnk = result['gedungnk'];
-                    String? kantin = result['kantin'];
-                    if (gedungk != null && gedungnk != null && kantin != null) {
-                      int Gedungnk = int.parse(gedungnk) + 1;
-                      String newgedungnk = Gedungnk.toString();
-                      await _usercon.updateGedung(
-                          uid, gedungk, newgedungnk, kantin);
-                    } else {
-                      print('Error: One of the values is null');
-                    }
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                },
-              ),
-            ],
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return ScanAdventure(
+            imageUrl: '',
+            namaGedung: id,
+            onPressed: () async {
+              try {
+                var result = await _usercon.getGedung(uid);
+                String? gedungk = result['gedungk'];
+                String? gedungnk = result['gedungnk'];
+                String? kantin = result['kantin'];
+                if (gedungk != null && gedungnk != null && kantin != null) {
+                  int Gedungnk = int.parse(gedungnk) + 1;
+                  String newgedungnk = Gedungnk.toString();
+                  await _usercon.updateGedung(uid, gedungk, newgedungnk, kantin);
+                } else {
+                  print('Error: One of the values is null');
+                }
+              } catch (e) {
+                print('Error: $e');
+              }
+            },
           );
         },
       );
     } else if (message == " 3") {
-      //kantin
-      showDialog(
+      // Kantin
+      showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Adventurer',
-              style: TextStyle(
-                fontSize: 24.0, // Ukuran font untuk judul
-                fontWeight: FontWeight.bold, // Membuat teks tebal
-              ),
-            ),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 5.0), // Padding untuk kanan dan kiri
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'Gedung: $id',
-                    style: TextStyle(
-                      fontSize: 16.0, // Ukuran font untuk konten
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    fontSize: 18.0, // Ukuran font untuk tombol OK
-                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
-                  ),
-                ),
-                onPressed: () async {
-                  try {
-                    var result = await _usercon.getGedung(uid);
-                    String? gedungk = result['gedungk'];
-                    String? gedungnk = result['gedungnk'];
-                    String? kantin = result['kantin'];
-                    if (gedungk != null && gedungnk != null && kantin != null) {
-                      int Kantin = int.parse(kantin) + 1;
-                      String newKantin = Kantin.toString();
-                      await _usercon.updateGedung(
-                          uid, gedungk, gedungnk, newKantin);
-                    } else {
-                      print('Error: One of the values is null');
-                    }
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                },
-              ),
-            ],
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return ScanAdventure(
+            imageUrl: '',
+            namaGedung: id,
+            onPressed: () async {
+              try {
+                var result = await _usercon.getGedung(uid);
+                String? gedungk = result['gedungk'];
+                String? gedungnk = result['gedungnk'];
+                String? kantin = result['kantin'];
+                if (gedungk != null && gedungnk != null && kantin != null) {
+                  int Kantin = int.parse(kantin) + 1;
+                  String newKantin = Kantin.toString();
+                  await _usercon.updateGedung(uid, gedungk, gedungnk, newKantin);
+                } else {
+                  print('Error: One of the values is null');
+                }
+              } catch (e) {
+                print('Error: $e');
+              }
+            },
           );
         },
       );
     } else {
-      showDialog(
+      showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Quest',
-              style: TextStyle(
-                fontSize: 24.0, // Ukuran font untuk judul
-                fontWeight: FontWeight.bold, // Membuat teks tebal
-              ),
-            ),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 5.0), // Padding untuk kanan dan kiri
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'Message: $id',
-                    style: TextStyle(
-                      fontSize: 16.0, // Ukuran font untuk konten
-                    ),
-                  ),
-                  SizedBox(height: 18), // Jarak antara teks dan TextField
-                  TextField(
-                    controller: jawabController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Jawab', // Label untuk TextField
-                      hintText: 'Jawab Lah Travelers',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    fontSize: 18.0, // Ukuran font untuk tombol OK
-                    fontWeight: FontWeight.bold, // Membuat teks tombol OK tebal
-                  ),
-                ),
-                onPressed: () {
-                  Future.delayed(Duration.zero, () {
-                    scan_model _scan = scan_model(
-                      uid: FirebaseAuth.instance.currentUser!.uid,
-                      isi: code ?? "Unknown",
-                      jawab: jawabController.text,
-                    );
-                    ScanCon.addToFirestore(context, _scan);
-                  });
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return ScanQuest(
+            imageUrl: 'assets/img/TULT.png',
+            question: id,
+            controller: jawabController,
+            code: code,
           );
         },
       );

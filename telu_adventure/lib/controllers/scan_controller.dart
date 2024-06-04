@@ -9,16 +9,14 @@ class ScanCon {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //create
-  static Future<void> addToFirestore(
-      BuildContext context, scan_model scan) async {
+  static Future<void> addToFirestore(BuildContext context, scan_model scan) async {
     try {
       await FirebaseFirestore.instance.collection("quest").add(scan.toMap());
       // Show success message or navigate to another screen
-      
+
       Navigator.pop(context);
     } catch (error) {
-     
-      Navigator.pop(context); // Assuming this is in a new screen
+      print(error); // Assuming this is in a new screen
     }
   }
 

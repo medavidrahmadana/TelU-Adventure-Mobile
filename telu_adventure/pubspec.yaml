@@ -57,6 +57,7 @@ dependencies:
   firebase_storage: ^11.7.5
   image_picker: ^1.1.1
   sqflite: ^2.3.3+1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   test: ^1.24.9
@@ -112,3 +113,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: "AppIcon"
+  image_path: "assets/img/logo_splash.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
