@@ -8,7 +8,7 @@ import '../page/scan_page.dart';
 import 'package:telu_adventure/page/cari_page.dart';
 
 class NavButton extends StatefulWidget {
-  NavButton({Key? key}) : super(key: key);
+  const NavButton({super.key});
 
   @override
   _NavButtonState createState() => _NavButtonState();
@@ -27,7 +27,7 @@ class _NavButtonState extends State<NavButton> {
     super.initState();
     _initCamera();
     _bucket = PageStorageBucket();
-    _currentScreen = home_page(); // Assuming HomePage is your default screen
+    _currentScreen = const home_page(); // Assuming HomePage is your default screen
   }
 
   Future<void> _initCamera() async {
@@ -35,8 +35,8 @@ class _NavButtonState extends State<NavButton> {
     _camera = cameras.first;
     setState(() {
       _children = [
-        home_page(),
-        map_page(),
+        const home_page(),
+        const map_page(),
         // MapCard(),
         // course_page(),
         ScanPage(camera: _camera),
@@ -57,8 +57,10 @@ class _NavButtonState extends State<NavButton> {
     setState(() {
       if (_isCariPage) {
         _currentScreen = lapor_page();
+        _currentIndex = 3;
       } else {
         _currentScreen = cari_page();
+        _currentIndex = 3;
       }
       _isCariPage = !_isCariPage; // Toggle halaman
     });
@@ -68,15 +70,14 @@ class _NavButtonState extends State<NavButton> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageStorage(
-        child: _currentScreen,
         bucket: _bucket,
+        child: _currentScreen,
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-              100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
+          borderRadius: BorderRadius.circular(100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
         ),
-        child: Icon(Icons.qr_code_scanner_rounded),
+        child: const Icon(Icons.qr_code_scanner_rounded),
         onPressed: () {
           Navigator.push(
             context,
@@ -86,9 +87,9 @@ class _NavButtonState extends State<NavButton> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
+        child: SizedBox(
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,7 +101,7 @@ class _NavButtonState extends State<NavButton> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          _currentScreen = home_page();
+                          _currentScreen = const home_page();
                           _currentIndex = 0;
                         });
                       },
@@ -109,14 +110,12 @@ class _NavButtonState extends State<NavButton> {
                         children: [
                           Icon(
                             Icons.home,
-                            color:
-                                _currentIndex == 0 ? Colors.red : Colors.grey,
+                            color: _currentIndex == 0 ? Colors.red : Colors.grey,
                           ),
                           Text(
                             'Home',
                             style: TextStyle(
-                              color:
-                                  _currentIndex == 0 ? Colors.red : Colors.grey,
+                              color: _currentIndex == 0 ? Colors.red : Colors.grey,
                             ),
                           )
                         ],
@@ -125,7 +124,7 @@ class _NavButtonState extends State<NavButton> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          _currentScreen = map_page();
+                          _currentScreen = const map_page();
                           _currentIndex = 1;
                         });
                       },
@@ -134,14 +133,12 @@ class _NavButtonState extends State<NavButton> {
                         children: [
                           Icon(
                             Icons.map,
-                            color:
-                                _currentIndex == 1 ? Colors.red : Colors.grey,
+                            color: _currentIndex == 1 ? Colors.red : Colors.grey,
                           ),
                           Text(
                             'Map',
                             style: TextStyle(
-                              color:
-                                  _currentIndex == 1 ? Colors.red : Colors.grey,
+                              color: _currentIndex == 1 ? Colors.red : Colors.grey,
                             ),
                           )
                         ],
@@ -164,14 +161,12 @@ class _NavButtonState extends State<NavButton> {
                         children: [
                           Icon(
                             Icons.chat,
-                            color:
-                                _currentIndex == 2 ? Colors.red : Colors.grey,
+                            color: _currentIndex == 2 ? Colors.red : Colors.grey,
                           ),
                           Text(
                             'Forum',
                             style: TextStyle(
-                              color:
-                                  _currentIndex == 2 ? Colors.red : Colors.grey,
+                              color: _currentIndex == 2 ? Colors.red : Colors.grey,
                             ),
                           )
                         ],
