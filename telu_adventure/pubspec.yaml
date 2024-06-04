@@ -39,6 +39,7 @@ dependencies:
   webview_flutter: ^2.0.13
   firebase_core: ^2.27.1
   firebase_auth: ^4.3.0
+  flutter_sparkle: ^0.0.2 # Dependensi untuk efek kembang api
 
 
   # The following adds the Cupertino Icons font to your application.
