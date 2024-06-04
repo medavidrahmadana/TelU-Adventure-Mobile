@@ -174,7 +174,7 @@ class _ScanPageState extends State<ScanPage> {
         backgroundColor: Colors.white,
         builder: (context) {
           return ScanAdventure(
-            imageUrl: '',
+            imageUrl: 'assets/img/gku.jpg',
             namaGedung: id,
             onPressed: () async {
               try {
@@ -246,7 +246,7 @@ class _ScanPageState extends State<ScanPage> {
         backgroundColor: Colors.white,
         builder: (context) {
           return ScanAdventure(
-            imageUrl: '',
+            imageUrl: 'assets/img/kantin.jpg',
             namaGedung: id,
             onPressed: () async {
               try {
@@ -281,7 +281,7 @@ class _ScanPageState extends State<ScanPage> {
         backgroundColor: Colors.white,
         builder: (context) {
           return ScanQuest(
-            imageUrl: 'assets/img/TULT.png',
+            imageUrl: 'assets/img/quiz.jpg',
             question: id,
             controller: jawabController,
             code: code,
