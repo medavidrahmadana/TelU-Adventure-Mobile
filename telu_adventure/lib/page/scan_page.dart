@@ -22,6 +22,8 @@ class _ScanPageState extends State<ScanPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   final TextEditingController jawabController = TextEditingController();
   Barcode? result;
+  bool _isScanned =
+      false; // Tambahkan variabel untuk menandai apakah sudah dipindai
 
   @override
   void reassemble() {
@@ -70,7 +72,8 @@ class _ScanPageState extends State<ScanPage> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) {
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
                             return Stack(
                               children: <Widget>[
                                 ScanPage(camera: widget.camera),
@@ -84,7 +87,8 @@ class _ScanPageState extends State<ScanPage> {
                               ],
                             );
                           },
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
                             return child;
                           },
                         ),
@@ -140,10 +144,14 @@ class _ScanPageState extends State<ScanPage> {
       qrController = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-      _showModalScanData(scanData);
+      if (!_isScanned) {
+        // Periksa apakah sudah dipindai
+        setState(() {
+          result = scanData;
+        });
+        _showModalScanData(scanData);
+        _isScanned = true; // Tandai bahwa sudah dipindai
+      }
     });
   }
 
@@ -186,6 +194,8 @@ class _ScanPageState extends State<ScanPage> {
                   int Gedung = int.parse(gedungk) + 1;
                   String newgedung = Gedung.toString();
                   await _usercon.updateGedung(uid, newgedung, gedungnk, kantin);
+                  _isScanned = false;
+                  Navigator.pop(context);
                 } else {
                   print('Error: One of the values is null');
                 }
@@ -221,7 +231,10 @@ class _ScanPageState extends State<ScanPage> {
                 if (gedungk != null && gedungnk != null && kantin != null) {
                   int Gedungnk = int.parse(gedungnk) + 1;
                   String newgedungnk = Gedungnk.toString();
-                  await _usercon.updateGedung(uid, gedungk, newgedungnk, kantin);
+                  await _usercon.updateGedung(
+                      uid, gedungk, newgedungnk, kantin);
+                  _isScanned = false;
+                  Navigator.pop(context);
                 } else {
                   print('Error: One of the values is null');
                 }
@@ -257,7 +270,10 @@ class _ScanPageState extends State<ScanPage> {
                 if (gedungk != null && gedungnk != null && kantin != null) {
                   int Kantin = int.parse(kantin) + 1;
                   String newKantin = Kantin.toString();
-                  await _usercon.updateGedung(uid, gedungk, gedungnk, newKantin);
+                  await _usercon.updateGedung(
+                      uid, gedungk, gedungnk, newKantin);
+                  _isScanned = false;
+                  Navigator.pop(context);
                 } else {
                   print('Error: One of the values is null');
                 }

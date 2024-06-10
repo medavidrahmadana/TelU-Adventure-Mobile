@@ -1,22 +1,96 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:telu_adventure/controllers/lapor_controller.dart';
 import 'package:telu_adventure/model/barang_model.dart';
+import 'dart:io';
 
-class modal_lapor extends StatelessWidget {
+class modal_lapor extends StatefulWidget {
+  @override
+  _modal_laporState createState() => _modal_laporState();
+}
+
+class _modal_laporState extends State<modal_lapor> {
   final TextEditingController _namaBarangController = TextEditingController();
   final TextEditingController _typeBarangController = TextEditingController();
   final TextEditingController _imageBarangController = TextEditingController();
-  final TextEditingController _deskripsiBarangController = TextEditingController();
+  final TextEditingController _deskripsiBarangController =
+      TextEditingController();
   final TextEditingController _lokasiBarangController = TextEditingController();
+  File? _imageFile;
+  bool _isLoading = false;
 
-  modal_lapor({super.key});
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        _imageBarangController.text = pickedFile.name;
+      });
+      print('Image picked: ${pickedFile.path}');
+    } else {
+      print('No image selected.');
+    }
+  }
+
+  Future<String?> _uploadImageToFirebase() async {
+    if (_imageFile == null) return null;
+
+    String fileName = _imageFile!.path.split('/').last;
+    Reference storageRef =
+        FirebaseStorage.instance.ref().child('images/$fileName');
+
+    try {
+      TaskSnapshot snapshot = await storageRef.putFile(_imageFile!);
+      String downloadURL = await snapshot.ref.getDownloadURL();
+      print('Image uploaded successfully: $downloadURL');
+      return downloadURL;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
+    }
+  }
+
+  Future<void> _submitReport() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Upload image to Firebase Storage and get the download URL
+      String? imageURL = await _uploadImageToFirebase();
+
+      // Create Barang object with the image URL
+      Barang barang = Barang(
+        nama: _namaBarangController.text,
+        type: _typeBarangController.text,
+        deskripsi: _deskripsiBarangController.text,
+        imagePath: imageURL ?? "",
+        telepon: _lokasiBarangController.text,
+        kehilangan: FirebaseAuth.instance.currentUser!.uid,
+        status: "Belum",
+      );
+
+      // Add the Barang object to Firestore
+      await LaporCon.addToFirestore(context, barang);
+      print('Report submitted successfully');
+    } catch (e) {
+      print('Error during report submission: $e');
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.white,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 25), // Set inset padding
+      insetPadding:
+          const EdgeInsets.symmetric(horizontal: 25), // Set inset padding
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9, // Lebar container utama
         padding: const EdgeInsets.all(20),
@@ -69,10 +143,6 @@ class modal_lapor extends StatelessWidget {
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: () {},
-                      ),
                     ],
                   ),
                 ),
@@ -100,9 +170,7 @@ class modal_lapor extends StatelessWidget {
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: IconButton(
-                            onPressed: () {
-                              // Handle camera icon press
-                            },
+                            onPressed: _pickImage,
                             icon: const Icon(
                               Icons.camera_alt_outlined,
                               color: Colors.white,
@@ -136,37 +204,27 @@ class modal_lapor extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFBB371A),
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(11), // Atur radius sesuai keinginan
-                  // Tambahan properti untuk mengatur tepi (edge)
-                ),
-              ),
-              child: const Text(
-                'Lapor',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                Future.delayed(Duration.zero, () {
-                  Barang barang = Barang(
-                    nama: _namaBarangController.text,
-                    type: _typeBarangController.text,
-                    deskripsi: _deskripsiBarangController.text,
-                    imagePath: _imageBarangController.text,
-                    telepon: _lokasiBarangController.text,
-                    kehilangan: FirebaseAuth.instance.currentUser!.uid,
-                    status: "Belum",
-                  );
-                  LaporCon.addToFirestore(context, barang);
-                });
-              },
-            ),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFBB371A),
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            11), // Atur radius sesuai keinginan
+                        // Tambahan properti untuk mengatur tepi (edge)
+                      ),
+                    ),
+                    child: const Text(
+                      'Lapor',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: _submitReport,
+                  ),
           ],
         ),
       ),

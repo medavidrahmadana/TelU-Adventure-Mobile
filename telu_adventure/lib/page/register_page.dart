@@ -200,10 +200,7 @@ class RegisterPage extends StatelessWidget {
       await userCredential.user!.updatePhotoURL(pathimg);
       // Registrasi berhasil, arahkan pengguna ke halaman login
       print('User registered: ${userCredential.user?.uid}');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('berhasil registrasi!!')),
       );

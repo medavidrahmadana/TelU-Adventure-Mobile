@@ -11,7 +11,6 @@ import firebase_auth
 import firebase_core
 import firebase_storage
 import flutter_local_notifications
-import google_sign_in_ios
 import flutter_sparkle
 import mobile_scanner
 import sqflite

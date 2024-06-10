@@ -53,7 +53,6 @@ class usercon {
           'gedungnk': newGedungnk,
           'kantin': newKantin,
         });
-
         print('Document updated successfully');
       } else {
         print('No documents found for uid: $uid');

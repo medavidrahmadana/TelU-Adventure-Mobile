@@ -25,7 +25,8 @@ class _NavButtonState extends State<NavButton> {
     super.initState();
     _initCamera();
     _bucket = PageStorageBucket();
-    _currentScreen = const home_page(); // Assuming HomePage is your default screen
+    _currentScreen =
+        const home_page(); // Assuming HomePage is your default screen
   }
 
   Future<void> _initCamera() async {
@@ -34,7 +35,7 @@ class _NavButtonState extends State<NavButton> {
     setState(() {
       _children = [
         const home_page(),
-        const map_page(),
+        map_page(),
         // MapCard(),
         // course_page(),
         ScanPage(camera: _camera),
@@ -60,7 +61,8 @@ class _NavButtonState extends State<NavButton> {
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
+          borderRadius: BorderRadius.circular(
+              100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
         ),
         child: const Icon(Icons.qr_code_scanner_rounded),
         onPressed: () {
@@ -95,12 +97,14 @@ class _NavButtonState extends State<NavButton> {
                         children: [
                           Icon(
                             Icons.home,
-                            color: _currentIndex == 0 ? Colors.red : Colors.grey,
+                            color:
+                                _currentIndex == 0 ? Colors.red : Colors.grey,
                           ),
                           Text(
                             'Home',
                             style: TextStyle(
-                              color: _currentIndex == 0 ? Colors.red : Colors.grey,
+                              color:
+                                  _currentIndex == 0 ? Colors.red : Colors.grey,
                             ),
                           )
                         ],
@@ -109,7 +113,7 @@ class _NavButtonState extends State<NavButton> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          _currentScreen = const map_page();
+                          _currentScreen = map_page();
                           _currentIndex = 1;
                         });
                       },
@@ -118,12 +122,14 @@ class _NavButtonState extends State<NavButton> {
                         children: [
                           Icon(
                             Icons.map,
-                            color: _currentIndex == 1 ? Colors.red : Colors.grey,
+                            color:
+                                _currentIndex == 1 ? Colors.red : Colors.grey,
                           ),
                           Text(
                             'Map',
                             style: TextStyle(
-                              color: _currentIndex == 1 ? Colors.red : Colors.grey,
+                              color:
+                                  _currentIndex == 1 ? Colors.red : Colors.grey,
                             ),
                           )
                         ],
@@ -146,12 +152,14 @@ class _NavButtonState extends State<NavButton> {
                         children: [
                           Icon(
                             Icons.chat,
-                            color: _currentIndex == 2 ? Colors.red : Colors.grey,
+                            color:
+                                _currentIndex == 2 ? Colors.red : Colors.grey,
                           ),
                           Text(
                             'Forum',
                             style: TextStyle(
-                              color: _currentIndex == 2 ? Colors.red : Colors.grey,
+                              color:
+                                  _currentIndex == 2 ? Colors.red : Colors.grey,
                             ),
                           )
                         ],
@@ -174,7 +182,8 @@ class _NavButtonState extends State<NavButton> {
                         Text(
                           'Lapor',
                           style: TextStyle(
-                            color: _currentIndex == 3 ? Colors.red : Colors.grey,
+                            color:
+                                _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),
                         )
                       ],

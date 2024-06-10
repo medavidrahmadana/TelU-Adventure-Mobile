@@ -87,25 +87,35 @@ class _home_pageState extends State<home_page> {
                     child: FutureBuilder<List<jadwalPelajaran>>(
                       future: _controller.getJadwalPelajaran(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
-                          List<jadwalPelajaran> jadwalList = snapshot.data ?? [];
+                          List<jadwalPelajaran> jadwalList =
+                              snapshot.data ?? [];
                           return Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 20.0), // Atur jarak kiri dan kanan
+                            padding: const EdgeInsets.only(
+                                left: 20.0,
+                                right: 20.0), // Atur jarak kiri dan kanan
                             child: Row(
-                              children: List.generate(jadwalList.length, (index) {
+                              children:
+                                  List.generate(jadwalList.length, (index) {
                                 // Check if it's not the last item to add space after it
                                 return Padding(
-                                  padding: EdgeInsets.only(right: index < jadwalList.length - 1 ? 20.0 : 0.0),
+                                  padding: EdgeInsets.only(
+                                      right: index < jadwalList.length - 1
+                                          ? 20.0
+                                          : 0.0),
                                   child: SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.8,
-                                    height: MediaQuery.of(context).size.height * 0.2,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
                                     child: ModulOption(
-                                      imagePath: 'assets/img/Map.png', // Ganti dengan gambar yang sesuai
+                                      imagePath:
+                                          'assets/img/Map.png', // Ganti dengan gambar yang sesuai
                                       topText: jadwalList[index].namaMatkul,
                                       bottomTexts: [
                                         jadwalList[index].namaGedung,
@@ -144,7 +154,8 @@ class _home_pageState extends State<home_page> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => achievement_page()),
+                              MaterialPageRoute(
+                                  builder: (context) => achievement_page()),
                             );
                           },
                           child: const Text(
@@ -166,7 +177,9 @@ class _home_pageState extends State<home_page> {
                     child: Row(
                       children: [
                         SizedBox(width: 20.0),
-                        ModulAch(topText: 'New Star', imagePath: 'assets/img/Achievement.png'),
+                        ModulAch(
+                            topText: 'New Star',
+                            imagePath: 'assets/img/Achievement.png'),
                         SizedBox(width: 10.0),
                       ],
                     ),
@@ -196,7 +209,8 @@ class _home_pageState extends State<home_page> {
                     child: FutureBuilder<List<Beasiswa>>(
                       future: _controller.getBeasiswa(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           ); // Menampilkan indikator loading di tengah saat data sedang dimuat
@@ -205,34 +219,44 @@ class _home_pageState extends State<home_page> {
                             child: Text('Error: ${snapshot.error}'),
                           ); // Menampilkan pesan kesalahan di tengah jika terjadi error
                         } else {
-                          List<Beasiswa> beasiswaList = snapshot.data ?? []; // Mendapatkan data beasiswa
+                          List<Beasiswa> beasiswaList =
+                              snapshot.data ?? []; // Mendapatkan data beasiswa
                           return Column(
                             children: beasiswaList.map((beasiswa) {
                               return Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Container(
-                                  width: double.infinity, // Lebar kontainer mengikuti lebar layar
+                                  width: double
+                                      .infinity, // Lebar kontainer mengikuti lebar layar
                                   decoration: BoxDecoration(
-                                    color: Colors.white, // Warna latar belakang kotak
-                                    borderRadius: BorderRadius.circular(20.0), // Sudut bulat kotak
+                                    color: Colors
+                                        .white, // Warna latar belakang kotak
+                                    borderRadius: BorderRadius.circular(
+                                        20.0), // Sudut bulat kotak
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5), // Warna bayangan
-                                        spreadRadius: 3, // Radius penyebaran bayangan
+                                        color: Colors.grey
+                                            .withOpacity(0.5), // Warna bayangan
+                                        spreadRadius:
+                                            3, // Radius penyebaran bayangan
                                         blurRadius: 5, // Radius kabur bayangan
-                                        offset: const Offset(0, 3), // Offset bayangan
+                                        offset: const Offset(
+                                            0, 3), // Offset bayangan
                                       ),
                                     ],
                                   ),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 10),
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
                                         child: SizedBox(
                                           height: 100, // Tinggi gambar
                                           child: Image.asset(
-                                            beasiswa.image, // URL gambar beasiswa
+                                            beasiswa
+                                                .image, // URL gambar beasiswa
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -240,18 +264,22 @@ class _home_pageState extends State<home_page> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             const SizedBox(
                                               height: 10,
                                             ),
                                             Text(
                                               beasiswa.namaBeasiswa,
-                                              style: const TextStyle(fontSize: 16),
+                                              style:
+                                                  const TextStyle(fontSize: 16),
                                             ),
                                             Text(
                                               beasiswa.deskripsi,
-                                              style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -279,12 +307,14 @@ class _home_pageState extends State<home_page> {
                     children: [
                       const Spacer(), // Spacer untuk menggeser icon button ke kanan
                       Padding(
-                        padding: const EdgeInsets.only(top: 50, right: 20), // Ubah padding ke bagian kanan
+                        padding: const EdgeInsets.only(
+                            top: 50, right: 20), // Ubah padding ke bagian kanan
                         child: Container(
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEED1D1), // Warna latar belakang putih
+                            color: const Color(
+                                0xFFEED1D1), // Warna latar belakang putih
                             borderRadius: BorderRadius.circular(9),
                             boxShadow: const [
                               BoxShadow(
@@ -307,7 +337,8 @@ class _home_pageState extends State<home_page> {
                               // Navigate to the login page
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
                               );
                             },
                           ),
@@ -353,7 +384,8 @@ class InfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String uid = FirebaseAuth.instance.currentUser!.uid; // Get the current user UID
+    String uid =
+        FirebaseAuth.instance.currentUser!.uid; // Get the current user UID
 
     return StreamBuilder<QuerySnapshot>(
       stream: _controller.getgedung(uid),
@@ -462,17 +494,20 @@ class InfoBox extends StatelessWidget {
                           // Handle event when explorasi button is pressed
                         },
                         style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(const Color(0xFFA11E22)), // Warna latar merah
-                          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color(0xFFA11E22)), // Warna latar merah
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0), // Kurangi radius sudut
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Kurangi radius sudut
                             ),
                           ),
                         ),
                         child: const Text(
                           'Explorasi',
-                          style: TextStyle(color: Colors.white), // Warna teks putih
+                          style: TextStyle(
+                              color: Colors.white), // Warna teks putih
                         ),
                       ),
                     ),
@@ -492,7 +527,11 @@ class ModulOption extends StatelessWidget {
   final List<String> bottomTexts; // Mengubah bottomText menjadi List<String>
   final String imagePath;
 
-  const ModulOption({super.key, required this.topText, required this.bottomTexts, required this.imagePath});
+  const ModulOption(
+      {super.key,
+      required this.topText,
+      required this.bottomTexts,
+      required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -501,7 +540,8 @@ class ModulOption extends StatelessWidget {
       height: 170.0,
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: const Color(0xFFA11E22), // Ganti warna latar belakang menjadi merah
+        color:
+            const Color(0xFFA11E22), // Ganti warna latar belakang menjadi merah
         borderRadius: BorderRadius.circular(20.0),
         boxShadow: [
           BoxShadow(
@@ -517,7 +557,10 @@ class ModulOption extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(
-                top: 5.0, right: 0.0, bottom: 40.0, left: 0.0), // Sesuaikan nilai sesuai kebutuhan
+                top: 5.0,
+                right: 0.0,
+                bottom: 40.0,
+                left: 0.0), // Sesuaikan nilai sesuai kebutuhan
             child: Image.asset(
               imagePath, // Path gambar
               width: 100, // Lebar gambar, sesuaikan sesuai kebutuhan
@@ -570,12 +613,13 @@ class ModulOption extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 10.0), // Spasi antara bottom text dan tombol
+                const SizedBox(
+                    height: 10.0), // Spasi antara bottom text dan tombol
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const map_page()),
+                      MaterialPageRoute(builder: (context) => map_page()),
                     );
                     // Handle event when navigasi button is pressed
                   },
