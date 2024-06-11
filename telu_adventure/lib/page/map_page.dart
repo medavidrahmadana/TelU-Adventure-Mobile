@@ -11,9 +11,17 @@ class map_page extends StatelessWidget {
     final initialUrl = 'https://www.bing.com/maps?q=$locationName';
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Map Page"),
+      ),
       body: WebView(
         initialUrl: initialUrl,
         javascriptMode: JavascriptMode.unrestricted,
+        navigationDelegate: (NavigationRequest request) {
+          // Tracking route navigation
+          print('Navigation to: ${request.url}');
+          return NavigationDecision.navigate;
+        },
       ),
     );
   }
