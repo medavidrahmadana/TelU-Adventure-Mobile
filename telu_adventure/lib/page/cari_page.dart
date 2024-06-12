@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/controllers/lapor_controller.dart';
-import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/widget/modal_barang.dart';
+import 'package:telu_adventure/page/lapor_page.dart';
 
 import '../widget/modal_cari.dart';
 import '../widget/modal_lapor.dart';
@@ -13,9 +13,9 @@ class cari_page extends StatelessWidget {
   // Contoh nilai UID
   final LaporCon _laporCon = LaporCon();
   int _loadedItems = 3; // Jumlah awal item yang akan ditampilkan
-  int _loadThreshold = 3; // Jumlah item yang akan dimuat setiap kali di-scroll
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  cari_page({Key? key}) : super(key: key);
+  final int _loadThreshold = 3; // Jumlah item yang akan dimuat setiap kali di-scroll
+  String? uid = FirebaseAuth.instance.currentUser?.uid;
+  cari_page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class cari_page extends StatelessWidget {
         children: [
           Container(
             height: 300,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFFBB371A),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(35),
@@ -49,69 +49,30 @@ class cari_page extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      child: Center(
+                      child: const Center(
                         child: ProfilePicture(),
                       ),
                     ),
-                    Padding(
+Padding(
                       padding: const EdgeInsets.only(bottom: 30.0, right: 20),
                       child: Container(
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Color(0xFFEED1D1),
+                          color: Colors
+                              .transparent, // Ubah warna latar belakang menjadi transparan
                           borderRadius: BorderRadius.circular(9),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.notifications,
-                            color: Colors.orange,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                  return Stack(
-                                    children: <Widget>[
-                                      cari_page(),
-                                      SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: Offset(1.0, 0.0),
-                                          end: Offset(0.2, 0.0),
-                                        ).animate(animation),
-                                        child: forum_notifikasi(),
-                                      ),
-                                    ],
-                                  );
-                                },
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return child;
-                                },
-                              ),
-                            );
-                          },
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   FirebaseAuth.instance.currentUser?.displayName ?? 'User',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -140,79 +101,82 @@ class cari_page extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          StreamBuilder(
-                            stream: _laporCon.getlaporanbystatus(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError ||
-                                  snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
-                              List<DocumentSnapshot> docs = snapshot.data!.docs;
-                              int totalItems = docs.length;
-                              int sudahItems = docs
-                                  .where((doc) => doc['status'] == 'Sudah')
-                                  .length;
-                              int belumItems = docs
-                                  .where((doc) => doc['status'] == 'Belum')
-                                  .length;
-                              return Container(
-                                width: 250,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 25.0),
+                          if (uid != null)
+                            StreamBuilder(
+                              stream: _laporCon.getlaporanbystatus(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError ||
+                                    snapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+                                List<DocumentSnapshot> docs = snapshot.data!.docs;
+                                int totalItems = docs.length;
+                                int sudahItems = docs.where((doc) => doc['status'] == 'Sudah').length;
+                                int belumItems = docs.where((doc) => doc['status'] == 'Belum').length;
+                                return SizedBox(
+                                  width: 250,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 25.0),
+                                          child: Text(
+                                            '$totalItems',
+                                            style: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 60,
+                                        child: Center(
+                                          child: Text(
+                                            '$sudahItems',
+                                            style: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 45.0),
                                         child: Text(
-                                          '$totalItems',
-                                          style: TextStyle(
+                                          '$belumItems',
+                                          style: const TextStyle(
                                             color: Colors.red,
                                             fontSize: 32,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: 60,
-                                      child: Center(
-                                        child: Text(
-                                          '$sudahItems',
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 45.0),
-                                      child: Text(
-                                        '$belumItems',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          else
+                            const Text(
+                              'No User Data',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                         ],
                       ),
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 13.0),
+                          padding: EdgeInsets.only(left: 13.0),
                           child: Text(
                             'Laporan',
                             style: TextStyle(
@@ -222,7 +186,7 @@ class cari_page extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0),
+                          padding: EdgeInsets.only(left: 0.0),
                           child: Text(
                             'Selesai',
                             style: TextStyle(
@@ -232,7 +196,7 @@ class cari_page extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 17.0),
+                          padding: EdgeInsets.only(right: 17.0),
                           child: Text(
                             'Belum',
                             style: TextStyle(
@@ -249,30 +213,26 @@ class cari_page extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ElevatedButton(
+                            key: const ValueKey('tombol-halamanlapor-key'),
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => lapor_page()),
+                                MaterialPageRoute(builder: (context) =>  lapor_page()),
                               );
                             },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                  side: BorderSide(color: Colors.white),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                side: const BorderSide(color: Colors.white),
                               ),
-                              elevation: MaterialStateProperty.all<double>(5),
+                              elevation: 5,
                             ),
                             child: Container(
                               width: 70,
                               height: 20,
                               alignment: Alignment.center,
-                              child: Text(
+                              child: const Text(
                                 'Lapor',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -286,23 +246,19 @@ class cari_page extends StatelessWidget {
                             onPressed: () {
                               // Add your button 1 action here
                             },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xFFBB371A)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                  side: BorderSide(color: Colors.white),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFBB371A),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                side: const BorderSide(color: Colors.white),
                               ),
-                              elevation: MaterialStateProperty.all<double>(5),
+                              elevation: 5,
                             ),
                             child: Container(
                               width: 70,
                               height: 20,
                               alignment: Alignment.center,
-                              child: Text(
+                              child: const Text(
                                 'Cari',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -322,10 +278,10 @@ class cari_page extends StatelessWidget {
           ),
           Column(
             children: [
-              Row(
+              const Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 405, left: 25),
+                    padding: EdgeInsets.only(top: 405, left: 25),
                     child: Text(
                       'List Barang',
                       style: TextStyle(
@@ -344,7 +300,7 @@ class cari_page extends StatelessWidget {
                   width: 350,
                   height: 45,
                   decoration: ShapeDecoration(
-                    color: Color(0xFFF5F5F5),
+                    color: const Color(0xFFF5F5F5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
                     ),
@@ -377,7 +333,7 @@ class cari_page extends StatelessWidget {
                         angle: 90 * (22 / 7 / 180),
                         child: IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.more_vert),
+                          icon: const Icon(Icons.more_vert),
                           color: Colors.grey[500],
                           iconSize: 32,
                         ),
@@ -386,7 +342,7 @@ class cari_page extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(child: _buildKarirList(context)),
+              Expanded(child: _buildBarangListCari(context)),
             ],
           )
         ],
@@ -394,8 +350,8 @@ class cari_page extends StatelessWidget {
     );
   }
 
-  Widget _buildKarirList(BuildContext context) {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
+  Widget _buildBarangListCari(BuildContext context) {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
     return StreamBuilder(
       stream: _laporCon.getlaporanbystatus(),
       builder: (context, snapshot) {
@@ -403,18 +359,17 @@ class cari_page extends StatelessWidget {
           return Text(snapshot.error.toString());
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text('Loading...');
+          return const Text('Loading...');
         }
         if (snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('Tidak ada data'));
+          return const Center(child: Text('Tidak ada data'));
         }
 
         final docs = snapshot.data!.docs;
         return NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
             if (notification is ScrollEndNotification &&
-                notification.metrics.pixels >=
-                    notification.metrics.maxScrollExtent &&
+                notification.metrics.pixels >= notification.metrics.maxScrollExtent &&
                 _loadedItems < docs.length) {
               _loadedItems += _loadThreshold;
               if (_loadedItems >= docs.length) {
@@ -427,11 +382,11 @@ class cari_page extends StatelessWidget {
             itemCount: docs.length,
             itemBuilder: (context, index) {
               if (index >= _loadedItems) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              return _buildLaporItem(docs[index], context);
+              return _buildLaporCariItem(docs[index], context);
             },
           ),
         );
@@ -441,22 +396,21 @@ class cari_page extends StatelessWidget {
 
   void _loadMore() {
     final scrollController = ScrollController();
-    if (scrollController.position.pixels >=
-        scrollController.position.maxScrollExtent) {
+    if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
       _loadedItems += _loadThreshold;
     }
   }
 
-  Widget _buildLaporItem(DocumentSnapshot doc, BuildContext context) {
+  Widget _buildLaporCariItem(DocumentSnapshot doc, BuildContext context) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, bottom: 10),
-      child: Container(
+      child: SizedBox(
         width: 350,
         height: 45,
         child: Row(
           children: [
-            Container(
+            SizedBox(
               width: 170,
               height: 45,
               child: Row(
@@ -468,37 +422,45 @@ class cari_page extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(13),
                       border: Border.all(
-                        color: Color.fromARGB(255, 228, 226, 226),
+                        color: const Color.fromARGB(255, 228, 226, 226),
                         width: 2,
                       ),
                     ),
-                    // child: Image.asset(
-                    //   data['imagePath'],
-                    //   fit: BoxFit.cover,
-                    // ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: data['imagePath'] != null &&
+                              data['imagePath'].isNotEmpty
+                          ? Image.network(
+                              data['imagePath'],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(Icons.error),
+                            )
+                          : Icon(Icons.image_not_supported),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(data['nama'], style: TextStyle(fontSize: 16)),
+                    child: Text(data['nama'], style: const TextStyle(fontSize: 16)),
                   )
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: 100,
               height: 45,
               child: Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                   data['type'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontFamily: "inter",
                   ),
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: 85,
               height: 45,
               child: Transform.rotate(
@@ -514,8 +476,8 @@ class cari_page extends StatelessWidget {
                               cari_page(),
                               SlideTransition(
                                 position: Tween<Offset>(
-                                  begin: Offset(0, 0),
-                                  end: Offset(0, 0),
+                                  begin: const Offset(0, 0),
+                                  end: const Offset(0, 0),
                                 ).animate(animation),
                                 child: modal_cari(
                                   documentId: doc.id,
@@ -524,14 +486,13 @@ class cari_page extends StatelessWidget {
                             ],
                           );
                         },
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
                           return child;
                         },
                       ),
                     );
                   },
-                  icon: Icon(Icons.more_vert),
+                  icon: const Icon(Icons.more_vert),
                   iconSize: 32,
                 ),
               ),

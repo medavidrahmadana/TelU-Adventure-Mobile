@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:telu_adventure/page/forum_jawab.dart';
+import 'package:telu_adventure/page/forum_komentar.dart';
 import 'package:telu_adventure/page/forum_pertanyaan.dart';
 import '../widget/forum_notifikasi.dart';
 import 'package:telu_adventure/model/pertanyaan_model.dart';
@@ -28,53 +29,53 @@ class forum_dashboard extends StatelessWidget {
                 height: 45,
                 margin: const EdgeInsets.only(right: 16),
                 child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        width: 45,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
+                    // children: [
+                    //   Positioned(
+                    //     top: 0,
+                    //     right: 0,
+                    //     child: Container(
+                    //       width: 45,
+                    //       height: 45,
+                    //       decoration: BoxDecoration(
+                    //         color: Colors.red,
+                    //         borderRadius: BorderRadius.circular(14),
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   // IconButton(
+                    //   //   icon: const Icon(
+                    //   //     Icons.notifications,
+                    //   //     color: Colors.white,
+                    //   //   ),
+                    //   //   onPressed: () {
+                    //   //     Navigator.push(
+                    //   //       context,
+                    //   //       PageRouteBuilder(
+                    //   //         pageBuilder:
+                    //   //             (context, animation, secondaryAnimation) {
+                    //   //           return Stack(
+                    //   //             children: <Widget>[
+                    //   //               forum_dashboard(), // Menambahkan forum_dashboard di belakang forum_notifikasi
+                    //   //               SlideTransition(
+                    //   //                 position: Tween<Offset>(
+                    //   //                   begin: const Offset(1.0, 0.0),
+                    //   //                   end: const Offset(0.2, 0.0),
+                    //   //                 ).animate(animation),
+                    //   //                 child: const forum_notifikasi(),
+                    //   //               ),
+                    //   //             ],
+                    //   //           );
+                    //   //         },
+                    //   //         transitionsBuilder: (context, animation,
+                    //   //             secondaryAnimation, child) {
+                    //   //           return child!;
+                    //   //         },
+                    //   //       ),
+                    //   //     );
+                    //   //   },
+                    //   // ),
+                    // ],
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.notifications,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                              return Stack(
-                                children: <Widget>[
-                                  forum_dashboard(), // Menambahkan forum_dashboard di belakang forum_notifikasi
-                                  SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(1.0, 0.0),
-                                      end: const Offset(0.2, 0.0),
-                                    ).animate(animation),
-                                    child: const forum_notifikasi(),
-                                  ),
-                                ],
-                              );
-                            },
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return child!;
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
               ),
             ],
             bottom: PreferredSize(
@@ -251,10 +252,23 @@ class forum_dashboard extends StatelessWidget {
                                   SizedBox(height: 12),
                                   Row(
                                     children: [
-                                      Text(
-                                        'Belum ada jawaban',
-                                        style: TextStyle(
-                                          color: Color(0xFF797979),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  forum_komentar(
+                                                documentId: pertanyaan.id,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          'Lihat Komentar',
+                                          style: TextStyle(
+                                            color: Color(0xFF797979),
+                                          ),
                                         ),
                                       ),
                                     ],

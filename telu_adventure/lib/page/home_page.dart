@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:telu_adventure/page/map_page.dart';
 import 'package:telu_adventure/widget/forum_notifikasi.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/login_page.dart';
@@ -13,6 +14,7 @@ import 'package:telu_adventure/model/jadwalPelajaran_model.dart';
 import 'package:telu_adventure/model/beasiswa_model.dart';
 import 'package:telu_adventure/model/tugas_model.dart';
 import 'package:telu_adventure/model/achievement_model.dart';
+import 'package:telu_adventure/controllers/userdetail_controller.dart';
 
 import '../Handler/DatabaseHelper.dart';
 
@@ -22,14 +24,34 @@ int currentListIndex = 0;
 int currentPage = 0;
 
 class home_page extends StatefulWidget {
-  const home_page({Key? key}) : super(key: key);
+  const home_page({super.key});
 
   @override
   State<home_page> createState() => _home_pageState();
 }
 
 class _home_pageState extends State<home_page> {
+  final usercon _usercon = usercon();
+  final String UID = FirebaseAuth.instance.currentUser!.uid;
+  String? gedungk;
+  String? gedungnk;
+  String? kantin;
+
+
+  
   @override
+  void initState() {
+    super.initState();
+    _fetchGedungData();
+  }
+  Future<void> _fetchGedungData() async {
+    Map<String, String?> gedungData = await _usercon.getGedung(UID);
+    setState(() {
+      gedungk = gedungData['gedungk'];
+      gedungnk = gedungData['gedungnk'];
+      kantin = gedungData['kantin'];
+    });
+  }
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -38,7 +60,7 @@ class _home_pageState extends State<home_page> {
             children: [
               Container(
                 height: 300,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFFBB371A),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(70),
@@ -49,15 +71,15 @@ class _home_pageState extends State<home_page> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 50.0),
-                  Center(
+                  const SizedBox(height: 50.0),
+                  const Center(
                     child: ProfilePicture(),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Center(
                     child: Text(
                       FirebaseAuth.instance.currentUser?.displayName ?? 'User',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24.0,
                         fontFamily: 'Inter',
                         color: Colors.white,
@@ -65,11 +87,11 @@ class _home_pageState extends State<home_page> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  InfoBox(),
-                  SizedBox(height: 20.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  const SizedBox(height: 20.0),
+                  const InfoBox(),
+                  const SizedBox(height: 20.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
                       'Jadwal Pelajaran',
                       style: TextStyle(
@@ -80,7 +102,7 @@ class _home_pageState extends State<home_page> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: FutureBuilder<List<jadwalPelajaran>>(
@@ -88,14 +110,14 @@ class _home_pageState extends State<home_page> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
                           List<jadwalPelajaran> jadwalList =
                               snapshot.data ?? [];
                           return Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 20.0,
                                 right: 20.0), // Atur jarak kiri dan kanan
                             child: Row(
@@ -108,7 +130,10 @@ class _home_pageState extends State<home_page> {
                                           ? 20.0
                                           : 0.0),
                                   child: SizedBox(
-                                    width: 300, // Lebar masing-masing item
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
                                     child: ModulOption(
                                       imagePath:
                                           'assets/img/Map.png', // Ganti dengan gambar yang sesuai
@@ -128,12 +153,12 @@ class _home_pageState extends State<home_page> {
                       },
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Row(
                       children: [
-                        Column(
+                        const Column(
                           children: [
                             Text(
                               'Achievement',
@@ -145,7 +170,7 @@ class _home_pageState extends State<home_page> {
                             ),
                           ],
                         ),
-                        Spacer(),
+                        const Spacer(),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -154,7 +179,7 @@ class _home_pageState extends State<home_page> {
                                   builder: (context) => achievement_page()),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Lihat Semua',
                             style: TextStyle(
                               fontSize: 12.0,
@@ -166,31 +191,77 @@ class _home_pageState extends State<home_page> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10.0),
-                  SingleChildScrollView(
-                    // Tambahkan SingleChildScrollView di sini
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20.0),
-                        ModulAch(
-                            topText: 'Still Free',
-                            imagePath: 'assets/img/scholar.png'),
-                        SizedBox(width: 10.0),
-                        ModulAch(
-                            topText: 'Task Master',
-                            imagePath: 'assets/img/task_achievement.png'),
-                        SizedBox(width: 10.0),
-                        ModulAch(
-                            topText: 'Food Place',
-                            imagePath: 'assets/img/restaurant.png'),
-                        SizedBox(width: 10.0),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  const SizedBox(height: 10.0),
+                 SingleChildScrollView(
+  scrollDirection: Axis.horizontal,
+  child: StreamBuilder<QuerySnapshot>(
+    stream: _controller.getAchievement(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        return Center(child: Text('No achievements found'));
+      } else {
+        List<ModulAch?> achievements = snapshot.data!.docs.map((doc) {
+          // Log data for debugging
+          print('Achievement doc: ${doc.data()}');
+
+          Achievement achievement = Achievement(
+            id: doc['id'] ?? '',
+            namaAchievement: doc['namaAchievement'] ?? '',
+            gambarAchievement: doc['gambarAchievement'] ?? '',
+            syarat: doc['syarat'] ?? '',
+          );
+
+          String syarat = achievement.syarat;
+          if ((syarat == gedungk && achievement.id == '3') ||
+              (syarat == gedungnk && achievement.id == '2') ||
+              (syarat == kantin && achievement.id == '4')) {
+            // Show achievement image
+            return ModulAch(
+              topText: doc['namaAchievement'],
+              imagePath: doc['gambarAchievement'],
+              status: true,
+            );
+          }else if (
+                  achievement.id == '6') {
+                return ModulAch(
+                  topText: doc['namaAchievement'],
+                  imagePath: doc['gambarAchievement'],
+                  status: true,
+                );
+                }
+          return null;
+        }).where((ach) => ach != null).toList();
+
+        return Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Row(
+            children: List.generate(achievements.length, (index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  right: index < achievements.length - 1 ? 20.0 : 0.0,
+                ),
+                child: SizedBox(
+                  width: 150, // Lebar tetap untuk ModulAch
+                  height: 175,
+                  child: achievements[index]!,
+                ),
+              );
+            }),
+          ),
+        );
+      }
+    },
+  ),
+),
+
+
+                  const SizedBox(height: 20),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Row(
                       children: [
                         Column(
@@ -215,7 +286,7 @@ class _home_pageState extends State<home_page> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(),
                           ); // Menampilkan indikator loading di tengah saat data sedang dimuat
                         } else if (snapshot.hasError) {
@@ -244,7 +315,8 @@ class _home_pageState extends State<home_page> {
                                         spreadRadius:
                                             3, // Radius penyebaran bayangan
                                         blurRadius: 5, // Radius kabur bayangan
-                                        offset: Offset(0, 3), // Offset bayangan
+                                        offset: const Offset(
+                                            0, 3), // Offset bayangan
                                       ),
                                     ],
                                   ),
@@ -270,16 +342,17 @@ class _home_pageState extends State<home_page> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
                                             Text(
                                               beasiswa.namaBeasiswa,
-                                              style: TextStyle(fontSize: 16),
+                                              style:
+                                                  const TextStyle(fontSize: 16),
                                             ),
                                             Text(
                                               beasiswa.deskripsi,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey),
                                               maxLines: 2,
@@ -307,7 +380,7 @@ class _home_pageState extends State<home_page> {
                     mainAxisAlignment: MainAxisAlignment
                         .spaceBetween, // Mengatur posisi antara icon button dan child lainnya
                     children: [
-                      Spacer(), // Spacer untuk menggeser icon button ke kanan
+                      const Spacer(), // Spacer untuk menggeser icon button ke kanan
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 50, right: 20), // Ubah padding ke bagian kanan
@@ -315,10 +388,10 @@ class _home_pageState extends State<home_page> {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color:
-                                Color(0xFFEED1D1), // Warna latar belakang putih
+                            color: const Color(
+                                0xFFEED1D1), // Warna latar belakang putih
                             borderRadius: BorderRadius.circular(9),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black, // Warna efek bayangan
                                 spreadRadius: 1,
@@ -328,7 +401,7 @@ class _home_pageState extends State<home_page> {
                             ],
                           ),
                           child: IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.logout,
                               color: Colors.orange,
                             ),
@@ -359,6 +432,8 @@ class _home_pageState extends State<home_page> {
 }
 
 class ProfilePicture extends StatelessWidget {
+  const ProfilePicture({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -373,147 +448,151 @@ class ProfilePicture extends StatelessWidget {
         radius: 50.0,
         backgroundImage: FirebaseAuth.instance.currentUser!.photoURL != null
             ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
-            : AssetImage('assets/img/Fadhil.png') as ImageProvider,
+            : const AssetImage('assets/img/Fadhil.png') as ImageProvider,
       ),
     );
   }
 }
 
 class InfoBox extends StatelessWidget {
+  const InfoBox({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 20.0),
-      padding: EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    '5',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Color(0xFFA11E22),
-                      fontWeight: FontWeight.bold,
+    String uid =
+        FirebaseAuth.instance.currentUser!.uid; // Get the current user UID
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: _controller.getgedung(uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text('No data available'));
+        } else {
+          // Extract data from the snapshot
+          var data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+          String perkuliahan = data['gedungk'] ?? "";
+          String kantin = data['kantin'] ?? "";
+          String nonPerkuliahan = data['gedungnk'] ?? "";
+
+          return Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          perkuliahan,
+                          style: const TextStyle(
+                            fontSize: 25.0,
+                            color: Color(0xFFA11E22),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text(
+                          'G. Perkuliahan',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    'G. Perkuliahan',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
+                    Column(
+                      children: [
+                        Text(
+                          kantin,
+                          style: const TextStyle(
+                            fontSize: 25.0,
+                            color: Color(0xFFA11E22),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text(
+                          'Kantin',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    '2',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Color(0xFFA11E22),
-                      fontWeight: FontWeight.bold,
+                    Column(
+                      children: [
+                        Text(
+                          nonPerkuliahan,
+                          style: const TextStyle(
+                            fontSize: 25.0,
+                            color: Color(0xFFA11E22),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text(
+                          'G. Non Perkuliahan',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    'Kantin',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    '2',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Color(0xFFA11E22),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'G. Non Perkuliahan',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle event when explorasi button is pressed
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color(0xFFA11E22)), // Warna latar merah
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10.0), // Kurangi radius sudut
+                  ],
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle event when explorasi button is pressed
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color(0xFFA11E22)), // Warna latar merah
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Kurangi radius sudut
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          'Explorasi',
+                          style: TextStyle(
+                              color: Colors.white), // Warna teks putih
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    'Explorasi',
-                    style: TextStyle(color: Colors.white), // Warna teks putih
-                  ),
+                  ],
                 ),
-              ),
-              SizedBox(width: 10), // Spacer
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle event when kesehatan button is pressed
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.white), // Warna latar putih
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(0.0), // Kurangi radius sudut
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Kesehatan',
-                    style: TextStyle(color: Colors.black), // Warna teks hitam
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -523,8 +602,9 @@ class ModulOption extends StatelessWidget {
   final List<String> bottomTexts; // Mengubah bottomText menjadi List<String>
   final String imagePath;
 
-  ModulOption(
-      {required this.topText,
+  const ModulOption(
+      {super.key,
+      required this.topText,
       required this.bottomTexts,
       required this.imagePath});
 
@@ -533,16 +613,17 @@ class ModulOption extends StatelessWidget {
     return Container(
       width: 300.0,
       height: 170.0,
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: Color(0xFFA11E22), // Ganti warna latar belakang menjadi merah
+        color:
+            const Color(0xFFA11E22), // Ganti warna latar belakang menjadi merah
         borderRadius: BorderRadius.circular(20.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -550,7 +631,7 @@ class ModulOption extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 top: 5.0,
                 right: 0.0,
                 bottom: 40.0,
@@ -561,20 +642,20 @@ class ModulOption extends StatelessWidget {
               height: 100, // Tinggi gambar, sesuaikan sesuai kebutuhan
             ),
           ),
-          SizedBox(width: 10.0), // Spasi antara gambar dan teks
+          const SizedBox(width: 10.0), // Spasi antara gambar dan teks
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   topText, // Judul modul
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white, // Warna teks putih
                   ),
                 ),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 // Menampilkan setiap baris bottom text dalam lingkaran dengan border putih
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -591,13 +672,13 @@ class ModulOption extends StatelessWidget {
                               width: 1.0,
                             ),
                           ),
-                          margin: EdgeInsets.only(right: 5.0),
+                          margin: const EdgeInsets.only(right: 5.0),
                         ),
                         Expanded(
                           child: Text(
                             text,
                             textAlign: TextAlign.start,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14.0,
                               color: Colors.white, // Warna teks putih
                             ),
@@ -607,15 +688,20 @@ class ModulOption extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 10.0), // Spasi antara bottom text dan tombol
+                const SizedBox(
+                    height: 10.0), // Spasi antara bottom text dan tombol
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => map_page()),
+                    );
                     // Handle event when navigasi button is pressed
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, // Warna latar belakang putih
                   ),
-                  child: Text(
+                  child: const Text(
                     'Navigasi',
                     style: TextStyle(color: Colors.black), // Warna teks hitam
                   ),
@@ -632,69 +718,95 @@ class ModulOption extends StatelessWidget {
 class ModulAch extends StatelessWidget {
   final String topText;
   final String imagePath;
+  final bool status;
 
-  ModulAch({required this.topText, required this.imagePath});
+  const ModulAch({
+    Key? key,
+    required this.topText,
+    required this.imagePath,
+    required this.status,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin:
-          EdgeInsets.all(10.0), // Tambahkan margin 10.0 di semua sisi container
-      padding: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize:
-            MainAxisSize.min, // Mengatur agar column menyesuaikan ukuran widget
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            imagePath,
-            width: 100,
-            height: 100,
-          ),
-          SizedBox(height: 10.0),
-          Padding(
-            padding: EdgeInsets.only(
-                bottom: 10.0), // Tambahkan jarak pada bagian bawah
-            child: Text(
-              topText,
-              textAlign:
-                  TextAlign.center, // Mengatur agar teks berada di tengah
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black, // Ubah warna teks menjadi hitam
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Congratulations!"),
+              content: Text("You've achieved $topText!"),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("Close"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Container(
+        width: 150, // Set lebar container menjadi 150
+        margin: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: status ? Colors.white : Colors.grey.withOpacity(0.7),
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 80,
+              height: 80,
+              color: status ? null : Colors.black,
+            ),
+            const SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                topText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: status ? Colors.black : Colors.white,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
+
 class ModulInfoBox extends StatelessWidget {
   final String title;
   final String dateTime;
 
-  ModulInfoBox({required this.title, required this.dateTime});
+  const ModulInfoBox({super.key, required this.title, required this.dateTime});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      padding: EdgeInsets.all(20.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20.0),
@@ -703,7 +815,7 @@ class ModulInfoBox extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 0,
             blurRadius: 3,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -712,16 +824,16 @@ class ModulInfoBox extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
               color: Color(0xFFA11E22),
             ),
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Text(
             dateTime,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.black,
             ),

@@ -5,10 +5,9 @@ import 'package:telu_adventure/page/home_page.dart';
 import 'package:telu_adventure/page/lapor_page.dart';
 import 'package:telu_adventure/page/map_page.dart';
 import '../page/scan_page.dart';
-import 'package:telu_adventure/page/cari_page.dart';
 
 class NavButton extends StatefulWidget {
-  NavButton({Key? key}) : super(key: key);
+  const NavButton({super.key});
 
   @override
   _NavButtonState createState() => _NavButtonState();
@@ -20,14 +19,14 @@ class _NavButtonState extends State<NavButton> {
   late PageStorageBucket _bucket;
   late Widget _currentScreen;
   List<Widget> _children = [];
-  bool _isCariPage = true;
 
   @override
   void initState() {
     super.initState();
     _initCamera();
     _bucket = PageStorageBucket();
-    _currentScreen = home_page(); // Assuming HomePage is your default screen
+    _currentScreen =
+        const home_page(); // Assuming HomePage is your default screen
   }
 
   Future<void> _initCamera() async {
@@ -35,13 +34,13 @@ class _NavButtonState extends State<NavButton> {
     _camera = cameras.first;
     setState(() {
       _children = [
-        home_page(),
+        const home_page(),
         map_page(),
         // MapCard(),
         // course_page(),
         ScanPage(camera: _camera),
         forum_dashboard(),
-        lapor_page(),
+        const lapor_page(),
       ];
     });
   }
@@ -53,30 +52,19 @@ class _NavButtonState extends State<NavButton> {
     });
   }
 
-  void _toggleLaporPage() {
-    setState(() {
-      if (_isCariPage) {
-        _currentScreen = lapor_page();
-      } else {
-        _currentScreen = cari_page();
-      }
-      _isCariPage = !_isCariPage; // Toggle halaman
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageStorage(
-        child: _currentScreen,
         bucket: _bucket,
+        child: _currentScreen,
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
               100.0), // Sesuaikan dengan tingkat kebulatan yang Anda inginkan
         ),
-        child: Icon(Icons.qr_code_scanner_rounded),
+        child: const Icon(Icons.qr_code_scanner_rounded),
         onPressed: () {
           Navigator.push(
             context,
@@ -86,9 +74,9 @@ class _NavButtonState extends State<NavButton> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
+        child: SizedBox(
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,7 +88,7 @@ class _NavButtonState extends State<NavButton> {
                       minWidth: 40,
                       onPressed: () {
                         setState(() {
-                          _currentScreen = home_page();
+                          _currentScreen = const home_page();
                           _currentIndex = 0;
                         });
                       },
@@ -178,7 +166,12 @@ class _NavButtonState extends State<NavButton> {
                       )),
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: _toggleLaporPage,
+                    onPressed: () {
+                      setState(() {
+                        _currentScreen = const lapor_page();
+                        _currentIndex = 3;
+                      });
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -187,9 +180,10 @@ class _NavButtonState extends State<NavButton> {
                           color: _currentIndex == 3 ? Colors.red : Colors.grey,
                         ),
                         Text(
-                          _isCariPage ? 'Cari' : 'Lapor',
+                          'Lapor',
                           style: TextStyle(
-                            color: _currentIndex == 3 ? Colors.red : Colors.grey,
+                            color:
+                                _currentIndex == 3 ? Colors.red : Colors.grey,
                           ),
                         )
                       ],

@@ -16,8 +16,6 @@ class forum_jawab extends StatefulWidget {
 }
 
 class _forum_jawabState extends State<forum_jawab> {
-  forumCon _forumcon = forumCon();
-
   String _pertanyaan = '';
   final TextEditingController _jawabanController = TextEditingController();
   @override

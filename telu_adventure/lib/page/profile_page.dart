@@ -27,18 +27,48 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user != null) {
       _nameController.text = user.displayName ?? '';
       _emailController.text = user.email ?? '';
-      
     }
   }
 
-   // Fungsi untuk menangani perubahan foto profil
+  // Fungsi untuk menangani perubahan foto profil
   void _changeProfilePhoto() async {
     User? user = _auth.currentUser;
     if (user == null) return;
 
+    // Menampilkan modal untuk memilih antara kamera dan galeri
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: Icon(Icons.camera_alt),
+            title: Text('Capture Photo'),
+            onTap: () async {
+              Navigator.pop(context);
+              await _pickImage(ImageSource.camera);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.photo_library),
+            title: Text('Select from Gallery'),
+            onTap: () async {
+              Navigator.pop(context);
+              await _pickImage(ImageSource.gallery);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Fungsi untuk memilih gambar dari sumber yang ditentukan
+  Future<void> _pickImage(ImageSource source) async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
     try {
-      // Memilih gambar dari galeri
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await _picker.pickImage(source: source);
 
       if (pickedFile != null) {
         File file = File(pickedFile.path);
@@ -138,7 +168,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Text('Full Name', style: TextStyle(fontSize: 18.0)),
             TextFormField(
               initialValue: _nameController.text,
-              style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
+              style: TextStyle(fontSize: 16.0),
               onChanged: (value) {
                 setState(() {
                   _nameController.text = value;
@@ -147,14 +177,14 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.grey[200],
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), // Ganti gaya garis input
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
             SizedBox(height: 20.0),
             Text('Email', style: TextStyle(fontSize: 18.0)),
             TextFormField(
               initialValue: _emailController.text,
-              style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
+              style: TextStyle(fontSize: 16.0),
               enabled: false,
               onChanged: (value) {
                 setState(() {
@@ -164,37 +194,20 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.grey[200],
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)), // Ganti gaya garis input
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
-            // SizedBox(height: 20.0),
-            // Text('Password', style: TextStyle(fontSize: 18.0)),
-            // TextFormField(
-            //   initialValue: _password,
-            //   style: TextStyle(fontSize: 16.0), // Ganti ukuran teks input
-            //   obscureText: true,
-            //   onChanged: (value) {
-            //     setState(() {
-            //       _password = value;
-            //     });
-            //   },
-            //   decoration: InputDecoration(
-            //     filled: true,
-            //     fillColor: Colors.grey[200],
-            //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-            //   ),
-            // ),
             SizedBox(height: 20.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, 
+                backgroundColor: Colors.red,
               ),
               onPressed: _saveProfile,
               child: Text(
                 'Save',
                 style: TextStyle(
-                  color: Colors.white, 
-                  fontSize: 18.0, 
+                  color: Colors.white,
+                  fontSize: 18.0,
                 ),
               ),
             ),

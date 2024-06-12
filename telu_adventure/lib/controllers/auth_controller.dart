@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:telu_adventure/model/userdetail_model.dart';
 
 import '../widget/nav_button.dart';
 
@@ -46,6 +48,23 @@ class AuthService {
       return userCredential.user;
     } catch (e) {
       return null;
+    }
+  }
+
+  static Future<void> addToFirestore(
+      BuildContext context, udetail_model udetail_model) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("userdetail")
+          .add(udetail_model.toMap());
+      // Show success message or navigate to another screen
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan sudah terkirim!')));
+      Navigator.pop(context);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Laporan gagal terkirim!')));
+      Navigator.pop(context); // Assuming this is in a new screen
     }
   }
 }

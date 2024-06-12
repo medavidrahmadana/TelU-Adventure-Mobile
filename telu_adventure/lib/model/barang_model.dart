@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Barang {
   final String nama;
-  final String imagePath; // Path gambar lokal
+  final String imagePath;
   final String type;
   final String deskripsi;
   final String telepon;
